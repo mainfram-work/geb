@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+# include external libraries
 require "dry/cli"
+
+# include geb commands / libraries
 require_relative "geb/version"
 require_relative "geb/build"
 require_relative "geb/release"

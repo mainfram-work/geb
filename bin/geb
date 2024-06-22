@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-require "dry/cli"
-
+# include the libraries and the CLI commands
 require_relative "../lib/geb"
 
-
+# run the CLI
 Dry::CLI.new(Geb::CLI::Commands).call

@@ -29,8 +29,8 @@ Gem::Specification.new do |spec|
         f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
     end
   end
-  spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.bindir = "bine"
+  spec.executables = ['geb']
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
