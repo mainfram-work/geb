@@ -1,4 +1,14 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+# -----------------------------------------------------------------------------
+#  Ruby Gem: Geb
+#  Author: Edin Mustajbegovic
+#  Email: edin@actiontwelve.com
+#
+#  Main executable file for the geb utility
+#
+#  Licence MIT
+# -----------------------------------------------------------------------------
 
 # include the libraries and the CLI commands
 require_relative "../lib/geb"

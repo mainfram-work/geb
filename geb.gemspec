@@ -1,24 +1,39 @@
 # frozen_string_literal: true
-
+# -----------------------------------------------------------------------------
+#  Ruby Gem: Geb
+#  Author: Edin Mustajbegovic
+#  Email: edin@actiontwelve.com
+#
+#  Geb gemspec file
+#  For more information and examples about making a new gem, check out our
+#  guide at: https://bundler.io/guides/creating_gem.html
+#
+#  Licence MIT
+# -----------------------------------------------------------------------------
 require_relative "lib/geb"
 
 Gem::Specification.new do |spec|
-  spec.name = "geb"
-  spec.version = Geb::VERSION
-  spec.authors = ["Edin Mustajbegovic"]
-  spec.email = ["edin@actiontwelve.com"]
 
-  spec.summary = "Write a short summary, because RubyGems requires one."
-  spec.description = "Write a longer description or delete this line."
-  spec.homepage = "http://www.mainfram.com/"
-  spec.license = "MIT"
+  # basic gem information
+  spec.name         = "geb"
+  spec.version      = Geb::VERSION
+  spec.authors      = ["Edin Mustajbegovic"]
+  spec.email        = ["edin@actiontwelve.com"]
+  spec.summary      = "A static website builder with simple templating and management utilities."
+  spec.description  = "A static website builder with simple templating and management utilities."
+  spec.homepage     = "https://github.com/mainfram-work/geb"
+  spec.license      = "MIT"
+
+  # setup gem metadata
+  spec.metadata["homepage_uri"]     = spec.homepage
+  spec.metadata["source_code_uri"]  = spec.homepage
+  spec.metadata["changelog_uri"]    = "https://github.com/mainfram-work/geb/blob/main/CHANGELOG.md"
+
+  # ruby version, dependencies and other settings
   spec.required_ruby_version = ">= 3.0.0"
+  spec.add_dependency "dry-cli", "~> 1.0"
+  spec.add_dependency "rake", "~> 13.0"
 
-  spec.metadata["allowed_push_host"] = "'https://example.com'"
-
-  spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "http://www.example.com."
-  spec.metadata["changelog_uri"] = "http://www.example.com/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -29,14 +44,10 @@ Gem::Specification.new do |spec|
         f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
     end
   end
-  spec.bindir = "bine"
-  spec.executables = ['geb']
-  spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
-  spec.add_dependency "dry-cli", "~> 1.0"
-  spec.add_dependency "rake", "~> 13.0"
+  # setup bin directory, executables and require paths
+  spec.bindir         = "bin"
+  spec.executables    = ['geb']
+  spec.require_paths  = ["lib"]
 
-  # For more information and examples about making a new gem, check out our
-  # guide at: https://bundler.io/guides/creating_gem.html
-end
+end # Gem::Specification.new 
