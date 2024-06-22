@@ -140,7 +140,8 @@ class TestGebCommands < Minitest::Test
     assert_cli_option Geb::CLI::Commands::Init, :force,               :boolean, false
 
     call_parameters = Geb::CLI::Commands::Init.instance_method(:call).parameters
-    assert_equal 10, call_parameters.size, "Init command should have 10 required parameters."
+    assert_equal 11, call_parameters.size, "Init command should have 10 required parameters."
+    assert_includes call_parameters, [:keyreq, :site_path],          "Init command should have a required site_path parameter."
     assert_includes call_parameters, [:keyreq, :skip_config],        "Init command should have a required skip_config parameter."
     assert_includes call_parameters, [:keyreq, :skip_locations],     "Init command should have a required skip_locations parameter."
     assert_includes call_parameters, [:keyreq, :skip_assetfolders],  "Init command should have a required skip_assetfolders parameter."

@@ -1,0 +1,15 @@
+
+# This is a sample configuration file for the geb command line tool.
+
+# The site_url is the URL of the site that you are deploying to.
+site_url: "https://example.com"
+
+# The remote_uri is the SSH URI of the remote server that you are deploying to.
+# Typpical format is username@server
+remote_uri: "user@server.com"
+
+# The remote_path is the path on the remote server where the site is located.
+remote_path: "/path/to/site"
+
+# The local_port is the port that the local server is running on.
+local_port: 4000

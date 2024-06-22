@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geb (0.3.0)
+    geb (0.3.2)
       dry-cli (~> 1.0)
       rake (~> 13.0)
 

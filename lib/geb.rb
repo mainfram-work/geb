@@ -9,6 +9,12 @@
 #  Licence MIT
 # -----------------------------------------------------------------------------
 
+# Define the main module, version and main error class
+module Geb
+  VERSION = "0.3.2"
+  class Error < StandardError; end
+end # module Geb
+
 # include external libraries
 require "dry/cli"
 
@@ -25,10 +31,3 @@ require_relative "geb/remote"
 # include geb libraries
 require_relative "geb/cli"
 
-module Geb
-
-  VERSION = "0.3.0"
-
-  class Error < StandardError; end
-  
-end
