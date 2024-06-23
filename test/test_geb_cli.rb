@@ -4,7 +4,7 @@
 #  Author: Edin Mustajbegovic
 #  Email: edin@actiontwelve.com
 #
-#  Tests the CLI commands for Geb commands, making sure that DRY::CLI 
+#  Tests the CLI commands for Geb commands, making sure that DRY::CLI
 #  structure is correctly implemented
 #
 #  Licence MIT
@@ -50,7 +50,7 @@ class TestGebCommands < Minitest::Test
 
     refute_nil    Geb::CLI::Commands::Build.description,  "Build command should have a description."
     refute_empty  Geb::CLI::Commands::Build.description,  "Build command's description should not be empty."
-    refute_nil    Geb::CLI::Commands::Build.example,      "Build command should have an example."  
+    refute_nil    Geb::CLI::Commands::Build.example,      "Build command should have an example."
     refute_empty  Geb::CLI::Commands::Build.example,      "Build command's example should not be empty."
 
     refute_nil    Geb::CLI::Commands::Build.method_defined?(:options)
@@ -87,7 +87,7 @@ class TestGebCommands < Minitest::Test
     assert_equal 2, call_parameters.size, "Release command should have two required parameters."
     assert_includes call_parameters, [:keyreq, :skip_assets], "Release command should have a required skip_assets parameter."
     assert_includes call_parameters, [:keyreq, :skip_pages],  "Release command should have a required skip_pages parameter."
-    
+
   end # def test_that_geb_has_a_release_command
 
   def test_that_geb_has_a_server_command
@@ -128,30 +128,15 @@ class TestGebCommands < Minitest::Test
     refute_nil    Geb::CLI::Commands::Init.method_defined?(:options)
     refute_empty  Geb::CLI::Commands::Init.options, "Init command should have options."
 
-    assert_cli_option Geb::CLI::Commands::Init, :skip_config,         :boolean, false
+    assert_cli_option Geb::CLI::Commands::Init, :template,            :string, nil
     assert_cli_option Geb::CLI::Commands::Init, :skip_locations,      :boolean, false
-    assert_cli_option Geb::CLI::Commands::Init, :skip_assetfolders,   :boolean, false
+    assert_cli_option Geb::CLI::Commands::Init, :skip_template,       :boolean, false
     assert_cli_option Geb::CLI::Commands::Init, :skip_git,            :boolean, false
-    assert_cli_option Geb::CLI::Commands::Init, :skip_index,          :boolean, false
-    assert_cli_option Geb::CLI::Commands::Init, :skip_site_manifest,  :boolean, false
-    assert_cli_option Geb::CLI::Commands::Init, :skip_snippets,       :boolean, false
-    assert_cli_option Geb::CLI::Commands::Init, :skip_js,             :boolean, false
-    assert_cli_option Geb::CLI::Commands::Init, :skip_css,            :boolean, false
     assert_cli_option Geb::CLI::Commands::Init, :force,               :boolean, false
 
     call_parameters = Geb::CLI::Commands::Init.instance_method(:call).parameters
-    assert_equal 11, call_parameters.size, "Init command should have 10 required parameters."
+    assert_equal 2, call_parameters.size, "Init command should have 10 required parameters."
     assert_includes call_parameters, [:keyreq, :site_path],          "Init command should have a required site_path parameter."
-    assert_includes call_parameters, [:keyreq, :skip_config],        "Init command should have a required skip_config parameter."
-    assert_includes call_parameters, [:keyreq, :skip_locations],     "Init command should have a required skip_locations parameter."
-    assert_includes call_parameters, [:keyreq, :skip_assetfolders],  "Init command should have a required skip_assetfolders parameter."
-    assert_includes call_parameters, [:keyreq, :skip_git],           "Init command should have a required skip_git parameter."
-    assert_includes call_parameters, [:keyreq, :skip_index],         "Init command should have a required skip_index parameter."
-    assert_includes call_parameters, [:keyreq, :skip_site_manifest], "Init command should have a required skip_site_manifest parameter."
-    assert_includes call_parameters, [:keyreq, :skip_snippets],      "Init command should have a required skip_snippets parameter."
-    assert_includes call_parameters, [:keyreq, :skip_js],            "Init command should have a required skip_js parameter."
-    assert_includes call_parameters, [:keyreq, :skip_css],           "Init command should have a required skip_css parameter."
-    assert_includes call_parameters, [:keyreq, :force],              "Init command should have a required force parameter."
 
   end # def test_that_geb_has_a_init_command
 
@@ -176,7 +161,7 @@ class TestGebCommands < Minitest::Test
     assert_equal 2, call_parameters.size, "Auto command should have two required parameters."
     assert_includes call_parameters, [:keyreq, :skip_assets_build], "Auto command should have a required skip_assets_build parameter."
     assert_includes call_parameters, [:keyreq, :skip_pages_build],  "Auto command should have a required skip_pages_build parameter."
-    
+
   end # def test_that_geb_has_a_auto_command
 
   def test_that_geb_has_a_upload_command

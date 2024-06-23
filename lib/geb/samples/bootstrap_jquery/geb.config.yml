@@ -20,7 +20,9 @@ output_dir: "output"
 # if the site is a template site, specify which files and directories are part of the template
 # when you create a new site, these files and directories will be copied to the new site
 site_template:
-  - "lib/geb/samples/sample_file_1.txt"
-  - "lib/geb/samples/sample_file_2.txt"
-  - "lib/geb/samples/sample_file_3.txt"
+  - "assets"
+  - "shared"
+  - "blog/*.html"
+  - "*.html"
+  - "site.webmanifest"
   

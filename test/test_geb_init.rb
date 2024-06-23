@@ -46,7 +46,7 @@ class TestGebCommandInit < Minitest::Test
 
     new_site_path = "new_site"
 
-    @command.call(site_path: "new_site", skip_config: false, skip_locations: false, skip_assetfolders: false, skip_git: false, skip_index: false, skip_site_manifest: false, skip_snippets: false, skip_js: false, skip_css: false, force: false)
+    @command.call(site_path: "new_site")
 
     assert_stdout_match("Creating site folder: #{new_site_path} ... done.")
     assert Dir.exist?(new_site_path), "New site folder should exist after init command"
@@ -54,6 +54,15 @@ class TestGebCommandInit < Minitest::Test
     assert_stdout_match("Initialising git repository ... done.")
     assert Dir.exist?("#{new_site_path}/.git"), "New site folder should contain a git repository after init command"
     assert File.exist?("#{new_site_path}/.gitignore"), "New site folder should contain a git ignore file after init command"
+
+    assert_stdout_match("Creating: #{File.join(new_site_path, "output")} ... done.")
+    assert File.exist?(File.join(new_site_path, "output")), "New site folder should contain an output folder after init command"
+
+    assert_stdout_match("Creating: #{File.join(new_site_path, "output/local")} ... done.")
+    assert File.exist?(File.join(new_site_path, "output/local")), "New site folder should contain an output/local folder after init command"
+
+    assert_stdout_match("Creating: #{File.join(new_site_path, "output/release")} ... done.")
+    assert File.exist?(File.join(new_site_path, "output/release")), "New site folder should contain an output/release folder after init command"
 
   end # def test_that_command_default_executes
 

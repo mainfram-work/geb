@@ -11,7 +11,7 @@
 
 # Define the main module, version and main error class
 module Geb
-  VERSION = "0.3.2"
+  VERSION = "0.3.7"
   class Error < StandardError; end
 end # module Geb
 
