@@ -128,7 +128,7 @@ class TestGebCommands < Minitest::Test
     refute_nil    Geb::CLI::Commands::Init.method_defined?(:options)
     refute_empty  Geb::CLI::Commands::Init.options, "Init command should have options."
 
-    assert_cli_option Geb::CLI::Commands::Init, :template,            :string, nil
+    assert_cli_option Geb::CLI::Commands::Init, :template,            :string,  nil
     assert_cli_option Geb::CLI::Commands::Init, :skip_locations,      :boolean, false
     assert_cli_option Geb::CLI::Commands::Init, :skip_template,       :boolean, false
     assert_cli_option Geb::CLI::Commands::Init, :skip_git,            :boolean, false

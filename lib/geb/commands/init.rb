@@ -9,38 +9,33 @@
 #
 #  Licence MIT
 # -----------------------------------------------------------------------------
+
+# include required libraries
+require 'fileutils'
+require 'yaml'
+
 module Geb
   module CLI
     module Commands
-
-      require 'fileutils'
-      require 'yaml'
-
-      class DirectoryExistsError < Geb::Error
-        MESSAGE = "Site folder already exists, please choose a different name or location.\nIf you want to use the existing site folder, use the --force option.".freeze
-        def initialize; super(MESSAGE); end
-      end # class DirectoryExistsError < Geb::Error
-
-      class InsideGitRepoError < Geb::Error
-        MESSAGE = "You are already inside a git repository, please choose a different location or use the --skip_git option.".freeze
-        def initialize; super(MESSAGE); end
-      end # class InsideGitRepoError < Geb::Error
-
-      class GitRepoExistsError < Geb::Error
-        MESSAGE = "Git repository already exists, please choose a different name or location or use the --skip_git option.".freeze
-        def initialize; super(MESSAGE); end
-      end # class GitRepoExistsError < Geb::Error
 
       class InvalidTemplate < Geb::Error
         MESSAGE = "Invalid template site. Make sure the specified path is a directory and contains a valid gab.config.yml file.".freeze
         def initialize; super(MESSAGE); end
       end # class InvalidTemplate < Geb::Error
 
+      class InvalidTemplateURL < Geb::Error
+        MESSAGE = "Invalid template URL specified. Ensure the template URL is properly accessible and packaged Gab site using gab release --with_template".freeze
+        def initialize; super(MESSAGE); end
+      end # class InvalidTemplateURL < Geb::Error
+
       # define init command
       class Init < Dry::CLI::Command
 
         # define list of available templates and the option to control which one is selected (first one will be default)
         AVAILABLE_TEMPLATES = ['bootstrap_jquery', 'basic']
+
+        # define the template archive filename
+        TEMPLATE_ARCHIVE_FILENAME = 'geb-template.tar.gz'
 
         # command description, usage and examples
         desc "Initialise geb site, creates folder locations, git repository and initial file structures"
@@ -54,33 +49,44 @@ module Geb
         option :skip_locations, type: :boolean, default: false,   desc: "Skip generating generating Geb site folder locations."
         option :skip_template,  type: :boolean, default: false,   desc: "Skip generating a site from template, ignores the template option."
         option :skip_git,       type: :boolean, default: false,   desc: "Skip initialising git repository"
-        option :force,          type: :boolean, default: false,   desc: "Force overwrite of existing files"
+        option :force,          type: :boolean, default: false,   desc: "Force overwrite of existing files and git repository. Use with caution."
 
         # call method for the init command
         def call(site_path:, **options)
 
-          # raise error if site folder already exists and force option is not set
-          raise DirectoryExistsError.new if File.directory?(site_path) && !options[:force]
+          # initialize a new site object, this does all sorts of validations and checks, raises errors if something is wrong
+          new_site = Geb::Site.new
 
-          # raise error if we are inside a git repository or git repository already exists and skip_git option is not set
-          raise InsideGitRepoError.new if inside_git_repo? && !options[:skip_git]
-          raise GitRepoExistsError.new if File.directory?(File.join(site_path, '.git'))  && !options[:skip_git]
+          # validate the site
+          new_site.validate(site_path, options[:template], options[:skip_template], options[:force])
 
-          # raise error if the template site is not valid
-          template = options[:skip_template] ? nil : get_template_path(options[:template])
-          raise InvalidTemplate.new if !template && !options[:skip_template]
+          # validate proposed git repository in the site path if we are not skipping git, will raise error if git situation is unacceptable
+          Geb::Git.validate_git_repo(site_path) unless options[:skip_git]
 
-          # set the site path
-          @site_path = site_path
+          # create the site folder and populate it with the template if we are not skipping the whole process
+          new_site.create
 
-          create_site_directory()
-          unless options[:skip_git];        create_git_repo();                else; puts "Skipping initializing git as told."; end
-          unless options[:skip_locations];  create_locations();               else; puts "Skipping creating locations as told."; end
-          unless options[:skip_template];   create_from_template(template);   else; puts "Skipping creating site from template as told."; end
+          Geb.log "FUCK\n"
+          exit 1
+          puts "DUCK"
+\
+
+          if true
+
+            # set the site path
+            @site_path = site_path
+
+            create_site_directory()
+            unless options[:skip_git];        Geb::Git.create_git_repo();       else; puts "Skipping initializing git as told."; end
+            unless options[:skip_locations];  create_locations();               else; puts "Skipping creating locations as told."; end
+            unless options[:skip_template];   create_from_template(template);   else; puts "Skipping creating site from template as told."; end
+
+          end
 
         rescue Geb::Error => e
 
           # print error message
+          puts
           warn e.message
           #raise e if ENV['TEST_MODE'] == 'true'
           #exit 1
@@ -89,6 +95,7 @@ module Geb
 
         # ::: Methods ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+        # Create the site folder
         def create_site_directory
 
           print "Creating site folder: #{@site_path} ... "
@@ -101,27 +108,6 @@ module Geb
           end # if
 
         end # def create_site_directory
-
-        # Create a new git repository in the site folder
-        def create_git_repo
-
-          print "Initialising git repository ... "
-
-          # initialize the git repository
-          system("git -C #{@site_path} init > /dev/null 2>&1")
-
-          # create a .gitignore file
-          File.open(File.join(@site_path, '.gitignore'), 'w') do |f|
-
-            # ignore everything with the output folder
-            f.puts "/output"
-            f.puts "/.DS_Store"
-
-          end # File.open
-
-          puts "done."
-
-        end # def execute_create_git_repo
 
         # Create the site folder output structure
         def create_locations
@@ -154,7 +140,7 @@ module Geb
           template_config = YAML.load_file(template_config_file)
 
           # get the list of template paths from the config file
-          config_template_paths = template_config['site_template']
+          config_template_paths = template_config['template_paths']
 
           # initalise a list of resolved paths to copy
           resolved_template_paths = []
@@ -173,6 +159,8 @@ module Geb
 
           # add the template config file to the resolved paths if it is not already there
           resolved_template_paths << File.join(template_path, 'geb.config.yml') unless resolved_template_paths.include?(File.join(template_path, 'geb.config.yml'))
+
+          puts "Populating site from template: #{template_path}, found #{resolved_template_paths.count} entries."
 
           # step through the resolved paths and copy the files or directories
           resolved_template_paths.each do |resolved_path|
@@ -193,7 +181,7 @@ module Geb
 
             else
 
-              print "Copying file: #{destination_path} ... "
+              print "Creating file: #{destination_path} ... "
               if File.exist?(destination_path)
                 puts "skipped, file already exists."
               else
@@ -206,6 +194,8 @@ module Geb
 
           end # each
 
+          puts "Site generated from template #{template_path}."
+
         end # def create_from_template
 
         private
@@ -213,17 +203,28 @@ module Geb
         # Check if the template is valid
         def get_template_path(specified_template_identifier)
 
+          # initialize the return value to nil, hopefully we will find a valid template
           return_template_path = nil
 
           # check if the template identifier is specified
           if specified_template_identifier.nil?
+
             specified_template_identifier = AVAILABLE_TEMPLATES.first
             puts "No template specified, using default: #{specified_template_identifier}."
+
+          else
+
+            # download the template inta temporary directory if it is a URL
+            return_template_path = download_site_template(specified_template_identifier) if specified_template_identifier.start_with?('http://', 'https://')
+
+            # if we have a valid template path, return it
+            return return_template_path if return_template_path
+
           end # if
 
           # check if the template identifier is in the available templates list
           if AVAILABLE_TEMPLATES.include?(specified_template_identifier)
-            return_template_path = File.join(__dir__, 'samples', specified_template_identifier)
+            return_template_path = File.join(__dir__, '..', 'samples', specified_template_identifier)
             puts "Specified template is a Geb sample: #{specified_template_identifier}, using it as site template."
           else
             # check if the template identifier is a valid path
@@ -246,10 +247,17 @@ module Geb
 
         end # def valid_template?
 
-        # Check if we are inside a git repository
-        def inside_git_repo?
-          system('git rev-parse --is-inside-work-tree > /dev/null 2>&1')
-        end # def inside_git_repo?
+        # Download the site template from a URL
+        def download_site_template(template_url)
+
+          puts "Attempting to download site template from: #{template_url}"
+
+          # check if the URL ends with TEMPLATE_ARCHIVE_FILENAME, if not add it
+          template_url = "#{template_url.chomp('/')}/#{TEMPLATE_ARCHIVE_FILENAME}" unless template_url.end_with?(TEMPLATE_ARCHIVE_FILENAME)
+
+
+
+        end # def download_site_template
 
       end # class Init < Dry::CLI::Command
 

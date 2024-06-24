@@ -45,8 +45,12 @@ class TestGebCommandInit < Minitest::Test
   def test_that_command_default_executes
 
     new_site_path = "new_site"
+    default_template = Geb::CLI::Commands::Init::AVAILABLE_TEMPLATES.first
 
     @command.call(site_path: "new_site")
+
+    assert_stdout_match("No template specified, using default: #{default_template}.")
+    assert_stdout_match("Specified template is a Geb sample: #{default_template}, using it as site template.")
 
     assert_stdout_match("Creating site folder: #{new_site_path} ... done.")
     assert Dir.exist?(new_site_path), "New site folder should exist after init command"
@@ -63,6 +67,29 @@ class TestGebCommandInit < Minitest::Test
 
     assert_stdout_match("Creating: #{File.join(new_site_path, "output/release")} ... done.")
     assert File.exist?(File.join(new_site_path, "output/release")), "New site folder should contain an output/release folder after init command"
+
+    assert_stdout_match(/Populating site from template.*#{default_template}/)
+    assert_stdout_match(/Site generated from template.*#{default_template}/)
+
+    # No template specified, using default: bootstrap_jquery.
+    # Specified template is a Geb sample: bootstrap_jquery, using it as site template.
+    # Creating site folder: tmp/foobar2 ... done.
+    # Skipping initializing git as told.
+    # Creating: tmp/foobar2/output ... done.
+    # Creating: tmp/foobar2/output/local ... done.
+    # Creating: tmp/foobar2/output/release ... done.
+    # Populating site from template: /Users/mainfram/ActionTwelve/Products/geb/geb/lib/geb/samples/bootstrap_jquery, found 10 entries.
+    # Creating directory: tmp/foobar2/assets ... done.
+    # Creating directory: tmp/foobar2/shared ... done.
+    # Creating file: tmp/foobar2/blog/blog_post_1.html ... done.
+    # Creating file: tmp/foobar2/blog/blog_post_2.html ... done.
+    # Creating file: tmp/foobar2/blog/blog_post_3.html ... done.
+    # Creating file: tmp/foobar2/blog/index.html ... done.
+    # Creating file: tmp/foobar2/index.html ... done.
+    # Creating file: tmp/foobar2/page.html ... done.
+    # Creating file: tmp/foobar2/site.webmanifest ... done.
+    # Creating file: tmp/foobar2/geb.config.yml ... done.
+    # Site generated from template /Users/mainfram/ActionTwelve/Products/geb/geb/lib/geb/samples/bootstrap_jquery.
 
   end # def test_that_command_default_executes
 

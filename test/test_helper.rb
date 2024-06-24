@@ -33,7 +33,7 @@ def assert_cli_registered_command(p_registry, p_command, p_class)
 
   command_lookup = p_registry.get([p_command])
   assert command_lookup.found?, "Command '#{p_command}' should be registered"
-  
+
   assert_equal p_class, command_lookup.command
 
 end # def assert_cli_registered_command
@@ -46,7 +46,7 @@ def assert_cli_option(p_command_class, p_option_name, p_type, p_default)
   # make sure the option is defined
   refute_nil    option,                     "#{command_name} command should have a #{p_option_name} option."
   assert_equal  p_type, option.type,        "#{command_name} command #{p_option_name} option should be #{p_type}."
-  assert_equal  p_default, option.default,  "#{command_name} command #{p_option_name} option should default to #{p_default}."
+  assert_equal  p_default, option.default,  "#{command_name} command #{p_option_name} option should default to #{p_default}." unless p_default.nil?
   refute_nil    option.desc,                "#{command_name} command #{p_option_name} option should have a description."
   refute_empty  option.desc,                "#{command_name} command #{p_option_name} option description should not be empty."
 

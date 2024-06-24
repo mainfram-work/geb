@@ -4,12 +4,22 @@
 #  Author: Edin Mustajbegovic
 #  Email: edin@actiontwelve.com
 #
-#  Build command definition, based on Dry::CLI framework
 #  The CLI Registry class, registers all the commands and their alises with
 #  the Dry::CLI framework.
 #
 #  Licence MIT
 # -----------------------------------------------------------------------------
+
+# include geb commands
+require_relative "commands/version"
+require_relative "commands/build"
+require_relative "commands/release"
+require_relative "commands/server"
+require_relative "commands/init"
+require_relative "commands/auto"
+require_relative "commands/upload"
+require_relative "commands/remote"
+
 module Geb
   module CLI
     module Commands
