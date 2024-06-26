@@ -25,7 +25,7 @@ module Geb
         option :skip_pages_build,   type: :boolean, default: false, desc: "Skip building pages"
 
         # Call method for the auto command
-        def call(skip_assets_build:, skip_pages_build:)
+        def call(**options)
 
           puts "Auto Building Site"
 

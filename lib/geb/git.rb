@@ -37,12 +37,19 @@ module Geb
     # ::: Class Methods ::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     # validate if the proposed directory is a git repository, raise an error if it is
+    # or if the directory is inside a git repository
+    # @param site_directory [String] the proposed site directory
+    # @raise [FailedValidationError] if the directory could not be evaluated
+    # @raise [InsideGitRepoError] if the directory is inside a git repository
+    # @raise [GitError] if an error occurred while executing the git command
+    # @return [void]
     def self.validate_git_repo(site_directory)
 
       Geb.log_start "Validating proposed site path as a git repository ... "
 
       # initialize the closest directory to the site directory that actually exists
       closest_existing_directory = site_directory
+
 
       # find the closest existing directory
       until Dir.exist?(closest_existing_directory)
@@ -58,15 +65,18 @@ module Geb
       # check if the error message is that the directory is not in a git repository
       raise InsideGitRepoError if status.success?
 
-      # check the status of the git command and raise an error if the directory is a git repository or error was raised
-      raise InsideGitRepoError                          if status.success?
+      # the above git command will fail if the directory is not in a git repository (we want that)
+      # raise error for all other errors
       raise FailedValidationError.new(stderr.chomp) unless stderr.include?("not a git repository")
 
       Geb.log "done."
 
     end # def self.validate_git_repo(site_directory)
 
-    # Create a new git repository in the specified folder
+    # Create a new git repository in the specified folder. It also creates a .gitignore file
+    # @param site_directory [String] the proposed site directory
+    # @raise [GitError] if an error occurred while executing the git command
+    # @return [void]
     def self.create_git_repo(site_directory)
 
       Geb.log_start "Initialising git repository ... "
@@ -77,13 +87,13 @@ module Geb
       # raise an error if the git command failed
       raise GitError.new(stderr.chomp) unless status.success?
 
-      # attempt to create a gitignore file
+      # attempt to create a .gitignore file
       begin
 
         # create a .gitignore file
         File.open(File.join(site_directory, '.gitignore'), 'w') do |f|
 
-          # ignore everything with the output folder
+          # ignore everything withint the output folder
           f.puts "/output"
           f.puts "/.DS_Store"
 

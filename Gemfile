@@ -4,7 +4,3 @@ source "https://rubygems.org"
 
 # Specify your gem's dependencies in geb.gemspec
 gemspec
-
-gem "rake", "~> 13.0"
-gem "minitest", "~> 5.16"
-gem "dry-cli", "~> 1.0"

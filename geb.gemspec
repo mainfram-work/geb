@@ -10,13 +10,13 @@
 #
 #  Licence MIT
 # -----------------------------------------------------------------------------
-require_relative "lib/geb"
+#require_relative "lib/geb"
 
 Gem::Specification.new do |spec|
 
   # basic gem information
   spec.name         = "geb"
-  spec.version      = Geb::VERSION
+  spec.version      = "0.3.7"
   spec.authors      = ["Edin Mustajbegovic"]
   spec.email        = ["edin@actiontwelve.com"]
   spec.summary      = "A static website builder with simple templating and management utilities."
@@ -33,7 +33,11 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0.0"
   spec.add_dependency "dry-cli", "~> 1.0"
   spec.add_dependency "rake", "~> 13.0"
-
+  spec.add_dependency "webrick", "~> 1.8"
+  spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "webmock", "~> 3.0"
+  spec.add_development_dependency 'simplecov', '~> 0.21.2'
+  spec.add_development_dependency 'mocha', '~> 2.1'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -49,5 +53,6 @@ Gem::Specification.new do |spec|
   spec.bindir         = "bin"
   spec.executables    = ['geb']
   spec.require_paths  = ["lib"]
+  spec.test_files     = Dir['test/**/*.rb']
 
-end # Gem::Specification.new 
+end # Gem::Specification.new

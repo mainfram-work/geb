@@ -25,7 +25,7 @@ module Geb
         option :skip_pages,   type: :boolean, default: false, desc: "Skip building pages"
 
         # Call method for the build command
-        def call(skip_assets:, skip_pages:)
+        def call(**options)
 
           puts "Building pages and assets"
 
