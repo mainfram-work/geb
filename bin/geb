@@ -10,8 +10,13 @@
 #  Licence MIT
 # -----------------------------------------------------------------------------
 
+# make sure global encoding is set to UTF-8, we will be working with files alot.
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
+
 # include the libraries and the CLI commands
 require_relative "../lib/geb"
+
 
 # run the CLI
 Dry::CLI.new(Geb::CLI::Commands).call

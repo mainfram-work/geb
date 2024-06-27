@@ -62,8 +62,6 @@ module Geb
           # print error message
           puts
           warn e.message
-          #raise e if ENV['TEST_MODE'] == 'true'
-          #exit 1
 
         end # def call
 

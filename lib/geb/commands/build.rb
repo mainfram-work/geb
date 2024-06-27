@@ -27,7 +27,25 @@ module Geb
         # Call method for the build command
         def call(**options)
 
-          puts "Building pages and assets"
+          # initialise a new site
+          site = Geb::Site.new
+
+          # load the site from the current directory
+          site.load(Dir.pwd)
+
+          # build the assets (images, css, js) unless the skip_assets option is set
+          Geb.log "Skipping building assets as told." if options[:skip_assets]
+          site.build_assets unless options[:skip_assets]
+
+          # build the pages unless the skip_pages option is set
+          Geb.log "Skipping building pages as told." if options[:skip_pages]
+          site.build_pages unless options[:skip_pages]
+
+        rescue Geb::Error => e
+
+          # print error message
+          puts
+          warn e.message
 
         end # def call
 

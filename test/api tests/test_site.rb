@@ -414,4 +414,345 @@ class SiteTest < Geb::ApiTest
 
   end # test "that the create site method skips the site directory folder creation if folder already exists"
 
+  test "that the load site method loads the site successfully from the current working directory" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site.stubs(:template_directory_has_config?).returns(true)
+
+    site.load(test_site_path)
+
+    assert_equal site.site_path, test_site_path
+    assert site.loaded
+
+  end # test "that the load site method works as expected"
+
+  test "that the load site method looks up the chain to find the site directory" do
+
+    site = Geb::Site.new
+    test_site_path = "find/site/here/nothere"
+
+    template_dir_sequence = sequence('template_directory_has_config_sequence')
+
+    site.expects(:template_directory_has_config?).returns(false).once.in_sequence(template_dir_sequence)
+    site.expects(:template_directory_has_config?).returns(true).once.in_sequence(template_dir_sequence)
+
+    site.load(test_site_path)
+
+    full_site_path = File.join(Dir.pwd, test_site_path)
+
+    assert_equal site.site_path, full_site_path.gsub('/nothere', '')
+    assert site.loaded
+
+  end # test "that the load site method looks up the chain to find the site directory"
+
+  test "that the load site throws an exception if the site directory is not found" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site.stubs(:site_directory_exists?).returns(false)
+
+    error = assert_raises Geb::Site::SiteNotFoundError do
+      site.load(test_site_path)
+    end # assert_raises
+
+    assert_match(/is not and is not in a gab site/, error.message)
+
+  end # test "that the load site throws an exception if the site directory is not found"
+
+  test "that the build pages method builds the pages successfully" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site_pages = ["index.html", "about.html", "contact.html"]
+
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.expects(:get_page_files).returns(site_pages)
+    site.expects(:clear_site_output_directory).once
+    site.expects(:output_site).once
+
+    page_build_sequence = sequence('page_build_sequence')
+    mock_page = mock('page')
+
+    site_pages.each { |page| Geb::Page.expects(:new).with(site, page).returns(mock_page).once.in_sequence(page_build_sequence) }
+    mock_page.expects(:build).times(site_pages.length)
+
+    site.build_pages
+
+  end # test "that the build pages method builds the pages successfully"
+
+  test "that the build pages method throws an exception if site is not loaded" do
+
+    site = Geb::Site.new
+
+    site_pages = ["index.html", "about.html", "contact.html"]
+
+    mock_pages = {}
+    site_pages.each { |page| mock_pages[page] = mock('page') }
+
+    site.instance_variable_set(:@pages, mock_pages)
+    site.instance_variable_set(:@loaded, false)
+
+    assert_equal site_pages.length, site.pages.length
+
+    error = assert_raises Geb::Site::SiteNotLoadedError do
+      site.build_pages
+    end # assert_raises
+
+    assert_match(/Could not build pages/, error.message)
+
+  end # test "that the build pages method throws an exception if site is not loaded"
+
+  test "that the build pages method throws an exception clear site output throws an exception" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site_pages = ["index.html", "about.html", "contact.html"]
+
+    page_mock = mock('page')
+    page_mock.expects(:build).times(site_pages.length)
+    Geb::Page.expects(:new).returns(page_mock).times(site_pages.length)
+
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.expects(:get_page_files).returns(site_pages)
+    site.expects(:clear_site_output_directory).raises(StandardError.new("Failed to clear site output directory"))
+    site.expects(:output_site).never
+
+    error = assert_raises Geb::Site::FailedToOutputSite do
+      site.build_pages
+    end # assert_raises
+
+    assert_match(/Failed to clear site output directory/, error.message)
+
+  end # test "that the build pages method throws an exception clear site output throws an exception"
+
+  test "that the build pages method throws an exception if the page output throws an exception" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site_pages = ["index.html", "about.html", "contact.html"]
+
+    page_mock = mock('page')
+    page_mock.expects(:build).times(site_pages.length)
+    Geb::Page.expects(:new).returns(page_mock).times(site_pages.length)
+
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.expects(:get_page_files).returns(site_pages)
+    site.expects(:clear_site_output_directory).once
+    site.expects(:output_site).raises(StandardError.new("Failed to output site."))
+
+    error = assert_raises Geb::Site::FailedToOutputSite do
+      site.build_pages
+    end # assert_raises
+
+    assert_match(/Failed to output site/, error.message)
+
+  end # test "that the build pages method throws an exception if the page output throws an exception"
+
+  test "that get page files method returns a list of page files using defaults" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+
+      site_pages = []
+      site_pages << File.join(site_path, "index.html")
+      site_pages << File.join(site_path, "about.html")
+      site_pages << File.join(site_path, "contact.html")
+      site_pages << File.join(site_path, "sub/page.html")
+      site_pages << File.join(site_path, "sub/sub/page.html")
+      site_pages.sort!
+
+      FileUtils.mkdir_p(site_path)
+
+      site_pages.each do |page|
+        FileUtils.mkdir_p(File.dirname(page))
+        FileUtils.touch(page)
+      end
+
+      pages = site.send(:get_page_files, site_path)
+
+      assert_equal site_pages, pages
+
+    end # Dir.mktmpdir
+
+  end # test "that get page files method returns a list of page files using defaults"
+
+  test "that get page files method returns a list of page files using custom page extension" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    test_page_extension = [".htm"]
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+
+      site_pages = []
+      site_pages << File.join(site_path, "index.htm")
+      site_pages << File.join(site_path, "about.html")
+      site_pages << File.join(site_path, "contact.htm")
+      site_pages << File.join(site_path, "sub/page.htm")
+      site_pages << File.join(site_path, "sub/sub/page.html")
+      site_pages.sort!
+
+      FileUtils.mkdir_p(site_path)
+
+      site_pages.each do |page|
+        FileUtils.mkdir_p(File.dirname(page))
+        FileUtils.touch(page)
+      end
+
+      pages = site.send(:get_page_files, site_path, test_page_extension)
+
+      assert_equal site_pages.length - 2, pages.length
+
+    end # Dir.mktmpdir
+
+  end # test "that get page files method returns a list of page files using custom page extension"
+
+  test "that the get page files method returns a list of page files while ignoring files with ignore pattern" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    test_page_extension = [".htm"]
+    ignore_pattern = /^ignore_/
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+
+      site_pages = []
+      site_pages << File.join(site_path, "index.htm") # not ignored
+      site_pages << File.join(site_path, "about.html") # not matched
+      site_pages << File.join(site_path, "ignore_contact.htm") # ignored
+      site_pages << File.join(site_path, "sub/page.htm") # not ignored
+      site_pages << File.join(site_path, "sub/sub/ignore_page.html") # ignored
+      site_pages.sort!
+
+      FileUtils.mkdir_p(site_path)
+
+      site_pages.each do |page|
+        FileUtils.mkdir_p(File.dirname(page))
+        FileUtils.touch(page)
+      end
+
+      pages = site.send(:get_page_files, site_path, test_page_extension, ignore_pattern)
+
+      assert_equal site_pages.length - 3, pages.length
+
+    end # Dir.mktmpdir
+
+  end # test "that the get page files method returns a list of page files while ignoring files with ignore pattern"
+
+  test "that the get page files method returns a list of page files while ignoring directories specified" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    test_page_extension = [".htm"]
+    ignore_pattern = /^ignore_/
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+
+      site_pages = []
+      site_pages << File.join(site_path, "index.htm") # not ignored
+      site_pages << File.join(site_path, "about.html") # not matched
+      site_pages << File.join(site_path, "ignore_contact.htm") # ignored
+      site_pages << File.join(site_path, "sub/page.htm") # ignored (sub directory)
+      site_pages << File.join(site_path, "sub/sub/ignore_page.html") # ignored
+      site_pages.sort!
+
+      ignore_directories = []
+      ignore_directories << File.join(site_path, "sub")
+
+      FileUtils.mkdir_p(site_path)
+
+      site_pages.each do |page|
+        FileUtils.mkdir_p(File.dirname(page))
+        FileUtils.touch(page)
+      end
+
+      pages = site.send(:get_page_files, site_path, test_page_extension, ignore_pattern, ignore_directories)
+
+      assert_equal site_pages.length - 4, pages.length
+
+    end # Dir.mktmpdir
+
+  end # test "that the get page files method returns a list of page files while ignoring directories specified"
+
+  test "that the clear site output directory method clears the output directory" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+
+      FileUtils.mkdir_p(site_path)
+      FileUtils.mkdir_p(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
+
+      # generate some sub-directories and files in the output directory
+      FileUtils.mkdir_p(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub"))
+      FileUtils.touch(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub", "file1.html"))
+      FileUtils.touch(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub", "file2.html"))
+      FileUtils.touch(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "file3.html"))
+
+      site.instance_variable_set(:@site_path, site_path)
+
+      site.send(:clear_site_output_directory)
+
+      # check to make sure all the files and directories are gone
+      refute Dir.exist?(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub"))
+      refute File.exist?(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "file3.html"))
+
+    end # Dir.mktmpdir
+
+  end # test "that the clear site output directory method clears the output directory"
+
+  test "that the output site method copies the local output directory to the release output directory" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+      very_temp_dir = File.join(temp_dir, "very_temp_dir")
+
+      FileUtils.mkdir_p(site_path)
+      FileUtils.mkdir_p(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
+
+      # generate some sub-directories and files in the output directory
+      FileUtils.mkdir_p(File.join(very_temp_dir, "sub"))
+      FileUtils.touch(File.join(very_temp_dir, "sub", "file1.html"))
+      FileUtils.touch(File.join(very_temp_dir, "sub", "file2.html"))
+      FileUtils.touch(File.join(very_temp_dir, "file3.html"))
+
+      site.instance_variable_set(:@site_path, site_path)
+
+      site.send(:output_site, very_temp_dir)
+
+      # check to make sure all the files and directories are gone
+      assert Dir.exist?(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub"))
+      assert File.exist?(File.join(site_path, Geb::Defaults::LOCAL_OUTPUT_DIR, "file3.html"))
+
+    end # Dir.mktmpdir
+
+  end # test "that the output site method copies the local output directory to the release output directory"
+
+
 end # class SiteTest < Minitest::Test

@@ -25,4 +25,7 @@ require_relative "geb/defaults"
 require_relative "geb/utilities"
 require_relative "geb/git"
 require_relative "geb/site"
+require_relative "geb/page"
+require_relative "geb/template"
+require_relative "geb/partial"
 require_relative "geb/cli" # make sure this is loaded last

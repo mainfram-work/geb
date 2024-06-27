@@ -63,6 +63,17 @@ module Geb
 
     end # def start_proxy
 
+    # copy the test site into the current directory
+    def copy_test_site
+
+        # get the test site path
+        test_site_path = File.expand_path(File.join(__dir__, '..', 'files/test-site'))
+
+        # copy the test site contents into the current directory
+        FileUtils.cp_r(File.join(test_site_path, '.'), Dir.pwd)
+
+    end # def copy_test_site
+
   end # class CliTest < Minitest::Test
 
 end # module Geb
