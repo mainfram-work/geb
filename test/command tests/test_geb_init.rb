@@ -73,7 +73,7 @@ class TestGebCommandInit < Geb::CliTest
     command.call(site_path: site_path, **command_options)
 
     refute_empty $stderr.string
-    assert_match(/Test Error/, $stderr.string)
+    assert_includes $stderr.string, "Test Error"
 
     $stdout = original_stdout
     $stderr = original_stderr
@@ -89,23 +89,22 @@ class TestGebCommandInit < Geb::CliTest
     assert status.success?
     assert_empty stderr
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/No template specified, using default: #{Geb::Defaults::DEFAULT_TEMPLATE}./, stdout)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+    assert_includes stdout, "No template specified, using default: #{Geb::Defaults::DEFAULT_TEMPLATE}."
     assert_match(/Validating template path.*#{Geb::Defaults::DEFAULT_TEMPLATE}.*\.\.\. done\./, stdout)
-    assert_match(/Validating proposed site path as a git repository ... done./, stdout)
-    refute_match(/Skipping git repository creation as told./, stdout)
+    assert_includes stdout, "Validating proposed site path as a git repository ... done."
+    refute_includes stdout, "Skipping git repository validation as told."
 
-    assert_match(/Creating site folder: #{new_site_path} ... done./, stdout)
+    assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_match(/Copying template files to site folder ... done./, stdout)
-
-    assert_match(/Creating: local and release output folders ...done./, stdout)
+    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_includes stdout, "Creating: local and release output folders ...done."
     assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_match(/Initialising git repository ... done./, stdout)
-    refute_match(/Skipping git repository creation as told./, stdout)
+    assert_includes stdout, "Initialising git repository ... done."
+    refute_includes stdout, "Skipping git repository creation as told."
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
 
@@ -120,22 +119,23 @@ class TestGebCommandInit < Geb::CliTest
     assert status.success?
     assert_empty stderr
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/No template specified, using default: #{Geb::Defaults::DEFAULT_TEMPLATE}./, stdout)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+    assert_includes stdout, "No template specified, using default: #{Geb::Defaults::DEFAULT_TEMPLATE}."
     assert_match(/Validating template path.*#{Geb::Defaults::DEFAULT_TEMPLATE}.*\.\.\. done\./, stdout)
-    assert_match(/Skipping git repository validation as told./, stdout)
+    assert_includes stdout, "Skipping git repository validation as told."
 
-    assert_match(/Creating site folder: #{new_site_path} ... done./, stdout)
+    assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_match(/Copying template files to site folder ... done./, stdout)
+    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_includes stdout, "Creating: local and release output folders ...done."
 
-    assert_match(/Creating: local and release output folders ...done./, stdout)
     assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    refute_match(/Initialising git repository ... done./, stdout)
-    assert_match(/Skipping git repository creation as told./, stdout)
+    refute_includes stdout, "Initialising git repository ... done."
+    assert_includes stdout, "Skipping git repository creation as told."
+
     refute File.directory?(File.join(new_site_path, ".git"))
     refute File.exist?(File.join(new_site_path, ".gitignore"))
 
@@ -150,22 +150,22 @@ class TestGebCommandInit < Geb::CliTest
     assert status.success?
     assert_empty stderr
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/Skipping template validation as told./, stdout)
-    assert_match(/Validating proposed site path as a git repository ... done./, stdout)
-    refute_match(/Skipping git repository validation as told./, stdout)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+    assert_includes stdout, "Skipping template validation as told."
+    assert_includes stdout, "Validating proposed site path as a git repository ... done."
+    refute_includes stdout, "Skipping git repository validation as told."
 
-    assert_match(/Creating site folder: #{new_site_path} ... done./, stdout)
+    assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_match(/kipping template creation as told./, stdout)
+    assert_includes stdout, "Skipping template creation as told."
+    assert_includes stdout, "Creating: local and release output folders ...done."
 
-    assert_match(/Creating: local and release output folders ...done./, stdout)
     assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_match(/Initialising git repository ... done./, stdout)
-    refute_match(/Skipping git repository creation as told./, stdout)
+    assert_includes stdout, "Initialising git repository ... done."
+    refute_includes stdout, "Skipping git repository creation as told."
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
 
@@ -181,23 +181,22 @@ class TestGebCommandInit < Geb::CliTest
     assert status.success?
     assert_empty stderr
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/Specified template is a Geb sample: #{template}, using it as site template./, stdout)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+    assert_includes stdout, "Specified template is a Geb sample: #{template}, using it as site template."
     assert_match(/Validating template path.*#{template}.*\.\.\. done\./, stdout)
-    assert_match(/Validating proposed site path as a git repository ... done./, stdout)
-    refute_match(/Skipping git repository validation as told./, stdout)
+    assert_includes stdout, "Validating proposed site path as a git repository ... done."
+    refute_includes stdout, "Skipping git repository validation as told."
 
-    assert_match(/Creating site folder: #{new_site_path} ... done./, stdout)
+    assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_match(/Copying template files to site folder ... done./, stdout)
-
-    assert_match(/Creating: local and release output folders ...done./, stdout)
+    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_includes stdout, "Creating: local and release output folders ...done."
     assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_match(/Initialising git repository ... done./, stdout)
-    refute_match(/Skipping git repository creation as told./, stdout)
+    assert_includes stdout, "Initialising git repository ... done."
+    refute_includes stdout, "Skipping git repository creation as told."
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
 
@@ -211,7 +210,7 @@ class TestGebCommandInit < Geb::CliTest
     _, stderr, status = Open3.capture3("geb init #{new_site_path} --template #{template}")
 
     assert status.success?
-    assert_match(/Invalid template site. Make sure the specified path is a directory and contains a valid gab.config.yml file./, stderr)
+    assert_includes stderr, "Invalid template site. Make sure the specified path is a directory and contains a valid gab.config.yml file."
     refute File.directory?(new_site_path)
 
   end # test "that invalid specified template is handled correctly"
@@ -232,25 +231,26 @@ class TestGebCommandInit < Geb::CliTest
     assert status.success?
     assert_empty stderr
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/Validating template URL #{template_url} ... done./, stdout)
-    assert_match(/Found a gzip archive at template url #{template_url}\./, stdout)
-    assert_match(/Downloading template from URL #{template_url} ... done\./, stdout)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+    assert_includes stdout, "Validating template URL #{template_url} ... done."
+    assert_includes stdout, "Found a gzip archive at template url #{template_url}."
+    assert_includes stdout, "Downloading template from URL #{template_url} ... done."
 
-    assert_match(/Validating proposed site path as a git repository ... done./, stdout)
-    refute_match(/Skipping git repository validation as told./, stdout)
+    assert_includes stdout, "Validating proposed site path as a git repository ... done."
+    refute_includes stdout, "Skipping git repository validation as told."
 
-    assert_match(/Creating site folder: #{new_site_path} ... done./, stdout)
+    assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_match(/Copying template files to site folder ... done./, stdout)
+    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_includes stdout, "Creating: local and release output folders ...done."
 
-    assert_match(/Creating: local and release output folders ...done./, stdout)
     assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_match(/Initialising git repository ... done./, stdout)
-    refute_match(/Skipping git repository creation as told./, stdout)
+    assert_includes stdout, "Initialising git repository ... done."
+    refute_includes stdout, "Skipping git repository creation as told."
+
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
 
@@ -265,9 +265,9 @@ class TestGebCommandInit < Geb::CliTest
 
     assert status.success?
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/Validating template URL #{template_url}/, stdout)
-    assert_match(/HTTP error/, stderr)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+    assert_includes stdout, "Validating template URL #{template_url}"
+    assert_includes stderr, "HTTP error"
 
     refute File.directory?(new_site_path)
 
@@ -286,9 +286,10 @@ class TestGebCommandInit < Geb::CliTest
 
     assert status.success?
 
-    assert_match(/Validating site path #{new_site_path} ... done./, stdout)
-    assert_match(/Validating template URL #{template_url} ... done./, stdout)
-    assert_match(/Specified template is not a gzip archive/, stderr)
+    assert_includes stdout, "Validating site path #{new_site_path} ... done."
+
+    assert_includes stdout, "Validating template URL #{template_url} ... done."
+    assert_includes stderr, "Specified template is not a gzip archive"
 
     refute File.directory?(new_site_path)
 

@@ -16,7 +16,6 @@ require_relative "commands/build"
 require_relative "commands/release"
 require_relative "commands/server"
 require_relative "commands/init"
-require_relative "commands/auto"
 require_relative "commands/upload"
 require_relative "commands/remote"
 
@@ -32,7 +31,6 @@ module Geb
       register "build",   Geb::CLI::Commands::Build,    aliases: ["b", "-b", "--build"]
       register "server",  Geb::CLI::Commands::Server,   aliases: ["s", "-s", "--server"]
       register "init",    Geb::CLI::Commands::Init
-      register "auto",    Geb::CLI::Commands::Auto,     aliases: ["a", "-a", "--auto"]
       register "upload",  Geb::CLI::Commands::Upload,   aliases: ["u", "-u", "--upload"]
       register "remote",  Geb::CLI::Commands::Remote
       register "version", Geb::CLI::Commands::Version,  aliases: ["v", "-v", "--version"]

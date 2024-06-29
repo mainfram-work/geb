@@ -18,7 +18,7 @@ module Geb
 
         # Command description, usage and examples
         desc "Builds the release version of the site (pages and assets)"
-        example [" ", "--skip-assets", "--skip-pages"]
+        example [" ", "--skip_assets", "--skip_pages"]
 
         # Define command options
         option :skip_assets,  type: :boolean, default: false, desc: "Skip building assets (images, css, js)"

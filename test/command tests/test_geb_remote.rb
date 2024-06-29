@@ -41,7 +41,7 @@ class TestGebCommandRemote < Geb::CliTest
 
     # assert that the output contains the expected string
     assert status.success?
-    assert_match(/Running remote/, stdout)
+    assert_includes stdout, "Running remote"
     assert_empty stderr
 
   end # test "command line"

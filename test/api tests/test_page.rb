@@ -46,7 +46,7 @@ class PageTest < Geb::ApiTest
       Geb::Page.new(site, page_path)
     end
 
-    assert_match(/#{page_path}/, error.message)
+    assert_includes(error.message, page_path)
 
   end # test "that page constructor throws an error if the page file does not exist"
 

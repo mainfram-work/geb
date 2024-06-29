@@ -41,7 +41,7 @@ class TestGebCommandRelease < Geb::CliTest
 
     # assert that the output contains the expected string
     assert status.success?
-    assert_match(/Building pages and assets for release/, stdout)
+    assert_includes stdout, "Building pages and assets for release"
     assert_empty stderr
 
   end # test "command line"

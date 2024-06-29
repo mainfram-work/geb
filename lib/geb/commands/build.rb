@@ -18,7 +18,7 @@ module Geb
 
         # Command description, usage and examples
         desc "Build the full site, includes pages and assets"
-        example [" ", "--skip-assets", "--skip-pages"]
+        example [" ", "--skip_assets", "--skip_pages"]
 
         # Define command options
         option :skip_assets,  type: :boolean, default: false, desc: "Skip building assets (images, css, js)"
@@ -27,19 +27,20 @@ module Geb
         # Call method for the build command
         def call(**options)
 
-          # initialise a new site
+          # initialise a new site and load the site from the current directory
           site = Geb::Site.new
-
-          # load the site from the current directory
           site.load(Dir.pwd)
+
+          # build the pages unless the skip_pages option is set
+          Geb.log "Skipping building pages as told." if options[:skip_pages]
+          site.build_pages unless options[:skip_pages]
 
           # build the assets (images, css, js) unless the skip_assets option is set
           Geb.log "Skipping building assets as told." if options[:skip_assets]
           site.build_assets unless options[:skip_assets]
 
-          # build the pages unless the skip_pages option is set
-          Geb.log "Skipping building pages as told." if options[:skip_pages]
-          site.build_pages unless options[:skip_pages]
+          # put a smartarse message to the console if both options are set
+          Geb.log "You told me to skip everything, so I did." if options[:skip_assets] && options[:skip_pages]
 
         rescue Geb::Error => e
 

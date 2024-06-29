@@ -41,7 +41,7 @@ class TestGebCommandVersion < Geb::CliTest
 
     # assert that the output contains the expected string
     assert status.success?
-    assert_match("Geb version #{Geb::VERSION}", stdout)
+    assert_includes stdout, "Geb version #{Geb::VERSION}"
     assert_empty stderr
 
   end # test "command line"

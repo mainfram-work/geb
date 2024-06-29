@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   # basic gem information
   spec.name         = "geb"
-  spec.version      = "0.3.7"
+  spec.version      = "0.3.10"
   spec.authors      = ["Edin Mustajbegovic"]
   spec.email        = ["edin@actiontwelve.com"]
   spec.summary      = "A static website builder with simple templating and management utilities."
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dry-cli", "~> 1.0"
   spec.add_dependency "rake", "~> 13.0"
   spec.add_dependency "webrick", "~> 1.8"
+  spec.add_dependency 'listen', "~> 3.9"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "webmock", "~> 3.0"
   spec.add_development_dependency 'simplecov', '~> 0.21.2'

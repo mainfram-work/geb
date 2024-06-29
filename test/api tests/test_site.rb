@@ -57,16 +57,16 @@ class SiteTest < Geb::ApiTest
 
   test "that site validates method throws an exception if site directory exists and force flag is false" do
 
-      site = Geb::Site.new
-      test_site_path = "test/site"
+    site = Geb::Site.new
+    test_site_path = "test/site"
 
-      site.stubs(:site_directory_exists?).returns(true)
-      assert_raises Geb::Site::DirectoryExistsError do
-        site.validate(test_site_path, nil, true)
-      end # assert_raises
-      assert_nil site.site_path
-      assert_nil site.template_path
-      refute site.validated
+    site.stubs(:site_directory_exists?).returns(true)
+    assert_raises Geb::Site::DirectoryExistsError do
+      site.validate(test_site_path, nil, true)
+    end # assert_raises
+    assert_nil site.site_path
+    assert_nil site.template_path
+    refute site.validated
 
   end # test "that site validates method throws an exception if site directory exists and force flag is false"
 
@@ -86,20 +86,20 @@ class SiteTest < Geb::ApiTest
 
   test "test site validates and uses specified template if the template is specified" do
 
-      site = Geb::Site.new
-      test_site_path = "tmp/test_site"
-      test_template = "/not/real/template"
+    site = Geb::Site.new
+    test_site_path = "tmp/test_site"
+    test_template = "/not/real/template"
 
-      site.stubs(:site_directory_exists?).returns(false)
-      site.stubs(:template_directory_exists?).returns(true)
-      site.stubs(:template_directory_has_config?).returns(true)
-      site.stubs(:is_bundled_template?).returns(false)
+    site.stubs(:site_directory_exists?).returns(false)
+    site.stubs(:template_directory_exists?).returns(true)
+    site.stubs(:template_directory_has_config?).returns(true)
+    site.stubs(:is_bundled_template?).returns(false)
 
-      site.validate(test_site_path, test_template)
+    site.validate(test_site_path, test_template)
 
-      assert_equal site.site_path,      test_site_path
-      assert_equal site.template_path,  test_template
-      assert site.validated
+    assert_equal site.site_path,      test_site_path
+    assert_equal site.template_path,  test_template
+    assert site.validated
 
   end # test "test site validates and uses specified template if the template is specified"
 
@@ -194,7 +194,7 @@ class SiteTest < Geb::ApiTest
       site.send(:validate_template_url, test_template_url)
     end # assert_raises
 
-    assert_match(/Web server returned 404/, error.message)
+    assert_includes error.message, "Web server returned 404"
 
   end # test "that the template url validation correctly detects the template URL access was not successful"
 
@@ -214,7 +214,8 @@ class SiteTest < Geb::ApiTest
       site.send(:validate_template_url, test_template_url)
     end # assert_raises
 
-    assert_match(/Specified template is not a gzip archive/, error.message)
+    assert_includes error.message, "Specified template is not a gzip archive"
+
 
   end # test "that the template url validation correctly detects the template URL is not an archive"
 
@@ -278,7 +279,7 @@ class SiteTest < Geb::ApiTest
       site.send(:fetch_http_response, test_template_url)
     end # assert_raises
 
-    assert_match(/HTTP request failed/, error.message)
+    assert_includes error.message, "HTTP request failed"
 
   end # test "that the fetch http response method throws an exception if the http request fails"
 
@@ -311,7 +312,7 @@ class SiteTest < Geb::ApiTest
       site.send(:download_template_from_url, test_template_url)
     end # assert_raises
 
-    assert_match(/Failed to extract template archive: tar: Error opening archive/, error.message)
+    assert_includes error.message, "Failed to extract template archive: tar: Error opening archive"
 
   end # test "that the download template throws an exception if the download fails"
 
@@ -329,7 +330,7 @@ class SiteTest < Geb::ApiTest
       site.send(:download_template_from_url, test_template_url)
     end # assert_raises
 
-    assert_match(/Failed to extract template archive: tar: Error opening archive/, error.message)
+    assert_includes error.message, "Failed to extract template archive: tar: Error opening archive"
 
   end # test "that the download template throws an exception if the archive is not a gzip archive"
 
@@ -458,7 +459,7 @@ class SiteTest < Geb::ApiTest
       site.load(test_site_path)
     end # assert_raises
 
-    assert_match(/is not and is not in a gab site/, error.message)
+    assert_includes error.message, "is not and is not in a gab site"
 
   end # test "that the load site throws an exception if the site directory is not found"
 
@@ -503,7 +504,7 @@ class SiteTest < Geb::ApiTest
       site.build_pages
     end # assert_raises
 
-    assert_match(/Could not build pages/, error.message)
+    assert_includes error.message, "Could not build pages"
 
   end # test "that the build pages method throws an exception if site is not loaded"
 
@@ -528,7 +529,7 @@ class SiteTest < Geb::ApiTest
       site.build_pages
     end # assert_raises
 
-    assert_match(/Failed to clear site output directory/, error.message)
+    assert_includes error.message, "Failed to clear site output directory"
 
   end # test "that the build pages method throws an exception clear site output throws an exception"
 
@@ -553,7 +554,7 @@ class SiteTest < Geb::ApiTest
       site.build_pages
     end # assert_raises
 
-    assert_match(/Failed to output site/, error.message)
+    assert_includes error.message, "Failed to output site"
 
   end # test "that the build pages method throws an exception if the page output throws an exception"
 

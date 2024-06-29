@@ -23,7 +23,7 @@ module Geb
 
         # command description, usage and examples
         desc "Initialise geb site, creates folder locations, git repository and initial file structures"
-        example ["new_site ", "new_site [options]", "new_site --skip_git --skip_config"]
+        example ["new_site ", "new_site [options]", "new_site --skip_template --skip_git"]
 
         # define project name command argument
         argument :site_path,        type: :string,  required: true, desc: "Path to the site folder / site name"

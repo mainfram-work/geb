@@ -65,7 +65,7 @@ class GitTest < Geb::ApiTest
       Geb::Git.create_git_repo("/some/fake/folder/path")
     end # assert_raises
 
-    assert_match git_error_message, error.message
+    assert_includes error.message, git_error_message
 
   end # test "that git create repo raises an error if git command fails"
 
@@ -97,8 +97,8 @@ class GitTest < Geb::ApiTest
       Geb::Git.create_git_repo("/some/fake/folder/path")
     end # assert_raises
 
-    assert_match(/Could not create \.gitignore file/, error.message)
-    assert_match file_error_message, error.message
+    assert_includes error.message, "Could not create .gitignore file"
+    assert_includes error.message, file_error_message
 
   end # test "that git create repo raises an error if it fails to create .gitignore"
 

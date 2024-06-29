@@ -25,6 +25,22 @@ module Geb
     # WebServerProxy class, used to create a web server that proxies requests
     class WebServerProxy
 
+      # find an available port
+      # @return [Integer] the available port
+      def self.find_available_port
+
+        # start a new server and get the port
+        server = TCPServer.new(0)
+        port = server.addr[1]
+
+        # close the server
+        server.close
+
+        # return the port
+        return port
+
+      end # def self.find_available_port
+
       # initialize the server, takes a port and a debug flag that stops the server will log to STDOUT
       # @param port [Integer] the port the server will run on
       # @param debug [Boolean] if true, the server will log to STDOUT

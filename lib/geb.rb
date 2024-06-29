@@ -13,7 +13,7 @@
 module Geb
 
   # define the version of the gem
-  VERSION = "0.3.7"
+  VERSION = "0.3.10"
 
 end # module Geb
 
@@ -28,4 +28,5 @@ require_relative "geb/site"
 require_relative "geb/page"
 require_relative "geb/template"
 require_relative "geb/partial"
+require_relative "geb/server"
 require_relative "geb/cli" # make sure this is loaded last

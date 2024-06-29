@@ -58,5 +58,25 @@ class UtilitiesTest < Minitest::Test
 
   end # test "that log_start prints a message to the console and does not have a trailing newline"
 
+  test "that logging can be suppressed" do
+
+    # setup a StringIO to capture standard output
+    original_stdout = $stdout
+    $stdout = StringIO.new
+
+    Geb.no_log do
+      Geb.log("Test Message")
+    end
+
+    assert_equal("", $stdout.string)
+
+    Geb.log("Test Message2")
+
+    assert_equal("Test Message2\n", $stdout.string)
+
+    # reset $stdout
+    $stdout = original_stdout
+
+  end
 
 end # class UtilitiesTest < Geb::ApiTest

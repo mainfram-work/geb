@@ -32,9 +32,12 @@ module Geb
     ASSETS_DIR                = 'assets'                          # location for assets (images, js and css)
 
     # default values for site pages
-    PAGE_EXTENSIONS           =
-      ['.md', '.markdown', '.html', '.htm', '.txt']               # list of file extention to treat as pages
+    PAGE_EXTENSIONS           =                                   # list of file extention to treat as pages
+      ['.md', '.markdown', '.html', '.htm', '.txt', '.js', '.css']
     TEMPLATE_AND_PARTIAL_IDENTIFIER  = /^_/                       # filename pattern for templates or partials
+
+    # default values for web server
+    WEB_SERVER_PORT           = 3456                              # default web server port
 
   end # module Defaults
 end # module Geb

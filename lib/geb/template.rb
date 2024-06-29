@@ -33,6 +33,11 @@ module Geb
     # define a class level cache for loaded template objects
     @@loaded_templates = {}
 
+    # class method to expire the template cache
+    def self.expire_cache
+      @@loaded_templates = {}
+    end # def self.expire_cache
+
     # class method to initialise a template if it is not already loaded, otherwise, return the cached template
     # @param template_path [String] the path to the template file
     # @return [Geb::Template] the template object

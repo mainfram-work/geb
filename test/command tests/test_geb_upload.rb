@@ -41,7 +41,7 @@ class TestGebCommandUpload < Geb::CliTest
 
     # assert that the output contains the expected string
     assert status.success?
-    assert_match(/Uploading site/, stdout)
+    assert_includes stdout, "Uploading site"
     assert_empty stderr
 
   end # test "command line"

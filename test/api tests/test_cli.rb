@@ -9,9 +9,10 @@
 #
 #  Licence MIT
 # -----------------------------------------------------------------------------
+
 require "test_helper"
 
-class TestGebCommands < Minitest::Test
+class TestCli < Minitest::Test
 
   test "that geb has a version number" do
     refute_nil Geb::VERSION
@@ -23,7 +24,6 @@ class TestGebCommands < Minitest::Test
     refute_nil Geb::CLI::Commands::Build
     refute_nil Geb::CLI::Commands::Server
     refute_nil Geb::CLI::Commands::Init
-    refute_nil Geb::CLI::Commands::Auto
     refute_nil Geb::CLI::Commands::Upload
     refute_nil Geb::CLI::Commands::Remote
     refute_nil Geb::CLI::Commands::Version
@@ -35,12 +35,43 @@ class TestGebCommands < Minitest::Test
     assert_cli_registered_command registry, "build",   Geb::CLI::Commands::Build
     assert_cli_registered_command registry, "server",  Geb::CLI::Commands::Server
     assert_cli_registered_command registry, "init",    Geb::CLI::Commands::Init
-    assert_cli_registered_command registry, "auto",    Geb::CLI::Commands::Auto
     assert_cli_registered_command registry, "upload",  Geb::CLI::Commands::Upload
     assert_cli_registered_command registry, "remote",  Geb::CLI::Commands::Remote
     assert_cli_registered_command registry, "version", Geb::CLI::Commands::Version
 
   end # test "that all geb commands are registered"
+
+  test "that all geb commands show help correctly" do
+
+    # build a hash of all commands (key is command name, value is commmand class instance)
+    commands = {}
+    commands["release"] = Geb::CLI::Commands::Release.new
+    commands["build"]   = Geb::CLI::Commands::Build.new
+    commands["server"]  = Geb::CLI::Commands::Server.new
+    commands["init"]    = Geb::CLI::Commands::Init.new
+    commands["upload"]  = Geb::CLI::Commands::Upload.new
+    commands["remote"]  = Geb::CLI::Commands::Remote.new
+    commands["version"] = Geb::CLI::Commands::Version.new
+
+    # iterate over all commands
+    commands.each do |name, command|
+
+      # call geb auto command and capture output and error
+      stdout, stderr, status = Open3.capture3("geb #{name} --help")
+
+      # assert that the output contains the expected string
+      assert status.success?
+      assert_empty stderr
+      assert_includes stdout, "geb #{name}"
+      assert_includes stdout, command.description
+      command.options.each do |option|
+        assert_includes stdout, option.name.to_s
+        assert_includes stdout, option.desc
+      end
+
+    end # each
+
+  end # test "that all geb commands show help correctly"
 
   test "that geb has a build command" do
 
@@ -120,25 +151,6 @@ class TestGebCommands < Minitest::Test
 
   end # test "that geb has a init command"
 
-  test "that geb has a auto command" do
-
-    refute_nil    Geb::CLI::Commands::Auto
-    refute_nil    Geb::CLI::Commands::Auto.method_defined?(:call)
-    assert_equal  Dry::CLI::Command, Geb::CLI::Commands::Auto.superclass
-
-    refute_nil    Geb::CLI::Commands::Auto.description, "Auto command should have a description."
-    refute_empty  Geb::CLI::Commands::Auto.description, "Auto command's description should not be empty."
-    refute_nil    Geb::CLI::Commands::Auto.example, "Auto command should have an example."
-    refute_empty  Geb::CLI::Commands::Auto.example, "Auto command's example should not be empty."
-
-    refute_nil    Geb::CLI::Commands::Auto.method_defined?(:options)
-    refute_empty  Geb::CLI::Commands::Auto.options, "Auto command should have options."
-
-    assert_cli_option Geb::CLI::Commands::Auto, :skip_assets_build, :boolean, false
-    assert_cli_option Geb::CLI::Commands::Auto, :skip_pages_build,  :boolean, false
-
-  end # test "that geb has a auto command"
-
   test "that geb has a upload command" do
 
     refute_nil    Geb::CLI::Commands::Upload
@@ -185,4 +197,4 @@ class TestGebCommands < Minitest::Test
 
   end # test "that geb has a version command"
 
-end # class TestGebCommands < Minitest::Test
+end # class TestCli < Minitest::Test

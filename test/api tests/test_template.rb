@@ -39,7 +39,7 @@ class TemplateTest < Geb::ApiTest
       Geb::Template.new(template_path)
     end
 
-    assert_match(/#{template_path}/, error.message)
+    assert_includes error.message, "#{template_path}", "Error message does not include the template path"
 
   end # test "that template constructor throws an error if the template file does not exist"
 
@@ -220,8 +220,8 @@ class TemplateTest < Geb::ApiTest
     output = template.parse(original_sections)
 
     assert_equal parsed_template_content, output
-    refute_match(/<%= insert: header %>/, output)
-    refute_match(/<%= insert: footer %>/, output)
+    refute_includes output, "<%= insert: header %>"
+    refute_includes output, "<%= insert: footer %>"
 
   end # test "that parse template, returns the template content and sections"
 

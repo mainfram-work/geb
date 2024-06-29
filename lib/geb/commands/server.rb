@@ -9,6 +9,7 @@
 #
 #  Licence MIT
 # -----------------------------------------------------------------------------
+
 module Geb
   module CLI
     module Commands
@@ -18,18 +19,52 @@ module Geb
 
         # Command description, usage and examples
         desc "Start a local server to view the site output (runs build first), uses webrick"
-        example [" ", "--port 8080", "--skip_build"]
+        example [" ", "--port 8080", "--skip_auto_build", "--skip_build"]
 
         # Define command options
-        option :port,       type: :int,     default: 3456,  desc: "Port to run the server on, otherwise it will use config file setting"
-        option :skip_build, type: :boolean, default: false, desc: "Skip building the site before starting the server"
+        option :port,             type: :int,     default: Geb::Defaults::WEB_SERVER_PORT,  desc: "Port to run the server on, otherwise it will use config file setting"
+        option :skip_build,       type: :boolean, default: false,                           desc: "Skip building the site before starting the server"
+        option :skip_auto_build,  type: :boolean, default: false,                           desc: "Don't automatically rebuild the site when a file changes"
 
         # Call method for the server command
-        def call(port:, skip_build:)
+        # @param options [Hash] the options hash for the command
+        def call(**options)
 
-          puts "Running server"
+          # initialise a site and load it from the current directory
+          site = Geb::Site.new
+          site.load(Dir.pwd)
+
+          # build the site if the skip_build option is not set
+          site.build() unless options[:skip_build]
+
+          # start a new queue for the shutdown signal (instead of using trap to shutdown the server and file watcher directly)
+          @shutdown_queue = Queue.new
+          trap('INT') { @shutdown_queue << :shutdown }
+
+          # initialize the server
+          server = Geb::Server.new(site, options[:port], !options[:skip_auto_build])
+
+          # start the server
+          server.start()
+
+          # wait for the shutdown signal
+          @shutdown_queue.pop
+
+          # stop the server
+          server.stop()
+
+        rescue Geb::Error => e
+
+          # print error message
+          puts
+          warn e.message
 
         end # def call
+
+        # Force shutdown of the server
+        def force_shutdown
+          @shutdown_queue << :shutdown if @shutdown_queue
+        end # force_shutdown
 
       end # class Server < Dry::CLI::Command
 

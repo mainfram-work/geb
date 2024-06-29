@@ -68,8 +68,8 @@ class TestGebCommandBuild < Geb::CliTest
 
     assert_empty $stderr.string
 
-    assert_match(/Skipping building assets as told/, $stdout.string)
-    assert_match(/Skipping building pages as told/, $stdout.string)
+    assert_includes $stdout.string, "Skipping building pages as told"
+    assert_includes $stdout.string, "Skipping building assets as told"
 
     $stdout = original_stdout
     $stderr = original_stderr
@@ -95,7 +95,7 @@ class TestGebCommandBuild < Geb::CliTest
     command.call(**command_options)
 
     refute_empty $stderr.string
-    assert_match(/Test Error/, $stderr.string)
+    assert_includes $stderr.string, "Test Error"
 
     $stdout = original_stdout
     $stderr = original_stderr
@@ -114,5 +114,71 @@ class TestGebCommandBuild < Geb::CliTest
     assert_empty stderr
 
   end # test "command line"
+
+  test "that command handles being executed in a non-site directory" do
+
+    # create a temporary directory
+    Dir.mktmpdir do |dir|
+
+      # change the current directory to the temporary directory
+      Dir.chdir(dir)
+
+      # call geb auto command and capture output and error
+      _, stderr, status = Open3.capture3('geb build')
+
+      # assert that the output contains the expected string
+      assert status.success?
+      refute_empty stderr
+
+    end # Dir.mktmpdir
+
+  end # test "that command handles being executed in a non-site directory"
+
+  test "that command handles being executed with skip pages option" do
+
+    copy_test_site()
+
+    # call geb auto command and capture output and error
+    stdout, stderr, status = Open3.capture3('geb build --skip-pages')
+
+    # assert that the output contains the expected string
+    assert status.success?
+    assert_empty stderr
+
+    assert_includes stdout, "Skipping building pages as told"
+
+  end # test "that command handles being executed with skip pages option"
+
+  test "that command handles being executed with skip assets option" do
+
+    copy_test_site()
+
+    # call geb auto command and capture output and error
+    stdout, stderr, status = Open3.capture3('geb build --skip-assets')
+
+    # assert that the output contains the expected string
+    assert status.success?
+    assert_empty stderr
+
+    assert_includes stdout, "Skipping building assets as told"
+
+  end # test "that command handles being executed with skip assets option"
+
+  test "that command handles being executed with skip pages and skip assets options" do
+
+    copy_test_site()
+
+    # call geb auto command and capture output and error
+    stdout, stderr, status = Open3.capture3('geb build --skip-pages --skip-assets')
+
+    # assert that the output contains the expected string
+    assert status.success?
+    assert_empty stderr
+
+    assert_includes stdout, "Skipping building pages as told"
+    assert_includes stdout, "Skipping building assets as told"
+    assert_includes stdout, "You told me to skip everything, so I did."
+
+  end # test "that command handles being executed with skip pages and skip assets options"
 
 end # class TestGebCommandBuild < Minitest::Test

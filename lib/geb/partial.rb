@@ -18,9 +18,6 @@ module Geb
 
     PARTIAL_PATTERN = /<%= partial: (?<path>.*?) %>/
 
-    # define a class level cache for loaded partial objects
-    @@loaded_partials = {}
-
     class PartialFileNotFound < Geb::Error
       MESSAGE = "Partial file not found".freeze
       def initialize(e = ""); super(e, MESSAGE); end
@@ -30,6 +27,14 @@ module Geb
       MESSAGE = "PFailed to read the partial file.".freeze
       def initialize(e = ""); super(e, MESSAGE); end
     end # class PartialFileReadFailure < Geb::Error
+
+    # define a class level cache for loaded partial objects
+    @@loaded_partials = {}
+
+    # class method to expire the partial cache
+    def self.expire_cache
+      @@loaded_partials = {}
+    end # def self.expire_cache
 
     # class method to initialise a partial if it is not already loaded, otherwise, return the cached partial
     # @param partial_path [String] the path to the partial file

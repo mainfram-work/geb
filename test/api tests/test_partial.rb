@@ -11,9 +11,9 @@
 
 require "test_helper"
 
-class PageTest < Geb::ApiTest
+class PartialTest < Geb::ApiTest
 
-  test "that page default initializes" do
+  test "that partial default initializes" do
 
     partial_path = File.join(Dir.pwd, "test", "partials", "template.html")
     partial_content = "This is a partial file"
@@ -27,9 +27,9 @@ class PageTest < Geb::ApiTest
     assert_equal partial.path, partial_path
     assert_equal partial.content, partial_content
 
-  end # test "that site default initializes"
+  end # test "that partial default initializes"
 
-  test "that page constructor throws an error if the partial file does not exist" do
+  test "that partial constructor throws an error if the partial file does not exist" do
 
     partial_path = File.join(Dir.pwd, "test", "partials", "template.html")
 
@@ -39,11 +39,11 @@ class PageTest < Geb::ApiTest
       Geb::Partial.new(partial_path)
     end
 
-    assert_match(/#{partial_path}/, error.message)
+    assert_includes(error.message, partial_path)
 
-  end # test "that page constructor throws an error if the partial file does not exist"
+  end # test "that partial constructor throws an error if the partial file does not exist"
 
-  test "that page constructor throws an error if the partial file cannot be read" do
+  test "that partial constructor throws an error if the partial file cannot be read" do
 
     partial_path = File.join(Dir.pwd, "test", "partials", "template.html")
 
@@ -54,7 +54,7 @@ class PageTest < Geb::ApiTest
       Geb::Partial.new(partial_path)
     end # error = assert_raises Geb::Partial::PartialFileNotFound do
 
-  end # test "that page constructor throws an error if the page file cannot be read"
+  end # test "that partial constructor throws an error if the page file cannot be read"
 
   test "that self.load returns the partial content when the partial file exists" do
 
@@ -149,4 +149,4 @@ class PageTest < Geb::ApiTest
 
   end # test "that that template file exists method finds files"
 
-end # class PageTest < Geb::ApiTest
+end # class PartialTest < Geb::ApiTest

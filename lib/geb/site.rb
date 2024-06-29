@@ -241,9 +241,59 @@ module Geb
 
     end # def load
 
+    # build the site
+    def build
+
+      # build the assets and pages
+      build_assets()
+      build_pages()
+
+    end # def build
+
+    # build the assets for the site
+    # @exception SiteNotLoaded if the site is not loaded
     def build_assets
-      Geb.log_start "Building assets for #{site_name} ... "
-      Geb.log "done."
+
+      # make sure the site is laoded, if not, raise an error
+      raise SiteNotLoadedError.new("Could not build assets.") unless @loaded
+
+      # get the site asset and output assets directory
+      site_assets_dir = get_site_assets_directory()
+      outout_assets_dir = File.join(get_site_output_directory(), site_assets_dir.gsub(@site_path, ""))
+
+      Geb.log "Building assets for #{site_name}\n\n"
+
+      # step through all the asset files and copy them to the output directory
+      Dir.glob("#{site_assets_dir}/**/*").each do |asset_file|
+
+        # skip directories
+        next if File.directory?(asset_file)
+
+        # get the relative path of the asset file and the destination path
+        asset_relative_path = asset_file.gsub(site_assets_dir, "")
+        asset_full_destination_path = File.join(outout_assets_dir, asset_relative_path)
+
+        # check if the destination asset file exists
+        if File.exist?(asset_full_destination_path)
+
+          Geb.log " - skipping asset: #{asset_relative_path}"
+
+        else
+
+          Geb.log " - processing asset: #{asset_relative_path}"
+
+          # create the output directory for the asset file
+          output_dir = File.join(outout_assets_dir, File.dirname(asset_relative_path))
+          FileUtils.mkdir_p(output_dir)
+
+          # copy the asset file to the output directory
+          FileUtils.cp(asset_file, output_dir)
+
+        end # if else
+
+      end # Dir.glob
+      Geb.log "\nDone building assets for #{site_name}"
+
     end # def build_assets
 
     # build the pages for the site
@@ -252,6 +302,10 @@ module Geb
 
       # make sure the site is laoded, if not, raise an error
       raise SiteNotLoadedError.new("Could not build pages.") unless @loaded
+
+      # expire page template and partial caches
+      Geb::Template.expire_cache
+      Geb::Partial.expire_cache
 
       # find all HTML files in the site path that don't start with an underscore, with extention .html and .htm
       page_files = get_page_files(@site_path,
@@ -294,6 +348,18 @@ module Geb
       end # Dir.mktmpdir
 
     end # def build_pages
+
+    # get the site output directory
+    # @return [String] the site output directory
+    def get_site_output_directory
+      return File.join(@site_path, Geb::Defaults::LOCAL_OUTPUT_DIR)
+    end # def get_site_output_directory
+
+    # get the site release directory
+    # @return [String] the site release directory
+    def get_site_release_directory
+      return File.join(@site_path, Geb::Defaults::RELEASE_OUTPUT_DIR)
+    end # def get_site_release_directory
 
     private
 
@@ -438,18 +504,6 @@ module Geb
 
     end # def get_page_files
 
-    # get the site output directory
-    # @return [String] the site output directory
-    def get_site_output_directory
-      return File.join(@site_path, Geb::Defaults::LOCAL_OUTPUT_DIR)
-    end # def get_site_output_directory
-
-    # get the site release directory
-    # @return [String] the site release directory
-    def get_site_release_directory
-      return File.join(@site_path, Geb::Defaults::RELEASE_OUTPUT_DIR)
-    end # def get_site_release_directory
-
     # clear the site output directory
     # @return [Nil]
     def clear_site_output_directory
@@ -463,6 +517,12 @@ module Geb
     def output_site(output_dir)
       FileUtils.cp_r("#{output_dir}/.", get_site_output_directory())
     end # def output_site
+
+    # get the site assets directory
+    # @return [String] the site assets directory
+    def get_site_assets_directory
+      return File.join(@site_path, Geb::Defaults::ASSETS_DIR)
+    end # def get_site_assets_directory
 
   end # class Site
 
