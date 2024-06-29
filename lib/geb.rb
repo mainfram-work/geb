@@ -1,19 +1,20 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Main module definition for the Geb gem
+# Main module definition for the Geb gem, it includes all the functionality
+# and modules for the Geb gem.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - core module
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+#
 
 # Define the main module, version and main error class
 module Geb
 
   # define the version of the gem
-  VERSION = "0.3.10"
+  VERSION = "0.3.11"
 
 end # module Geb
 

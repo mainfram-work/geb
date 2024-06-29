@@ -53,6 +53,13 @@ class TestCli < Minitest::Test
     commands["remote"]  = Geb::CLI::Commands::Remote.new
     commands["version"] = Geb::CLI::Commands::Version.new
 
+    # check the version first
+    stdout, stderr, status = Open3.capture3("geb version")
+
+    assert status.success?
+    assert_empty stderr
+    assert_includes stdout, "Geb version #{Geb::VERSION}"
+
     # iterate over all commands
     commands.each do |name, command|
 
@@ -106,8 +113,7 @@ class TestCli < Minitest::Test
     refute_nil    Geb::CLI::Commands::Release.method_defined?(:options)
     refute_empty  Geb::CLI::Commands::Release.options, "Release command should have options."
 
-    assert_cli_option Geb::CLI::Commands::Release, :skip_assets, :boolean, false
-    assert_cli_option Geb::CLI::Commands::Release, :skip_pages,  :boolean, false
+    assert_cli_option Geb::CLI::Commands::Release, :with_template, :boolean, false
 
   end # test "that geb has a release command"
 

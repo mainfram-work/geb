@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   # basic gem information
   spec.name         = "geb"
-  spec.version      = "0.3.10"
+  spec.version      = "0.3.11"
   spec.authors      = ["Edin Mustajbegovic"]
   spec.email        = ["edin@actiontwelve.com"]
   spec.summary      = "A static website builder with simple templating and management utilities."
@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "webmock", "~> 3.0"
   spec.add_development_dependency 'simplecov', '~> 0.21.2'
   spec.add_development_dependency 'mocha', '~> 2.1'
+  spec.add_development_dependency 'yard', '~> 0.9'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

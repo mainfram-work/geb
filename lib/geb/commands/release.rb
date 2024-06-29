@@ -18,14 +18,13 @@ module Geb
 
         # Command description, usage and examples
         desc "Builds the release version of the site (pages and assets)"
-        example [" ", "--skip_assets", "--skip_pages"]
+        example [" ", "--with_template"]
 
         # Define command options
-        option :skip_assets,  type: :boolean, default: false, desc: "Skip building assets (images, css, js)"
-        option :skip_pages,   type: :boolean, default: false, desc: "Skip building pages"
+        option :with_template,  type: :boolean, default: false, desc: "Build the release site with a template archive so you can share it."
 
         # Call method for the release command
-        def call(skip_assets:, skip_pages:)
+        def call(**options)
 
           puts "Building pages and assets for release"
 

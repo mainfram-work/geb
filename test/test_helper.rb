@@ -19,6 +19,12 @@ require 'simplecov'
 SimpleCov.start do
   command_name 'rake test'
   add_filter '/test/'
+  add_group 'Core' do |src_file|
+    src_file.filename.match(%r{^#{SimpleCov.root}/lib/geb/[^/]+$}) ||
+    src_file.filename.match(%r{^#{SimpleCov.root}/lib/[^/]+$})
+  end
+  add_group 'Commands', 'lib/geb/commands'
+  add_group 'Site Modules', 'lib/geb/site'
 end # SimpleCov.start
 
 # make sure simplecov runs at the end of the tests

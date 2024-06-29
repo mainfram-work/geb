@@ -26,13 +26,6 @@ module Geb
           # Print the version
           puts "Geb version #{Geb::VERSION}"
 
-          command = Geb::CLI::Commands::Build.new
-
-          Geb.dump_object_info(command.options[0])
-
-          puts "----"
-          puts command.options[0].desc
-
         end # def call
 
       end # class Version < Dry::CLI::Command
