@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Version command definition, based on Dry::CLI framework
-#  Prints the current version of the Geb
+# Version command definition, based on Dry::CLI framework
+# Prints the current version of the Geb
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Version Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+
 module Geb
   module CLI
     module Commands

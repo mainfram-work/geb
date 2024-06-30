@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Build command definition, based on Dry::CLI framework
-#  Run a webrick http server to view the site output
+# Build command definition, based on Dry::CLI framework
+# Run a webrick http server to view the site output, it optionally monitors
+# for file changes and rebuilds the site when a file changes.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Remote Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   module CLI

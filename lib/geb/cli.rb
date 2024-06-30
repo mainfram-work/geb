@@ -1,14 +1,14 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  The CLI Registry class, registers all the commands and their alises with
-#  the Dry::CLI framework.
+# The CLI Registry class, registers all the commands and their alises with
+# the Dry::CLI framework.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Command Registry
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 # include geb commands
 require_relative "commands/version"

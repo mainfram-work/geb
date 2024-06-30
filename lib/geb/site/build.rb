@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Site building functionality, building assets and pages
+# Site building functionality, building assets and pages
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Site - Build Module
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   class Site
@@ -30,13 +30,14 @@ module Geb
         raise SiteNotLoadedError.new("Could not build the site.") unless @loaded
 
         # build the assets and pages
-        build_assets()
+        # it is important to build assets first as there may be pages in the assets directory
         build_pages()
+        build_assets()
 
       end # def build
 
       # build the assets for the site
-      # @exception SiteNotLoaded if the site is not loaded
+      # @raise SiteNotLoaded if the site is not loaded
       def build_assets
 
         # make sure the site is laoded, if not, raise an error
@@ -82,7 +83,7 @@ module Geb
       end # def build_assets
 
       # build the pages for the site
-      # @exception SiteNotLoaded if the site is not loaded
+      # @raise SiteNotLoaded if the site is not loaded
       def build_pages
 
         # make sure the site is laoded, if not, raise an error
@@ -143,7 +144,10 @@ module Geb
       # get the page files in the specified path, with specified extentions and ignoring files that match the pattern
       # @param path [String] the path to the files
       # @param exts [Array] the extentions to look for, default is Geb::Defaults.PAGE_EXTENSIONS
-      # @param ignore [Regexp] the pattern to ignore, default is Geb::Defaults.TEMPLATE_AND_PARTIAL_PREFIX
+      # @param ignore_files_exp [Regexp] the pattern to ignore files, default is Geb::Defaults.TEMPLATE_AND_PARTIAL_IDENTIFIER
+      # @param ignore_directories [Array] the directories to ignore, default is []
+      # @return [Array] the array of matched file paths
+      # @note the ignore_files_exp and ignore_directories are used to ignore files that are not pages
       def get_page_files(path, exts = Geb::Defaults::PAGE_EXTENSIONS, ignore_files_exp = Geb::Defaults::TEMPLATE_AND_PARTIAL_IDENTIFIER, ignore_directories = [])
 
         # get all files in the path with the specified extentions

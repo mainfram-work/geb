@@ -1,19 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Represents a site object, handles creation, building and management of sites.
-#  Templates can be one of the following:
-#   - name of the site template that comes bundled with geb
-#   - a local directory that is a valid site template
-#   - a URL to a gab site template packaged as a zip file
+# Represents a site object, handles creation, building and management of sites.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Site
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
-# include required libraries
+# include the required libraries
 require 'uri'
 require 'net/http'
 require 'tmpdir'

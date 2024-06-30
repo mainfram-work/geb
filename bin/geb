@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Main executable file for the geb utility
+# Main executable file for the geb utility
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb Executable
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 # make sure global encoding is set to UTF-8, we will be working with files alot.
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-# include the libraries and the CLI commands
+# include the libraries
 require_relative "../lib/geb"
 
 # run the CLI

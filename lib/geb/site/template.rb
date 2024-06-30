@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 #
-# This file contains the site template functionality, mostly remote template handling.
-#
-# @title Geb - Site Template Functionality
-# @author Edin Mustajbegovic <edin@actiontwelve.com>
-# @license MIT
-#
 # This module is responsible for handling site templates, including downloading
 # and extracting templates from remote URLs.
 #
-# @see https://github.com/username/repo for more information
+# @title Geb - Site - Template Module
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
 #
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   class Site
@@ -25,7 +23,7 @@ module Geb
       # if the URL is not accessible, it tries to find the template by appending TEMPLATE_ARCHIVE_FILENAME
       # this is to facilitate specifiying a top level URL. The method returns the URL if it is valid.
       # @param template_url [String] the URL to the template
-      # @exception InvalidTemplateURL if the URL is not accessible or is not a tar.gz file
+      # @raise InvalidTemplateURL if the URL is not accessible or is not a tar.gz file
       # @return [String] the validated template URL
       def validate_template_url(template_url)
 
@@ -68,7 +66,7 @@ module Geb
       # download the template into a temporary directory from the URl and extract it,
       # return the path to the extracted template
       # @param template_url [String] the URL to the template
-      # @exception InvalidTemplateURL if the template extraction fails
+      # @raise InvalidTemplateURL if the template extraction fails
       # @return [String] the path to the extracted template
       def download_template_from_url(template_url)
 
@@ -98,7 +96,7 @@ module Geb
 
       # fetch the HTTP response for the URL
       # @param url [String] the URL to fetch
-      # @exception InvalidTemplateURL if the URL is not accessible
+      # @raise InvalidTemplateURL if the URL is not accessible
       # @return [Net::HTTPResponse] the HTTP response
       def fetch_http_response(url)
         return_response = nil

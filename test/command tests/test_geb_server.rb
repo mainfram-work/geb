@@ -122,7 +122,7 @@ class TestGebCommandServer < Geb::CliTest
 
   test "that command detects new file being added to the site" do
 
-    skip "This test is not working yet"
+    #skip "This test is not working yet"
 
     copy_test_site()
     server_port  = Geb::Test::WebServerProxy.find_available_port()
@@ -130,26 +130,24 @@ class TestGebCommandServer < Geb::CliTest
 
     new_file_path = File.join(Dir.pwd, "new_file.html")
 
-    file_change_detected = lambda do |output, error_output|
-      output.include?("Found changes, rebuilding site ...")
-      #output.include?("Server running on http://localhost:#{server_port}")
+    file_change_detected = lambda do |output, error_output, test|
+      foo = output.include?("Found changes, rebuilding site ...")
+      foo
     end
 
-    add_file_event = lambda do |output, error_output|
-      if output.include?("Watching for changes in [#{Dir.pwd}]")
+    add_file_event = lambda do
+        sleep 5
         FileUtils.touch(new_file_path)
         File.write(new_file_path, "<html><body><h1>New File</h1></body></html>")
-        return true
-      else
-        return false
-      end
     end
 
-    run_command_with_timeout(geb_command, timeout: 10, break_condition: file_change_detected, event: add_file_event) do |output, error_output|
+    run_command_with_timeout2(geb_command, timeout: 10, break_condition: file_change_detected, event: add_file_event) do |output, error_output|
 
       assert_includes output, "Loading site from path #{Dir.pwd}"
       assert_includes output, "Server running on http://localhost:#{server_port}"
       assert_includes output, "Watching for changes in [#{Dir.pwd}]"
+      assert_includes output, "Found changes, rebuilding site ..."
+      assert_includes output, "New files detected: [\"#{new_file_path}\"]"
 
     end # run_command_with_timeout
 

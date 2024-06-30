@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Remote command definition, based on Dry::CLI framework
-#  Simply call ssh using the configured remote string, convinience command
+# Remote command definition, based on Dry::CLI framework
+# Just a proxy for the ssh command
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Remote Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+
 module Geb
   module CLI
     module Commands

@@ -1,15 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Simple set of git utilities used by the cli commands
+# Simple set of git utilities used by the cli commands
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Git
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
-# include required libraries
+# include the required libraries
 require 'tmpdir'
 require 'open3'
 require 'shellwords'

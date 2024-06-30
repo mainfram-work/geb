@@ -1,14 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Site release functionality, releasing the site, packaging site templates
-#  and assets
+# Site release functionality, releasing the site, packaging site templates and assets
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Site - Release Module
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   class Site

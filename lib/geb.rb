@@ -3,12 +3,12 @@
 # Main module definition for the Geb gem, it includes all the functionality
 # and modules for the Geb gem.
 #
-# @title Geb - core module
+# @title Geb
 # @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
 # @license MIT
 #
 # @see https://github.com/mainfram-work/geb for more information
-#
 
 # Define the main module, version and main error class
 module Geb
@@ -30,4 +30,4 @@ require_relative "geb/page"
 require_relative "geb/template"
 require_relative "geb/partial"
 require_relative "geb/server"
-require_relative "geb/cli" # make sure this is loaded last
+require_relative "geb/cli"      # make sure this is loaded last

@@ -1,15 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  The http server class. This class is used to run a simple http server
-#  for the Geb gem.  It also contains the file monitoring code to automatically.
-#  build the site when a file changes.
+# The http server class. This class is used to run a simple http server
+# for the Geb gem.  It also contains the file monitoring code to automatically.
+# build the site when a file changes.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Server
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 # include the required libraries
 require 'webrick'

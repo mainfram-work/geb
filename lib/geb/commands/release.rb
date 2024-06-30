@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Release command definition, based on Dry::CLI framework
-#  Builds the site into the release directory
+# Release command definition, based on Dry::CLI framework
+# Builds the site into the release directory with optional template archive
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Release Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+
 module Geb
   module CLI
     module Commands

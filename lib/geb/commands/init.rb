@@ -1,16 +1,16 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Init command definition, based on Dry::CLI framework
-#  Initializes the site, creates a basic folder structure and git repository
+# Init command definition, based on Dry::CLI framework
+# Initializes the site, creates a basic folder structure and git repository
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Init Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
-# include required libraries
+# include the required libraries
 require 'fileutils'
 require 'yaml'
 

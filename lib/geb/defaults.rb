@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  A simple list of defaults for the Geb gem
+# A simple list of defaults for the Geb gem
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Defaults
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
+# include the required libraries
 require 'fileutils'
 
 module Geb

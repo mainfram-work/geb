@@ -1,15 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Represents a page template. A page template is a page file that contains
-#  template definitions and insert sections. The class keeps a cache of
-#  already loaded page templates.
+# Represents a page template. A page template is a page file that contains
+# template definitions and insert sections. The class keeps a cache of
+# already loaded page templates.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Template
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 require 'fileutils'
 

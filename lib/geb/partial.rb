@@ -1,16 +1,17 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Represents a page partial. A page partial is a file that contains
-#  content that is to be inserted in the page at the pace where the partial was
-#  declared.
+# Represents a page partial. A page partial is a file that contains
+# content that is to be inserted in the page at the pace where the partial was
+# declared. The class keeps a cache of already loaded partials.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Partial
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
+# include the required libraries
 require 'fileutils'
 
 module Geb

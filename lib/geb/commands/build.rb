@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Build command definition, based on Dry::CLI framework
-#  Builds the site, this is the core of what Geb does
+# Build command definition, based on Dry::CLI framework
+# Builds the site, this is the core of what Geb does
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Build Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+
 module Geb
   module CLI
     module Commands
@@ -32,6 +33,7 @@ module Geb
           site.load(Dir.pwd)
 
           # build the pages unless the skip_pages option is set
+          # it is important to build assets first as there may be pages in the assets directory
           Geb.log "Skipping building pages as told." if options[:skip_pages]
           site.build_pages unless options[:skip_pages]
 

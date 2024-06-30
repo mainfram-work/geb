@@ -167,6 +167,109 @@ module Geb
 
     end # def run_command_with_timeout
 
+
+    # run the command with a timeout and a break condition, useful for testing
+    # processes that may hang or run indefinitely
+    # @param command [String] the command to run
+    # @param timeout [Integer] the timeout in seconds
+    # @param break_condition [Proc] a block that will be called with the output and error
+    # @yieldparam output [String] the output of the command
+    # @yieldparam error_output [String] the error output of the command
+    def run_command_with_timeout2(command, timeout: 10, break_condition: nil, event: nil)
+
+      # initialize the output and error output
+      output, error_output = "", ""
+
+      # initialize a flag indicating if the event was executed
+      event_executed = false
+
+      # initialize a new mutex
+      mutex = Mutex.new
+
+      # initialise a condition variable for signaling
+      condition_variable = ConditionVariable.new
+
+      event_thread = Thread.new do
+        event.call
+      end
+
+      # run the command with within a thread
+      command_thread = Thread.new do
+
+        # run the command with a timeout
+        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+
+          # lets make sure we can safely kill the command
+          begin
+
+            # Timeout the command after the specified time
+            Timeout.timeout(timeout) do
+
+              # read the output and error output until the break condition is met or the timeout is reached
+              loop do
+
+                # lets do this safely
+                begin
+
+                  # synchronize the mutex
+                  mutex.synchronize do
+
+                  # read the output and error output
+                    output        += stdout.read_nonblock(4028) rescue ""
+                    error_output  += stderr.read_nonblock(4028) rescue ""
+
+                  end # mutex.synchronize
+
+                  # break if the break condition is met. call the break condition lambda
+                  # passed in as parameter with the output and error output
+                  if break_condition && break_condition.call(output, error_output, event_executed)
+                    condition_variable.signal
+                    break
+                  end
+
+                rescue IO::WaitReadable
+
+                  # wait for the IO to be readable
+                  IO.select([stdout, stderr])
+
+                  retry
+
+                rescue EOFError
+
+                  # break if the command has finished
+                  break
+
+                end # begin rescue
+              end # loop
+              condition_variable.signal
+            end # Timeout.timeout
+
+          ensure
+
+            # gracefully shutdown the process and wait for it to terminate
+            Process.kill("INT", wait_thr.pid)
+            wait_thr.value
+
+          end # begin ensure
+        end # Open3.popen3
+
+      end # Thread.new
+
+       # wait for the thread to finish or timeout
+      mutex.synchronize do
+        unless condition_variable.wait(mutex, timeout)
+          # Timeout reached, kill the thread
+          Thread.kill(command_thread)
+          Thread.kill(event_thread)
+        end
+      end
+
+      # yield to the block if it is given and return the output and error output,
+      # this is where test assertions should be made
+      yield output, error_output if block_given?
+
+    end # def run_command_with_timeout
+
   end # class CliTest < Minitest::Test
 
 end # module Geb

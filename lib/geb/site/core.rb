@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Site core functionality, loading, validation and creation
+# Site core functionality, loading, validation and creation
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Site - Core Module
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   class Site
@@ -49,10 +49,10 @@ module Geb
       # @param template_path  [String]  the path to the site template, default is nil, can be a URL, directory or a bundled template identifier
       # @param skip_template  [Boolean] skip the template validation, default is false
       # @param force          [Boolean] force the site creation, default is false
-      # @exception SiteAlreadyValidated if the site has already been validated
-      # @exception DirectoryExistsError if the site folder already exists and force option is not set
-      # @exception InvalidTemplate if the template path is invalid
-      # @exception InvalidTemplateURL if the template URL is invalid
+      # @raise SiteAlreadyValidated if the site has already been validated
+      # @raise DirectoryExistsError if the site folder already exists and force option is not set
+      # @raise InvalidTemplate if the template path is invalid
+      # @raise InvalidTemplateURL if the template URL is invalid
       # @return [Nil]
       def validate(site_path, template_path = nil, skip_template = false, force = false)
 
@@ -126,7 +126,7 @@ module Geb
       #   - create the site folder, if it exists, just skip it
       #   - copy the template files to the site folder if the template path is set
       #   - create the output folders
-      # @exception UnvalidatedSiteAndTemplate if the site has not been validated
+      # @raise UnvalidatedSiteAndTemplate if the site has not been validated
       # @return [Nil]
       def create
 
@@ -165,7 +165,7 @@ module Geb
       # load a site from a site path
       # it checks if the site path has a gab config file, if not, it goes up the chain to find it
       # @param site_path [String] the path to the site folder
-      # @exception SiteNotFoundError if the site path is not found
+      # @raise SiteNotFoundError if the site path is not found
       # @return [Nil]
       def load(site_path)
 
