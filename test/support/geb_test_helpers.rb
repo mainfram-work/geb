@@ -1,10 +1,6 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  A collection of Geb test helper methods:
+# A collection of Geb test helper methods:
 #
 #  assert_stdout_match            - asserts that the standard output matches a pattern
 #  refute_stdout_match            - asserts that the standard output does not match a pattern
@@ -14,8 +10,13 @@
 #  assert_cli_option              - asserts that a command has a specific option defined
 #  assert_folder_copied           - asserts that a folder has been copied to another folder
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test Support - Test Helpers
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+
 
 def assert_stdout_match(p_match)
 

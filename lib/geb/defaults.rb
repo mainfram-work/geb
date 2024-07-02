@@ -20,6 +20,8 @@ module Geb
     AVAILABLE_TEMPLATES       =                                   # list of bundled templates (first one is the default template)
       ['bootstrap_jquery', 'basic']
     SITE_CONFIG_FILENAME      = 'geb.config.yml'                  # site config file name
+    HTTP_TEMPLATE_CONTENT_TYPES =                               # acceptable remote template content types
+      ['application/x-gzip', 'application/gzip', 'application/octet-stream']
     BUNDLED_TEMPLATES_DIR     =                                   # bundled template directory
       File.join(__dir__, 'samples')
     DEFAULT_TEMPLATE_DIR      =                                   # default template directory
@@ -28,17 +30,15 @@ module Geb
       AVAILABLE_TEMPLATES.first
 
     # default values for site configuration (all paths are relative to the site root)
-    LOCAL_OUTPUT_DIR          = 'output/local'                    # local output directory
-    RELEASE_OUTPUT_DIR        = 'output/release'                  # release output directory
+    OUTPUT_DIR                = 'output'                          # output directory  (relative to site root)
+    LOCAL_OUTPUT_DIR          = 'local'                           # local output directory (relative to output directory)
+    RELEASE_OUTPUT_DIR        = 'release'                         # release output directory (relative to output directory)
     ASSETS_DIR                = 'assets'                          # location for assets (images, js and css)
 
     # default values for site pages
     PAGE_EXTENSIONS           =                                   # list of file extention to treat as pages
       ['.md', '.markdown', '.html', '.htm', '.txt', '.js', '.css']
     TEMPLATE_AND_PARTIAL_IDENTIFIER  = /^_/                       # filename pattern for templates or partials
-
-    # default values for web server
-    WEB_SERVER_PORT           = 3456                              # default web server port
 
   end # module Defaults
 end # module Geb

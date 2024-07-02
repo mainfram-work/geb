@@ -1,24 +1,70 @@
 
+# Geb Configuration File
+# =======================
+#
 # This is a sample configuration file for the geb command line tool.
+# You pretty much don't have to specify anything in this file, unless you want to 
+# customize the site. The default values are good enough for most sites.
+#
+# EVEN IF YOU DON"T SPECIFY ANYTHING IN THIS FILE, THIS CONFIG FILE MUST EXIST
+# AT THE ROOT OF THE SITE DIRECTORY.  OTHERWISE, THE GEB COMMANDS WILL NOT WORK.
+# IT CAN BE EMPTY, BUT IT MUST EXIST. GEB DEMANDS IT.
+#
+# However, remote_uri and remote_path are required if you want to use 
+# the geb remote and upload commands. If you plan to upload the site on your own then
+# you don't need to specify these values.
+#
 
-# The site_url is the URL of the site that you are deploying to.
-site_url: "https://example.com"
+# Name of the site. 
+# If not specified, the default is the name of the directory where the site is located.
+# Just for display purposes.
+#site_name: "My Site"
 
 # The remote_uri is the SSH URI of the remote server that you are deploying to.
-# Typpical format is username@server
-remote_uri: "user@server.com"
+# Geb remote and upload commands will use this URI to connect to the server.
+# If you don't specify a remote_uri, geb remote and upload commands will not work.
+# Typical format is username@server
+#remote_uri: "user@server.com"
 
 # The remote_path is the path on the remote server where the site is located.
-remote_path: "/path/to/site"
+# If you don't specify a remote_path, upload commands will not work.
+#remote_path: "/path/to/site"
 
-# The local_port is the port that the local server is running on.
-local_port: 4000
+# Set the local web server port that the site will run on.
+# Geb server command will use this port to start the local web server
+# If you don't specify a port, geb server command auto selects a port
+#local_port: 4000
 
-# default output directory
-output_dir: "output"
+# Specifies the output directory, this directory will be used to store the output of
+# the build and release commands. 
+# the output directory is relative to the site directory.
+# The default value is "output"
+#output_dir: "output"
 
-# if the site is a template site, specify which files and directories are part of the template
-# when you create a new site, these files and directories will be copied to the new site
-# template_name: 
-# template_paths: []
+# Specifies the assets directory, this directory will be used to store the assets.
+# The assets directory is relative to the site directory.
+# The default value is "assets"
+#assets_dir: "assets"
+
+# Specifies the page extensions that are used in the site. This can be any text file extension.
+# Default value is ['.md', '.markdown', '.html', '.htm', '.txt', '.js', '.css']
+#page_extensions: ["html", "htm", "md", "markdown"]
+
+# Template and partial identifier is a regular expression that is used to identify the template
+# and partial files in the site. The default value is /^_/, any filename that starts with an underscore.
+# These files are processed, but not included in the output directory, local or release.
+# This setting does not impact template paths below, which are used to share the site as a template,
+# which will include the template and partial files, if the template_paths includes them.
+#template_and_partial_identifier: /^_/
+
+# if you want to share the site as a template site, specify which files and directories 
+# are part of the template.
+# When you create a new site, these files and directories will be copied to the new site
+# If you don't specify template_paths, the site will not be shared as a template site and
+# the geb release --with_template option will not work.
+# Likewise, for other sites to use this site as a template, you must specify the template_paths.
+# The site template files will be archived into geb-template.tar.gz file and put within
+# the release directory.
+# e.g. template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
+#template_paths: []
   

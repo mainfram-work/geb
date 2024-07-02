@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Tests the Geb upload command
+# Tests the upload command class
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test - Upload Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 require "test_helper"
 

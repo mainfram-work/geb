@@ -27,7 +27,21 @@ module Geb
         # Call method for the release command
         def call(**options)
 
-          puts "Building pages and assets for release"
+          # initialise a new site and load the site from the current directory
+          site = Geb::Site.new
+          site.load(Dir.pwd)
+
+          # create a new release for the site
+          site.release()
+
+          # bundle the site with a template archive if the with_template option is set
+          site.bundle_template() if options[:with_template]
+
+        rescue Geb::Error => e
+
+          # print error message
+          puts
+          warn e.message
 
         end # def call
 

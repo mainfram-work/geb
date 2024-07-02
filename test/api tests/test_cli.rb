@@ -1,14 +1,14 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Tests the CLI commands for Geb commands, making sure that DRY::CLI
-#  structure is correctly implemented
+# Tests the CLI commands for Geb commands, making sure that DRY::CLI
+# structure is correctly implemented
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test - CLI
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 require "test_helper"
 
@@ -131,7 +131,7 @@ class TestCli < Minitest::Test
     refute_nil    Geb::CLI::Commands::Server.method_defined?(:options)
     refute_empty  Geb::CLI::Commands::Server.options, "Server command should have options."
 
-    assert_cli_option Geb::CLI::Commands::Server, :port,       :int,     3456
+    assert_cli_option Geb::CLI::Commands::Server, :port,       :int,     0
     assert_cli_option Geb::CLI::Commands::Server, :skip_build, :boolean, false
 
   end # test "that geb has a server command"

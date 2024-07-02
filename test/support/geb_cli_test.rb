@@ -1,19 +1,19 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  This is a CLI test base class for Geb.  It provides a consistant setup and
-#  teardown for CLI tests. Current setup and teardown handle the following
-#  tasks:
+# This is a CLI test base class for Geb.  It provides a consistant setup and
+# teardown for CLI tests. Current setup and teardown handle the following
+# tasks:
 #  - It checks the version of the command being tested on the setup and asserts
 #    that the version number in Geb::Version is the same as running command `geb version`
 #  - Creates a temporary directory and changes to it, removes it after the test
 #  - Sets up a proxy server if the PROXY_PORT is defined, stops server after the test
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test Support - CLI Test
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   class CliTest < Minitest::Test

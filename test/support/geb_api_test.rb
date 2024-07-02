@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  This is a CLI test base class for Geb.  It provides a consistant setup and
-#  teardown for CLI tests.
+# This is a Api test base class for Geb.  It provides a consistant setup and
+# teardown for API tests. Currently just stubs the Geb::log and Geb::log_start
+# as not to polute the test output with logging.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test Support - API Test
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 module Geb
   class ApiTest < Minitest::Test

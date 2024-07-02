@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Tests the Geb init command
+# Tests the init command class
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test - Init Command
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 require "test_helper"
 require "fileutils"
@@ -91,17 +91,20 @@ class TestGebCommandInit < Geb::CliTest
 
     assert_includes stdout, "Validating site path #{new_site_path} ... done."
     assert_includes stdout, "No template specified, using default: #{Geb::Defaults::DEFAULT_TEMPLATE}."
-    assert_match(/Validating template path.*#{Geb::Defaults::DEFAULT_TEMPLATE}.*\.\.\. done\./, stdout)
+    assert_includes stdout, "Validating template path #{Geb::Defaults::DEFAULT_TEMPLATE_DIR} ... done."
     assert_includes stdout, "Validating proposed site path as a git repository ... done."
     refute_includes stdout, "Skipping git repository validation as told."
 
     assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_includes stdout, "Loading template site from path #{Geb::Defaults::DEFAULT_TEMPLATE_DIR} ... done."
+    assert_includes stdout, "Resolving directories and files from template site to copy ... done."
+    assert_includes stdout, "copying directory and all sub-directories from #{Geb::Defaults::DEFAULT_TEMPLATE_DIR}"
+    assert_includes stdout, "copying directory and all sub-directories from"
     assert_includes stdout, "Creating: local and release output folders ...done."
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
     assert_includes stdout, "Initialising git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
@@ -127,11 +130,14 @@ class TestGebCommandInit < Geb::CliTest
     assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_includes stdout, "Copying template files to site folder ... done."
-    assert_includes stdout, "Creating: local and release output folders ...done."
 
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
+    assert_includes stdout, "Loading template site from path #{Geb::Defaults::DEFAULT_TEMPLATE_DIR} ... done."
+    assert_includes stdout, "Resolving directories and files from template site to copy ... done."
+    assert_includes stdout, "copying directory and all sub-directories from #{Geb::Defaults::DEFAULT_TEMPLATE_DIR}"
+    assert_includes stdout, "copying directory and all sub-directories from"
+    assert_includes stdout, "Creating: local and release output folders ...done."
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
     refute_includes stdout, "Initialising git repository ... done."
     assert_includes stdout, "Skipping git repository creation as told."
@@ -161,8 +167,8 @@ class TestGebCommandInit < Geb::CliTest
     assert_includes stdout, "Skipping template creation as told."
     assert_includes stdout, "Creating: local and release output folders ...done."
 
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
     assert_includes stdout, "Initialising git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
@@ -181,19 +187,24 @@ class TestGebCommandInit < Geb::CliTest
     assert status.success?
     assert_empty stderr
 
+    template_full_path = File.join(Geb::Defaults::BUNDLED_TEMPLATES_DIR, template)
+
     assert_includes stdout, "Validating site path #{new_site_path} ... done."
     assert_includes stdout, "Specified template is a Geb sample: #{template}, using it as site template."
-    assert_match(/Validating template path.*#{template}.*\.\.\. done\./, stdout)
+    assert_includes stdout, "Validating template path #{template_full_path} ... done."
     assert_includes stdout, "Validating proposed site path as a git repository ... done."
     refute_includes stdout, "Skipping git repository validation as told."
 
     assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_includes stdout, "Loading template site from path #{template_full_path} ... done."
+    assert_includes stdout, "Resolving directories and files from template site to copy ... done."
+    assert_includes stdout, "copying directory and all sub-directories from #{template_full_path}"
+    assert_includes stdout, "copying directory and all sub-directories from"
     assert_includes stdout, "Creating: local and release output folders ...done."
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
     assert_includes stdout, "Initialising git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
@@ -210,7 +221,7 @@ class TestGebCommandInit < Geb::CliTest
     _, stderr, status = Open3.capture3("geb init #{new_site_path} --template #{template}")
 
     assert status.success?
-    assert_includes stderr, "Invalid template site. Make sure the specified path is a directory and contains a valid gab.config.yml file."
+    assert_includes stderr, "Invalid template site. Make sure the specified path is a directory and contains a valid geb.config.yml file."
     refute File.directory?(new_site_path)
 
   end # test "that invalid specified template is handled correctly"
@@ -242,11 +253,14 @@ class TestGebCommandInit < Geb::CliTest
     assert_includes stdout, "Creating site folder: #{new_site_path} ... done."
     assert File.directory?(new_site_path)
 
-    assert_includes stdout, "Copying template files to site folder ... done."
+    assert_match(/Loading template site from path .*\.\.\. done\./, stdout)
     assert_includes stdout, "Creating: local and release output folders ...done."
+    assert_includes stdout, "Resolving directories and files from template site to copy ... done."
+    assert_match(/copying directory and all sub-directories from .*\.\.\. done\./, stdout)
+    assert_match(/copying file from .*\.\.\. done\./, stdout)
 
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
-    assert File.directory?(File.join(new_site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
+    assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
     assert_includes stdout, "Initialising git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."

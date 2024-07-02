@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Tests the server class for the Geb gem.
+# Tests the server class
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test - Server
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 require "test_helper"
 
@@ -21,6 +21,7 @@ class TestServer < Geb::ApiTest
     site_mock.stubs(:get_site_release_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
+    http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
 
     file_watcher_mock = mock('file_watcher')
     file_watcher_mock.stubs(:ignore)
@@ -45,6 +46,7 @@ class TestServer < Geb::ApiTest
     site_mock.stubs(:get_site_release_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
+    http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
 
     file_watcher_mock = mock('file_watcher')
     file_watcher_mock.stubs(:ignore)
@@ -70,6 +72,7 @@ class TestServer < Geb::ApiTest
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.expects(:start)
+    http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
 
     file_watcher_mock = mock('file_watcher')
     file_watcher_mock.stubs(:ignore)
@@ -106,6 +109,7 @@ class TestServer < Geb::ApiTest
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.expects(:start)
+    http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
 
     file_watcher_mock = mock('file_watcher')
     file_watcher_mock.stubs(:ignore)
@@ -140,8 +144,10 @@ class TestServer < Geb::ApiTest
     site_mock.stubs(:get_site_release_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
+    http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
     http_server_mock.expects(:start)
     http_server_mock.expects(:shutdown)
+
 
     file_watcher_mock = mock('file_watcher')
     file_watcher_mock.stubs(:ignore)
@@ -172,6 +178,7 @@ class TestServer < Geb::ApiTest
     site_mock.stubs(:get_site_release_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
+    http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
     http_server_mock.expects(:start)
     http_server_mock.expects(:shutdown)
 
@@ -208,6 +215,7 @@ class TestServer < Geb::ApiTest
       site_mock.stubs(:get_site_output_directory).returns(dir)
       site_mock.stubs(:get_site_release_directory).returns(dir)
       http_server_mock = mock('webric_httpserver')
+      http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
       file_watcher_mock = mock('file_watcher')
       file_watcher_mock.stubs(:ignore)
 
@@ -248,6 +256,7 @@ class TestServer < Geb::ApiTest
       site_mock.stubs(:get_site_output_directory).returns(dir)
       site_mock.stubs(:get_site_release_directory).returns(dir)
       http_server_mock = mock('webric_httpserver')
+      http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
       file_watcher_mock = mock('file_watcher')
       file_watcher_mock.stubs(:ignore)
 
@@ -298,6 +307,7 @@ class TestServer < Geb::ApiTest
       site_mock.expects(:build).times(1)
 
       http_server_mock = mock('webric_httpserver')
+      http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
       file_watcher_mock = mock('file_watcher')
       file_watcher_mock.stubs(:ignore)
 
@@ -365,6 +375,7 @@ class TestServer < Geb::ApiTest
       site_mock.expects(:build).raises(Geb::Error, "Build failed")
 
       http_server_mock = mock('webric_httpserver')
+      http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
       file_watcher_mock = mock('file_watcher')
       file_watcher_mock.stubs(:ignore)
 

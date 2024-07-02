@@ -30,7 +30,7 @@ module Geb
         raise SiteNotLoadedError.new("Could not build the site.") unless @loaded
 
         # build the assets and pages
-        # it is important to build assets first as there may be pages in the assets directory
+        # it is important to build pages first as there may be pages in the assets directory
         build_pages()
         build_assets()
 
@@ -95,8 +95,8 @@ module Geb
 
         # find all HTML files in the site path that don't start with an underscore, with extention .html and .htm
         page_files = get_page_files(@site_path,
-                                    Geb::Defaults::PAGE_EXTENSIONS,
-                                    Geb::Defaults::TEMPLATE_AND_PARTIAL_IDENTIFIER,
+                                    @site_config.page_extensions(),
+                                    @site_config.template_and_partial_identifier(),
                                     [get_site_output_directory(), get_site_release_directory()])
 
         Geb.log "Building #{page_files.length} pages for #{site_name}"
@@ -138,7 +138,7 @@ module Geb
       # get the site output directory
       # @return [String] the site output directory
       def get_site_output_directory
-        return File.join(@site_path, Geb::Defaults::LOCAL_OUTPUT_DIR)
+        return File.join(@site_path, @site_config.output_dir, Geb::Defaults::LOCAL_OUTPUT_DIR)
       end # def get_site_output_directory
 
       # get the page files in the specified path, with specified extentions and ignoring files that match the pattern
@@ -181,7 +181,7 @@ module Geb
       # get the site assets directory
       # @return [String] the site assets directory
       def get_site_assets_directory
-        return File.join(@site_path, Geb::Defaults::ASSETS_DIR)
+        return File.join(@site_path, @site_config.assets_dir)
       end # def get_site_assets_directory
 
     end # module Build

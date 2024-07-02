@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Minitest extensions for Geb, mostly syntax sugar for tests.
+# Minitest extensions for Geb, mostly syntax sugar for tests.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test Support - Minitest Extensions
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 
 # create some syntax sugar for the tests. It turns the default way to define tests as methods,

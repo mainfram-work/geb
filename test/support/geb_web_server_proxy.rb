@@ -1,14 +1,15 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  A web server (using Webrick) that proxies requests. Allows tests to stub
-#  requests and responses. Useful for testing HTTP requests.
+# A web server (using Webrick) that proxies requests. Allows tests to stub
+# requests and responses. Useful for testing HTTP requests.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test Support - Test Helpers
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
+
 
 require "webrick"
 
@@ -92,6 +93,17 @@ module Geb
       # @param body [String] the body to return (optional)
       # @param block [Block] a block to call to return the body (optional)
       # @return [void]
+      # @example
+      #
+      #   # stub a simple request
+      #   http_proxy = start_proxy
+      #   http_proxy.stub_request("http://example.com", { 'Content-Type' => 'text/html' }, "<html></html>")
+      #
+      #   # stub a request with a block
+      #   http_proxy.stub_request("http://example.com", { 'Content-Type' => 'text/html' }) do
+      #     "<html></html>"
+      #   end
+      #
       def stub_request(url, headers = {}, body = nil, &block)
 
         # strip the base_url from url

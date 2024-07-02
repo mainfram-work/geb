@@ -12,7 +12,6 @@
 
 # include the required libraries
 require 'fileutils'
-require 'yaml'
 
 module Geb
   module CLI

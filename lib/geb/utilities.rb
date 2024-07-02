@@ -71,4 +71,40 @@ module Geb
 
   end # def self.no_log
 
+  # copy the specified file and directory paths to the destination directory
+  # @param source_path [String] the source directory
+  # @param paths [Array] the paths to copy (still full paths, but from source directory)
+  # @param destination [String] the destination directory
+  # @param quiet [Boolean] the flag to suppress output
+  # @raise [Geb::Error] if the any of the file operations fail
+  def self.copy_paths_to_directory(source_path, paths, destination_path, quiet = false)
+
+    # step through the resolved template paths and copy them to the site path, taking care of files vs directories
+    paths.each do |path|
+
+      # get the relative path of the resolved template path and build the destination path
+      relative_template_path = path.gsub(source_path, "")
+      destination_file_path = File.join(destination_path, relative_template_path)
+
+      # ensure the destination directory exists
+      FileUtils.mkdir_p(File.dirname(destination_path))
+
+      # copy the resolved template path to the destination path
+      if File.directory?(path)
+        Geb.log_start " - copying directory and all sub-directories from #{path} to #{destination_file_path} ... " unless quiet
+        FileUtils.cp_r(path, destination_file_path)
+      else
+        Geb.log_start " - copying file from #{path} to #{destination_file_path} ... " unless quiet
+        FileUtils.cp(path, destination_file_path)
+      end # if else
+      Geb.log "done." unless quiet
+
+    end # each
+
+  rescue Exception => e
+    raise Geb::Error.new("Failed to copy paths to directory: #{e.message}")
+
+  end # def self.copy_paths_to_directory
+
+
 end # module Geb

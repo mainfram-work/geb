@@ -15,9 +15,81 @@ module Geb
     module Template
 
       class InvalidTemplateURL < Geb::Error
-        MESSAGE = "Invalid template URL specified. Ensure the template URL is properly accessible and packaged Gab site using gab release --with_template".freeze
+        MESSAGE = "Invalid template URL specified. Ensure the template URL is properly accessible and packaged Gab site using geb release --with_template".freeze
         def initialize(e = ""); super(e, MESSAGE); end
       end # class InvalidTemplateURL < Geb::Error
+
+      class InvalidTemplateSpecification < Geb::Error
+        MESSAGE = "Template has no template paths defined in geb.config.yml".freeze
+        def initialize(e = ""); super(e, MESSAGE); end
+      end # class InvalidTemplateSpecification < Geb::Error
+
+      # copy the template from the specified path to the site path. It uses template_paths from the configuration
+      # file to find the template. If the template is not found, it raises an error.
+      def copy_template_from_path
+
+        # raise an error if the site has not been validated
+        raise UnvalidatedSiteAndTemplate.new unless @validated
+
+        # check if the template path is a directory
+        raise InvalidTemplateSpecification.new("Template path [#{@template_path}] is not a directory") unless File.directory?(@template_path)
+
+        # check if the template path has a geb.config.yml file
+        raise InvalidTemplateSpecification.new("Template path [#{@template_path}] has no geb.config.yml file") unless Geb::Config.site_directory_has_config?(@template_path)
+
+        # create a site for the template, load it and get the site configuration
+        Geb.log_start "Loading template site from path #{@template_path} ... "
+        template_site = Geb::Site.new
+        Geb.no_log { template_site.load(@template_path) } # suppress logging for loading the template site
+        Geb.log "done."
+
+        # resolve template paths to directories and files to be copied
+        Geb.log_start "Resolving directories and files from template site to copy ... "
+        resolved_template_paths = template_site.site_config.template_paths.flat_map do |template_file_path|
+          Dir.glob(File.join(template_site.site_path, template_file_path))
+        end
+        Geb.log "done. Found #{resolved_template_paths.count} directories and files."
+
+        # if the resolved template paths are empty, raise an error
+        raise InvalidTemplateSpecification.new("Failed to load site from [#{template_site.site_path}]") if resolved_template_paths.empty?
+
+        # copy the resolved template paths to the site path
+        Geb.copy_paths_to_directory(template_site.site_path, resolved_template_paths, @site_path)
+
+      end # def copy_template_from_path
+
+      # bundle the site as a template archive
+      # @raise SiteNotFoundError if the site is not loaded
+      def bundle_template
+
+        # raise an error if the site is not loaded
+        raise Geb::Site::SiteNotFoundError.new("Site not loaded") unless @loaded
+
+        # resolve template paths to directories and files to be copied
+        Geb.log_start "Resolving directories and files to include in the template archive ... "
+        resolved_template_paths = @site_config.template_paths.flat_map do |template_file_path|
+          Dir.glob(File.join(@site_path, template_file_path))
+        end
+        Geb.log "done. Found #{resolved_template_paths.count} directories and files."
+
+        # if the resolved template paths are empty, raise an error
+        raise InvalidTemplateSpecification.new("Config template_paths not specified.") if resolved_template_paths.empty?
+
+        # create a temporary directory for the site template
+        tmp_archive_directory = Dir.mktmpdir
+
+        # copy the resolved paths to the temporary directory
+        Geb.log_start "Copying directories and files to the template archive directory #{tmp_archive_directory} ... "
+        Geb.copy_paths_to_directory(@site_path, resolved_template_paths, tmp_archive_directory)
+        Geb.log "done."
+
+        # create a template archive with files from the temporary directory into the release directory
+        output_archive_filename = File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR, Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)
+        Geb.log_start "Creating template archive in [#{output_archive_filename}] ... "
+        Open3.capture3("tar", "-czvf", output_archive_filename, "-C", tmp_archive_directory, ".")
+        Geb.log "done."
+
+      end # def bundle_template
 
       # validate the template URL. It checks if the URL is accessible and is a tar.gz file.
       # if the URL is not accessible, it tries to find the template by appending TEMPLATE_ARCHIVE_FILENAME
@@ -33,7 +105,7 @@ module Geb
         Geb.log "done."
 
         # check if the URL is accessible and is a tar.gz file, if not, try to find by appending TEMPLATE_ARCHIVE_FILENAME
-        unless response.is_a?(Net::HTTPSuccess) && ['application/x-gzip', 'application/gzip'].include?(response['Content-Type'])
+        unless response.is_a?(Net::HTTPSuccess) && Geb::Defaults::HTTP_TEMPLATE_CONTENT_TYPES.include?(response['Content-Type'])
 
           # check if the URL already has the TEMPLATE_ARCHIVE_FILENAME appended, if not, append it and try again
           unless template_url.end_with?(Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)
@@ -43,7 +115,7 @@ module Geb
             template_url += Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME
 
             Geb.log ("Failed. Web server returned #{response.code}, trying to re-try with url #{template_url}") unless response.is_a?(Net::HTTPSuccess)
-            Geb.log ("Specified template is not a gzip archive, trying to re-try with url #{template_url}") unless ['application/x-gzip', 'application/gzip'].include?(response['Content-Type'])
+            Geb.log ("Specified template is not a gzip archive, trying to re-try with url #{template_url}")     unless Geb::Defaults::HTTP_TEMPLATE_CONTENT_TYPES.include?(response['Content-Type'])
             Geb.log_start ("Trying to find geb template using URL #{template_url} ... ");
 
             # get the HTTP response for the template URL (now modified to include the archive filename)
@@ -55,7 +127,7 @@ module Geb
 
         # raise an error if the URL is not accessible and is not a tar.gz file
         raise InvalidTemplateURL.new("Web server returned #{response.code}")      unless response.is_a?(Net::HTTPSuccess)
-        raise InvalidTemplateURL.new("Specified template is not a gzip archive")  unless ['application/x-gzip', 'application/gzip'].include?(response['Content-Type'])
+        raise InvalidTemplateURL.new("Specified template is not a gzip archive")  unless Geb::Defaults::HTTP_TEMPLATE_CONTENT_TYPES.include?(response['Content-Type'])
 
         Geb::log("Found a gzip archive at template url #{template_url}.");
 
@@ -112,11 +184,6 @@ module Geb
       def template_directory_exists?(template_path)
         File.directory?(template_path)
       end # def template_directory_exists?
-
-      # check if the template directory specified has the required gab.config.yml file
-      def template_directory_has_config?(template_path)
-        File.exist?(File.join(template_path, Geb::Defaults::SITE_CONFIG_FILENAME))
-      end # def template_directory_has_config?
 
       # check if the URL is a valid URL
       def is_url?(url)

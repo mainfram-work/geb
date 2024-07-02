@@ -76,7 +76,7 @@ module Geb
         DocumentRoot: @site.get_site_output_directory()
       ) # WEBrick::HTTPServer.new
 
-      Geb.log "Server running on http://localhost:#{@port}"
+      Geb.log "Server running on http://localhost:#{server.config[:Port]}/"
 
       # return the http server
       return server

@@ -4,7 +4,7 @@
 # Templates can be one of the following:
 #  - name of the site template that comes bundled with geb
 #  - a local directory that is a valid site template
-#  - a URL to a gab site template packaged as a zip file
+#  - a URL to a geb site template packaged as a zip file
 #
 # @title Geb - Page
 # @author Edin Mustajbegovic <edin@actiontwelve.com>

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-# -----------------------------------------------------------------------------
-#  Ruby Gem: Geb
-#  Author: Edin Mustajbegovic
-#  Email: edin@actiontwelve.com
 #
-#  Minitest test helper class. This is where all global test setup is done.
+# Minitest test helper class. This is where all global test setup is done.
 #
-#  Licence MIT
-# -----------------------------------------------------------------------------
+# @title Geb - Test Support - Test Helpers
+# @author Edin Mustajbegovic <edin@actiontwelve.com>
+# @copyright 2024 Edin Mustajbegovic
+# @license MIT
+#
+# @see https://github.com/mainfram-work/geb for more information
 
 # include seth first... hang on to your hats
 require 'seth'
@@ -47,6 +47,7 @@ require 'minitest/autorun'
 require 'mocha/minitest'
 require 'webrick'
 require "stringio"
+require "yaml"
 
 # make sure code coverage actually generates a report
 # apparently this is not required, but I couldn't get simplecov to work without it

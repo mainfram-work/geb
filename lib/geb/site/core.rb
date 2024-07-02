@@ -24,7 +24,7 @@ module Geb
       end # class SiteAlreadyValidated < Geb::Error
 
       class InvalidTemplate < Geb::Error
-        MESSAGE = "Invalid template site. Make sure the specified path is a directory and contains a valid gab.config.yml file.".freeze
+        MESSAGE = "Invalid template site. Make sure the specified path is a directory and contains a valid geb.config.yml file.".freeze
         def initialize(e = ""); super(e, MESSAGE); end
       end # class InvalidTemplate < Geb::Error
 
@@ -44,7 +44,7 @@ module Geb
       #   - make sure the site path is valid, consider force option
       #   - if template path is nil, use the default template
       #   - if template path is a URL, validate the URL and download the template
-      #   - if template path is a directory, check if it has a gab.config.yml file
+      #   - if template path is a directory, check if it has a geb.config.yml file
       # @param site_path      [String]  the path to the site folder
       # @param template_path  [String]  the path to the site template, default is nil, can be a URL, directory or a bundled template identifier
       # @param skip_template  [Boolean] skip the template validation, default is false
@@ -101,11 +101,11 @@ module Geb
           # set the template dir to specified template path if template dir is still nil
           template_dir = template_path if template_dir.nil? # this is the case when the template is a local directory
 
-          # check if the template path is a directory and ontains a gab.config.yml file
+          # check if the template path is a directory and ontains a geb.config.yml file
           Geb.log_start "Validating template path #{template_dir.to_s} ... "
           raise InvalidTemplate.new if template_dir.nil?
           raise InvalidTemplate.new unless template_directory_exists?(template_dir)
-          raise InvalidTemplate.new unless template_directory_has_config?(template_dir)
+          raise InvalidTemplate.new unless Geb::Config.site_directory_has_config?(template_dir)
           Geb.log "done."
 
           # set the template path
@@ -144,26 +144,40 @@ module Geb
 
         Geb.log("Skipping template creation as told.") if @template_path.nil?
 
-        # check if we are skipping the template
-        unless @template_path.nil?
+        # check if we are skipping the template, if not copy the template files
+        copy_template_from_path unless @template_path.nil?
 
-          # copy the template files to the site folder
-          Geb.log_start "Copying template files to site folder ... "
-          FileUtils.cp_r("#{@template_path}/.", @site_path)
+        # check if the site has a geb config file, if not, copy the default one
+        if Geb::Config.site_directory_has_config?(@site_path)
+          Geb.log "Config file already exists, no need to create it."
+        else
+          Geb.log_start "Creating default geb config file ... "
+          FileUtils.cp(File.join(Geb::Defaults::BUNDLED_TEMPLATES_DIR, Geb::Defaults::SITE_CONFIG_FILENAME), @site_path)
           Geb.log "done."
+        end # if else
 
-        end # unless
+        # load the site config
+        @site_config = Geb::Config.new(self)
+
+        # create the assets folder if it does not exist
+        if File.directory?(File.join(@site_path, @site_config.assets_dir))
+          Geb.log "Assets folder already exists, no need to create it."
+        else
+          Geb.log_start "Creating assets folder since it wasn't created by the template ... "
+          FileUtils.mkdir_p(File.join(@site_path, @site_config.assets_dir))
+          Geb.log "done."
+        end # if else
 
         # create the output folders
         Geb.log_start "Creating: local and release output folders ..."
-        FileUtils.mkdir_p(File.join(@site_path, Geb::Defaults::LOCAL_OUTPUT_DIR))
-        FileUtils.mkdir_p(File.join(@site_path, Geb::Defaults::RELEASE_OUTPUT_DIR))
+        FileUtils.mkdir_p(File.join(@site_path, @site_config.output_dir, Geb::Defaults::LOCAL_OUTPUT_DIR))
+        FileUtils.mkdir_p(File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR))
         Geb.log "done."
 
       end # def create
 
       # load a site from a site path
-      # it checks if the site path has a gab config file, if not, it goes up the chain to find it
+      # it checks if the site path has a geb config file, if not, it goes up the chain to find it
       # @param site_path [String] the path to the site folder
       # @raise SiteNotFoundError if the site path is not found
       # @return [Nil]
@@ -174,14 +188,19 @@ module Geb
         # set the site path candidate
         site_path_candidate = site_path
 
-        # check if the site has a gab config file, if not go up the chain to find it
+        # check if the site has a geb config file, if not go up the chain to find it
         until site_path_candidate == '/'
 
-          # check if the site path has a gab config file
-          if template_directory_has_config?(site_path_candidate)
+          # check if the site path has a geb config file
+          if Geb::Config.site_directory_has_config?(site_path_candidate)
 
-            # set the site path and loaded flag
+            # set the site path
             @site_path = site_path_candidate
+
+            # load the site configuration
+            @site_config = Geb::Config.new(self)
+
+            # set the loaded flag and break the loop
             @loaded = true
             break
 
@@ -193,10 +212,10 @@ module Geb
         end # until
 
         # raise an error if the site path is not found
-        raise SiteNotFoundError.new("#{site_path} is not and is not in a gab site.") unless @loaded
+        raise SiteNotFoundError.new("#{site_path} is not and is not in a geb site.") unless @loaded
 
         Geb.log "done."
-        Geb.log "Found gab site at path #{@site_path} as #{site_name}."
+        Geb.log "Found geb site at path #{@site_path} as #{site_name}."
 
       end # def load
 
