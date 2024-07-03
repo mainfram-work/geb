@@ -11,6 +11,8 @@
 # @copyright 2024 Edin Mustajbegovic
 # @license MIT
 #
+# @todo Make insert pattern configurable
+#
 # @see https://github.com/mainfram-work/geb for more information
 
 # include the required libraries
@@ -19,6 +21,7 @@ require 'fileutils'
 module Geb
   class Page
 
+    # insert pattern constant
     INSERT_PATTERN    = /<%= insert: (.*?) %>/
 
     class PageFileNotFound < Geb::Error
@@ -41,9 +44,28 @@ module Geb
       def initialize(e = ""); super(e, MESSAGE); end
     end # class FailedToOutputPage < Geb::Error
 
-    # define attr_reader for the site and path
-    attr_reader :site, :path, :content, :parsed_content
+    # @!attribute [r] site
+    # @return [Geb::Site] the site object
+    attr_reader :site
 
+    # @!attribute [r] path
+    # @return [String] the page path
+    attr_reader :path
+
+    # @!attribute [r] content
+    # @return [String] the page content
+    attr_reader :content
+
+    # @!attribute [r] parsed_content
+    # @return [String] the parsed page content
+    attr_reader :parsed_content
+
+    # page constructor, initializes the page object and attributes
+    # @param site [Geb::Site] the site object
+    # @param path [String] the page path
+    # @raise [PageFileNotFound] if the page file does not exist
+    # @raise [PageFileReadFailure] if the page file could not be read
+    # @return [Geb::Page] the page object
     def initialize(site, path)
 
       # set the site and path
@@ -68,7 +90,7 @@ module Geb
 
     end # def initialize
 
-    # parse the page content
+    # parse the page content for templates and partials
     def parse
 
       # initalise the new page content
@@ -149,6 +171,8 @@ module Geb
     end # def parse_for_partials
 
     # build the page, save it to the output folder
+    # @param output_path [String] the output path
+    # @raise [FailedToOutputPage] if the page could not be saved to the output folder
     def build(output_path)
 
       # build the page

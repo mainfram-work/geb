@@ -1,8 +1,15 @@
 # Geb
 
-TODO: Delete this and the text below, and describe your gem
+Geb is a static website manager/builder named after the Egyptian god Geb, the foundation of the web.
+It uses the [dry-cli](https://rubygems.org/gems/dry-cli) gem to create a command line tool.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/geb`. To experiment with that code, run `bin/console` for an interactive prompt.
+![Geb Logo](lib/geb/samples/basic/assets/images/hero.png)
+
+Geb, draws a symbolic connection to the ancient Egyptian god Geb, the deity of the Earth. 
+Just as Geb the god provides a stable foundation for the world, software Geb offers a 
+robust and essential foundation for building and managing static websites, which are the 
+very bedrock of the web.
+
 
 ## Installation
 

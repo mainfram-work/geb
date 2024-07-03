@@ -9,6 +9,8 @@
 # @copyright 2024 Edin Mustajbegovic
 # @license MIT
 #
+# @todo Make template, section and insert patterns configurable
+#
 # @see https://github.com/mainfram-work/geb for more information
 
 require 'fileutils'
@@ -101,8 +103,13 @@ module Geb
 
     end # def self.extract_sections_for_template
 
-    # setup attribute accessors
-    attr_reader :path, :content
+    # @!attribute [r] path
+    # @return [String] the path to the template file
+    attr_reader :path
+
+    # @!attribute [r] content
+    # @return [String] the content of the template file
+    attr_reader :content
 
     # Template class constructor
     # @param template_path [String] the path to the template file

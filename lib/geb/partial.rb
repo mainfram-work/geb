@@ -9,6 +9,8 @@
 # @copyright 2024 Edin Mustajbegovic
 # @license MIT
 #
+# @todo Make partial pattern configurable
+#
 # @see https://github.com/mainfram-work/geb for more information
 
 # include the required libraries
@@ -17,6 +19,7 @@ require 'fileutils'
 module Geb
   class Partial
 
+    # partial pattern constant
     PARTIAL_PATTERN = /<%= partial: (?<path>.*?) %>/
 
     class PartialFileNotFound < Geb::Error
@@ -104,7 +107,13 @@ module Geb
 
     end # def self.extract_partial_paths
 
-    attr_reader :path, :content
+    # @!attribute [r] path
+    # @return [String] the path to the partial file
+    attr_reader :path
+
+    # @!attribute [r] content
+    # @return [String] the content of the partial file
+    attr_reader :content
 
     # initialise a new partial object
     # @param partial_path [String] the path to the partial file

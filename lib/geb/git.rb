@@ -17,8 +17,6 @@ require 'shellwords'
 module Geb
   module Git
 
-    # ::: Exception Classes :::::::::::::::::::::::::::::::::::::::::::::::::::
-
     class FailedValidationError < Geb::Error
       MESSAGE = "Could not evaluate if the specified SITE_PATH is within a git repository, please choose a different location or use the --skip_git option.".freeze
       def initialize(e = ""); super(e, MESSAGE); end
