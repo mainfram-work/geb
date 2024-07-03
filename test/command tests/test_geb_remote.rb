@@ -15,15 +15,19 @@ class TestGebCommandRemote < Geb::CliTest
 
   test "that the CLI api call works" do
 
-   command = Geb::CLI::Commands::Remote.new
+    copy_test_site()
 
-   command_options = { }
+    command = Geb::CLI::Commands::Remote.new
+
+    command_options = { }
 
     original_stdout = $stdout
     original_stderr = $stderr
 
     $stdout = StringIO.new
     $stderr = StringIO.new
+
+    Open3.expects(:capture3).with("ssh", "user@server.com").returns(["", "", ""])
 
     command.call(**command_options)
 
@@ -34,16 +38,29 @@ class TestGebCommandRemote < Geb::CliTest
 
   end # test "that the CLI api call works"
 
-  test "that command default executes" do
+  test "that the CLI api call works with an error" do
 
-    # call geb auto command and capture output and error
-    stdout, stderr, status = Open3.capture3('geb remote')
+    copy_test_site()
 
-    # assert that the output contains the expected string
-    assert status.success?
-    assert_includes stdout, "Running remote"
-    assert_empty stderr
+    command = Geb::CLI::Commands::Remote.new
 
-  end # test "command line"
+    command_options = { }
+
+    original_stdout = $stdout
+    original_stderr = $stderr
+
+    $stdout = StringIO.new
+    $stderr = StringIO.new
+
+    Geb::Site.expects(:new).raises(Geb::Error.new("Site not loaded"))
+
+    command.call(**command_options)
+
+    assert_match(/Site not loaded/, $stderr.string)
+
+    $stdout = original_stdout
+    $stderr = original_stderr
+
+  end # test "that the CLI api call works with an error"
 
 end # class TestGebCommandRemote < Minitest::Test

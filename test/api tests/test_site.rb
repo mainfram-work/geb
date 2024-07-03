@@ -970,5 +970,99 @@ class SiteTest < Geb::ApiTest
 
   end # test "that the template archive release path is constructed correctly"
 
+  test "that launch remot method executes as expected" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:capture3).with("ssh", remote_uri).once
+
+    site.launch_remote
+
+  end # test "that launch remote method executes as expected"
+
+  test "that launch remote method handles site not loaded exception" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    site.instance_variable_set(:@loaded, false)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:capture3).with("ssh", remote_uri).never
+
+    error = assert_raises Geb::Site::SiteNotFoundError do
+      site.launch_remote
+    end
+
+    assert_includes error.message, "Site not loaded"
+
+  end # test "that launch remote method handles site not loaded exception"
+
+  test "that launch remote method handles remote uri not specified exception" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = nil
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:capture3).with("ssh", remote_uri).never
+
+    error = assert_raises Geb::Site::RemoteURINotConfigured do
+      site.launch_remote
+    end
+
+    assert_includes error.message, "Remote URI not configured in geb.config.yml"
+
+  end # test "that launch remote method handles remote uri not specified exception"
+
+  test "that launch remote method handles Interrupt and IOError exceptions" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:capture3).with("ssh", remote_uri).raises(Interrupt).once
+    Geb.expects(:log).with("Remote session interrupted.").once
+
+    site.launch_remote
+
+  end # test "that launch remote method handles Interrupt and IOError exceptions"
+
+  test "that launch remote method handles general exception while executing external command" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:capture3).with("ssh", remote_uri).raises(StandardError).once
+    Geb.expects(:log).with("Remote session interrupted.").once
+
+    site.launch_remote
+
+  end # test "that launch remote method handles general exception while executing external command"
 
 end # class SiteTest < Minitest::Test

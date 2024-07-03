@@ -118,12 +118,49 @@ class TestGebCommandRelease < Geb::CliTest
     assert_includes stdout, "building page"
     assert_match(/Done building \d* pages for/, stdout)
     assert_includes stdout, "Clearing site output folder"
-    assert_includes stdout, "Outputting site to"
+    assert_match(/Outputting site to.*done/, stdout)
     assert_includes stdout, "Building assets for"
     assert_includes stdout, "Done building assets for"
-    assert_includes stdout, "Clearing site release folder"
-    assert_includes stdout, "Releasing site to"
+    assert_match(/Clearing site release folder.*done/, stdout)
+    assert_match(/Releasing site to.*done/, stdout)
+    refute_match(/Resolving directories and files to include in the template archive.*done/, stdout)
+    refute_match(/Creating template archive in.*done/, stdout)
 
   end # test "that the command actually builds the site"
+
+  test "that the command actually builds and releases the site with a template" do
+
+    copy_test_site()
+
+    output_archive_filename = File.join(Dir.pwd, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR, Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)
+
+    stdout, stderr, status = Open3.capture3('geb release --with_template')
+
+    assert status.success?
+    assert_empty stderr
+
+    assert_includes stdout, "Loading site from path #{Dir.pwd} ... done."
+    assert_includes stdout, "Found geb site at path #{Dir.pwd}"
+    assert_match(/Building \d* pages for/, stdout)
+    assert_includes stdout, "loading page"
+    assert_includes stdout, "loading template"
+    assert_includes stdout, "loading partial"
+    assert_includes stdout, "building page"
+    assert_match(/Done building \d* pages for/, stdout)
+    assert_includes stdout, "Clearing site output folder"
+    assert_match(/Outputting site to.*done/, stdout)
+    assert_includes stdout, "Building assets for"
+    assert_includes stdout, "Done building assets for"
+    assert_match(/Clearing site release folder.*done/, stdout)
+    assert_match(/Releasing site to.*done/, stdout)
+    assert_match(/Resolving directories and files to include in the template archive.*done/, stdout)
+    assert_match(/copying directory and all sub-directories from.*to.*done/, stdout)
+    assert_match(/copying file from.*to.*done/, stdout)
+    assert_includes stdout, "Done copying directories and files to the template archive directory."
+    assert_match(/Creating template archive in.*done/, stdout)
+
+    assert File.exist?(output_archive_filename)
+
+  end # test "that the command actually builds the site with a template"
 
 end # class TestGebCommandRelease < Minitest::Test

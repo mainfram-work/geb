@@ -21,6 +21,7 @@ require_relative 'site/core'
 require_relative 'site/build'
 require_relative 'site/release'
 require_relative 'site/template'
+require_relative 'site/remote'
 
 module Geb
   class Site
@@ -30,6 +31,7 @@ module Geb
     include Geb::Site::Build      # building the site, pages, page templates, partials and assets
     include Geb::Site::Release    # releasing the site, pages and assets
     include Geb::Site::Template   # mostly remote template handling
+    include Geb::Site::Remote     # remote site functionality, ssh, scp, rsync, etc.
 
     # @!attribute [r] site_path
     #  @return [String] the site path

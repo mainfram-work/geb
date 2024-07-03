@@ -24,7 +24,7 @@
 # Geb remote and upload commands will use this URI to connect to the server.
 # If you don't specify a remote_uri, geb remote and upload commands will not work.
 # Typical format is username@server
-#remote_uri: "user@server.com"
+remote_uri: "user@server.com"
 
 # The remote_path is the path on the remote server where the site is located.
 # If you don't specify a remote_path, upload commands will not work.
@@ -66,5 +66,5 @@
 # The site template files will be archived into geb-template.tar.gz file and put within
 # the release directory.
 # e.g. template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
-#template_paths: []
+template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
   

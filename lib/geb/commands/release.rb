@@ -8,6 +8,8 @@
 # @copyright 2024 Edin Mustajbegovic
 # @license MIT
 #
+# @todo Consider some option or check to see if the release would override previous release --with_template
+#
 # @see https://github.com/mainfram-work/geb for more information
 
 module Geb

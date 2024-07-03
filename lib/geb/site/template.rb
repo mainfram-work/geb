@@ -26,6 +26,11 @@ module Geb
 
       # copy the template from the specified path to the site path. It uses template_paths from the configuration
       # file to find the template. If the template is not found, it raises an error.
+      # @raise UnvalidatedSiteAndTemplate if the site has not been validated
+      # @raise InvalidTemplateSpecification if the template path is not a directory or has no geb.config.yml file
+      # @raise InvalidTemplateSpecification if the resolved template paths are empty
+      # @raise InvalidTemplateSpecification if the site cannot be loaded from the template path
+      # @raise InvalidTemplateSpecification if the resolved template paths cannot be copied to the site path
       def copy_template_from_path
 
         # raise an error if the site has not been validated
@@ -60,6 +65,9 @@ module Geb
 
       # bundle the site as a template archive
       # @raise SiteNotFoundError if the site is not loaded
+      # @raise InvalidTemplateSpecification if the template paths are not specified
+      # @raise InvalidTemplateSpecification if the resolved template paths are empty
+      # @raise InvalidTemplateSpecification if the template archive cannot be created
       def bundle_template
 
         # raise an error if the site is not loaded
@@ -79,9 +87,9 @@ module Geb
         tmp_archive_directory = Dir.mktmpdir
 
         # copy the resolved paths to the temporary directory
-        Geb.log_start "Copying directories and files to the template archive directory #{tmp_archive_directory} ... "
+        Geb.log "Copying directories and files to the template archive directory #{tmp_archive_directory}"
         Geb.copy_paths_to_directory(@site_path, resolved_template_paths, tmp_archive_directory)
-        Geb.log "done."
+        Geb.log "Done copying directories and files to the template archive directory."
 
         # create a template archive with files from the temporary directory into the release directory
         output_archive_filename = File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR, Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)

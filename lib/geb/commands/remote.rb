@@ -26,7 +26,18 @@ module Geb
         # Call method for the remote command
         def call(*)
 
-          puts "Running remote"
+          # initialise a new site and load the site from the current directory
+          site = Geb::Site.new
+          site.load(Dir.pwd)
+
+          # launch the remote session
+          site.launch_remote()
+
+        rescue Geb::Error => e
+
+          # print error message
+          puts
+          warn e.message
 
         end # def call
 
