@@ -10,6 +10,27 @@ Just as Geb the god provides a stable foundation for the world, software Geb off
 robust and essential foundation for building and managing static websites, which are the 
 very bedrock of the web.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Geb Site Configuration](#geb-site-configuration)
+- [Site Templates](#site-templates)
+  - [Built-in site templates](#built-in-site-templates)
+  - [Previous project as a template](#previous-project-as-a-template)
+  - [Publishing and using templates](#publishing-and-using-templates)
+- [Basic Site Structure](#basic-site-structure)
+- [Pages, Templates and Partials](#pages-templates-and-partials)
+  - [**Page** Example](#page-example)
+  - [**Template** Example](#template-example)
+  - [**Partial** Example](#partial-example)
+  - [Result Page](#result-page)
+  - [Discussion and key takeaways](#discussion-and-key-takeaways)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+- [Code of Conduct](#code-of-conduct)
+
 ## Installation
 
 Installing geb is as simple as installing a Ruby Gem
