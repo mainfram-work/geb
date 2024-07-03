@@ -55,14 +55,6 @@ To get help for a particular command simply run.
 $ geb [command] --help
 ```
 
-Below is a full geb command reference.
-```bash
-$ geb build             # Build the full site, includes pages and assets
-        --skip_assets   # Skip building assets (images, css, js), default: false
-        --skip_pages    # Skip building pages, default: false
-# geb init SITE_PATH        
-```
-
 The basic geb workflow is as follows.
 
 ```bash
@@ -82,6 +74,28 @@ $ geb release
 # upload the released site to your remote server
 $ geb upload
 ```
+## Geb Site Configuration
+
+Every geb site has a configuration file in the root of the site.  The file is called **geb.config.yml**
+The geb command will use values in the configuration file over the default values in almost all cases.
+
+Check out a [sample geb configuration file](lib/geb/samples/geb.config.yml) for detailed description of all configuration items.
+
+## Site Templates
+
+Geb has a concept of site templates.  Think of it as a way to share site designs, libraries and content.
+Geb comes with a set of site templates, distributed with the geb gem. These are:
+
+- **basic** - this is a default template, provides a simple site structure and placeholders for various concepts such as headers, footers, javascript and css and so on.
+- **bootstrap_jquery** - a site template with bootstrap 5 and jquery 3.7, along with example pages.
+
+To use one of the built-in templates, simply pass the name to the geb init command
+```bash
+$ geb init new_site --template bootstrap_jquery
+```
+If you do not specify a site template, geb will use basic template that comes bundled with the geb gem.
+
+Site templates can also be other sites you have developed. To 
 
 
 ## Development
