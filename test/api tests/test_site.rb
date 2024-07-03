@@ -1065,4 +1065,251 @@ class SiteTest < Geb::ApiTest
 
   end # test "that launch remote method handles general exception while executing external command"
 
+  test "that upload release to remote method executes as expected" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+    remote_path = '/var/www/site'
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(true)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:popen3).once
+
+    site.upload_release_to_remote
+
+  end # test "that upload release to remote method executes as expected"
+
+  test "that upload release to remote method handles if site has not been released" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+    remote_path = '/var/www/site'
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(false)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:popen3).never
+
+    error = assert_raises Geb::Site::SiteNotReleasedError do
+      site.upload_release_to_remote
+    end
+
+    assert_includes error.message, "Site not released."
+
+  end # test "that upload release to remote method handles if site has not been released"
+
+  test "that upload release to remote method handles if remote uri is not specified" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = nil
+    remote_path = '/var/www/site'
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(true)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:popen3).never
+
+    error = assert_raises Geb::Site::RemoteURINotConfigured do
+      site.upload_release_to_remote
+    end
+
+    assert_includes error.message, "Remote URI not configured in geb.config.yml"
+
+  end # test "that upload release to remote method handles if remote uri is not specified"
+
+  test "that upload release to remote method handles if remote path is not specified" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+    remote_path = nil
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(true)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:popen3).never
+
+    error = assert_raises Geb::Site::RemotePathNotConfigured do
+      site.upload_release_to_remote
+    end
+
+    assert_includes error.message, "Remote Path is not configured in geb.config.yml"
+
+  end # test "that upload release to remote method handles if remote path is not specified"
+
+
+  test "that upload release to remote method handles Interrupt and IOError exceptions" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+    remote_path = '/var/www/site'
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(true)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:popen3).raises(Interrupt).once
+    Geb.expects(:log).with("Upload interrupted.").once
+
+    site.upload_release_to_remote
+
+  end # test "that upload release to remote method handles Interrupt and IOError exceptions"
+
+  test "that upload release to remote method handles general exception while executing external command" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+    remote_path = '/var/www/site'
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(true)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+    Open3.expects(:popen3).raises(Geb::Error).once
+    Geb.expects(:log).with("Upload interrupted.").once
+
+    site.upload_release_to_remote
+
+  end # test "that lupload release to remote method handles general exception while executing external command"
+
+  test "that upload release to remote method handles output from external command"  do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+    remote_uri = "user@server.com"
+    remote_path = '/var/www/site'
+
+    config = mock('config')
+    config.stubs(:remote_uri).returns(remote_uri)
+    config.stubs(:remote_path).returns(remote_path)
+    config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    site.expects(:released?).returns(true)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@site_config, config)
+
+    mock_stdout = StringIO.new("mocked stdout line 1\nmocked stdout line 2\n")
+    mock_stderr = StringIO.new("mocked stderr line 1\nmocked stderr line 2\n")
+    mock_wait_thr = mock('wait_thr')
+    mock_wait_thr.stubs(:value) #.returns(mock('status', exitstatus: 0))
+
+    Open3.stubs(:popen3).yields(nil, mock_stdout, mock_stderr, mock_wait_thr)
+
+    site.upload_release_to_remote
+
+  end # test "that upload release to remote method handles output from external command"
+
+  test "that the released method returns true if the release directory exists and is not empty" do
+
+    site = Geb::Site.new
+    test_site_path = "site"
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+      site_release_path = File.join(site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR)
+
+      config = mock('config')
+      config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+      site.instance_variable_set(:@site_path, site_path)
+      site.instance_variable_set(:@site_config, config)
+
+      FileUtils.mkdir_p(site_path)
+      FileUtils.mkdir_p(site_release_path)
+
+      FileUtils.touch(File.join(site_release_path, "dummy_file.html"))
+
+      assert_equal site_release_path, site.get_site_release_directory()
+
+      assert site.released?
+
+    end # Dir.mktmpdir
+
+  end # test "that the released method returns true if the release directory exists and is not empty"
+
+  test "that the released method returns false if the release directory does not exist" do
+
+    site = Geb::Site.new
+    test_site_path = "site"
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+      site_release_path = File.join(site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR)
+
+      config = mock('config')
+      config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+      site.instance_variable_set(:@site_path, site_path)
+      site.instance_variable_set(:@site_config, config)
+
+      FileUtils.mkdir_p(site_path)
+
+      assert_equal site_release_path, site.get_site_release_directory()
+
+      refute site.released?
+
+    end # Dir.mktmpdir
+
+  end # test "that the released method returns false if the release directory does not exist"
+
+  test "that the released method returns false if the release directory is empty" do
+
+    site = Geb::Site.new
+    test_site_path = "site"
+
+    Dir.mktmpdir do |temp_dir|
+
+      site_path = File.join(temp_dir, test_site_path)
+      site_release_path = File.join(site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR)
+
+      config = mock('config')
+      config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+      site.instance_variable_set(:@site_path, site_path)
+      site.instance_variable_set(:@site_config, config)
+
+      FileUtils.mkdir_p(site_path)
+      FileUtils.mkdir_p(site_release_path)
+
+      assert_equal site_release_path, site.get_site_release_directory()
+
+      refute site.released?
+
+    end # Dir.mktmpdir
+
+  end # test "that the released method returns false if the release directory is empty"
+
 end # class SiteTest < Minitest::Test

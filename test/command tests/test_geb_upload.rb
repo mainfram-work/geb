@@ -15,15 +15,19 @@ class TestGebCommandUpload < Geb::CliTest
 
   test "that the CLI api call works" do
 
+    copy_test_site()
+
     command = Geb::CLI::Commands::Upload.new
 
-    command_options = { skip_build: false, skip_assets_build: false, skip_pages_build: false }
+    command_options = { }
 
     original_stdout = $stdout
     original_stderr = $stderr
 
     $stdout = StringIO.new
     $stderr = StringIO.new
+
+    Open3.expects(:popen3).returns(["", "", ""])
 
     command.call(**command_options)
 
@@ -34,16 +38,59 @@ class TestGebCommandUpload < Geb::CliTest
 
   end # test "that the CLI api call works"
 
-  test "that command default executes" do
+  test "that the Open3 block executes correctly" do
 
-    # call geb auto command and capture output and error
-    stdout, stderr, status = Open3.capture3('geb upload')
+    copy_test_site()
 
-    # assert that the output contains the expected string
-    assert status.success?
-    assert_includes stdout, "Uploading site"
-    assert_empty stderr
+    command = Geb::CLI::Commands::Upload.new
 
-  end # test "command line"
+    command_options = { }
+
+    original_stdout = $stdout
+    original_stderr = $stderr
+
+    $stdout = StringIO.new
+    $stderr = StringIO.new
+
+    mock_stdout = StringIO.new("mocked stdout line 1\nmocked stdout line 2\n")
+    mock_stderr = StringIO.new("mocked stderr line 1\nmocked stderr line 2\n")
+    mock_wait_thr = mock('wait_thr')
+    mock_wait_thr.stubs(:value) #.returns(mock('status', exitstatus: 0))
+
+    Open3.stubs(:popen3).yields(nil, mock_stdout, mock_stderr, mock_wait_thr)
+
+    command.call(**command_options)
+
+    assert_empty $stderr.string
+
+    $stdout = original_stdout
+    $stderr = original_stderr
+
+  end # test "that the Open3 block executes correctly"
+
+  test "that the command executes correctly with exception" do
+
+    copy_test_site()
+
+    command = Geb::CLI::Commands::Upload.new
+
+    command_options = { }
+
+    original_stdout = $stdout
+    original_stderr = $stderr
+
+    $stdout = StringIO.new
+    $stderr = StringIO.new
+
+    Geb::Site.expects(:new).raises(Geb::Error.new("Site not loaded"))
+
+    command.call(**command_options)
+
+    assert_match(/Site not loaded/, $stderr.string)
+
+    $stdout = original_stdout
+    $stderr = original_stderr
+
+  end # test "that the command executes correctly with exception"
 
 end # class TestGebCommandUpload < Minitest::Test

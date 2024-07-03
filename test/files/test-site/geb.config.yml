@@ -28,7 +28,7 @@ remote_uri: "user@server.com"
 
 # The remote_path is the path on the remote server where the site is located.
 # If you don't specify a remote_path, upload commands will not work.
-#remote_path: "/path/to/site"
+remote_path: "/home/user/public_html"
 
 # Set the local web server port that the site will run on.
 # Geb server command will use this port to start the local web server

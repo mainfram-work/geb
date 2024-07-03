@@ -62,6 +62,13 @@ module Geb
         FileUtils.cp_r("#{get_site_output_directory()}/.", get_site_release_directory())
       end # def output_site
 
+      # check if the site has been released.
+      # The site is considered released if the release directory exists and is not empty.
+      # @return [Boolean] true if the site has been released, false otherwise
+      def released?
+        return Dir.exist?(get_site_release_directory()) && !Dir.empty?(get_site_release_directory())
+      end # def released?
+
     end # module Build
   end # class Site
 end # module Geb

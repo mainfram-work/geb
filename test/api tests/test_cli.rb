@@ -168,12 +168,6 @@ class TestCli < Minitest::Test
     refute_nil    Geb::CLI::Commands::Upload.example, "Upload command should have an example."
     refute_empty  Geb::CLI::Commands::Upload.example, "Upload command's example should not be empty."
 
-    refute_nil    Geb::CLI::Commands::Upload.method_defined?(:options)
-    refute_empty  Geb::CLI::Commands::Upload.options, "Upload command should have options."
-
-    assert_cli_option Geb::CLI::Commands::Upload, :skip_build,        :boolean, false
-    assert_cli_option Geb::CLI::Commands::Upload, :skip_assets_build, :boolean, false
-    assert_cli_option Geb::CLI::Commands::Upload, :skip_pages_build,  :boolean, false
 
   end # test "that geb has a upload command"
 

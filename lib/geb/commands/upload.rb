@@ -19,17 +19,25 @@ module Geb
 
         # Command description, usage and examples
         desc "Upload the site to the remote server"
-        example [" ", "--skip_build", "--skip_assets_build", "--skip_pages_build"]
+        example [" "]
 
         # Define command options
-        option :skip_build,         type: :boolean, default: false, desc: "Skip building pages and assets"
-        option :skip_assets_build,  type: :boolean, default: false, desc: "Skip building assets (images, css, js)"
-        option :skip_pages_build,   type: :boolean, default: false, desc: "Skip building pages"
 
-        # Call method for the upload command
-        def call(skip_build:, skip_assets_build:, skip_pages_build:)
+        # Call method for the remote command
+        def call(*)
 
-          puts "Uploading site"
+          # initialise a new site and load the site from the current directory
+          site = Geb::Site.new
+          site.load(Dir.pwd)
+
+          # check if the site has been released before uploading
+          site.upload_release_to_remote()
+
+        rescue Geb::Error => e
+
+          # print error message
+          puts
+          warn e.message
 
         end # def call
 
