@@ -13,19 +13,76 @@ very bedrock of the web.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Installing geb is as simple as installing a Ruby Gem
+```bash
+$ gem install geb
+```
 
-Install the gem and add to the application's Gemfile by executing:
+If you would like to install geb from source, follow the following steps
+```bash
+# clone the repository
+$ git clone https://github.com/mainfram-work/geb.git
+$ cd geb
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+# install dependencies
+$ bundle install
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+# make sure everything works
+$ rake test
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+# build and install the geb gem
+$ rake build
+$ rake install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Geb has several commands to help you manage your site. running "geb help" will list the available commands.
+```bash
+$ geb help
+Commands:
+  geb build                    # Build the full site, includes pages and assets
+  geb init SITE_PATH           # Initialise geb site, creates folder locations, git repository and initial file structures
+  geb release                  # Builds the release version of the site (pages and assets)
+  geb remote                   # Launch remote ssh session using the config file settings
+  geb server                   # Start a local server to view the site output (runs build first), uses webrick
+  geb upload                   # Upload the site to the remote server
+  geb version                  # Print version
+```
+
+To get help for a particular command simply run.
+```bash
+$ geb [command] --help
+```
+
+Below is a full geb command reference.
+```bash
+$ geb build             # Build the full site, includes pages and assets
+        --skip_assets   # Skip building assets (images, css, js), default: false
+        --skip_pages    # Skip building pages, default: false
+# geb init SITE_PATH        
+```
+
+The basic geb workflow is as follows.
+
+```bash
+# initialize a new site in the directory nexthing
+$ geb init nexthing
+$ cd nexthing
+
+# build the site
+$ geb build
+
+# start a local web server to access your built site
+$ geb server
+
+# build a release version of the site
+$ geb release
+
+# upload the released site to your remote server
+$ geb upload
+```
+
 
 ## Development
 
