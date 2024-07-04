@@ -131,7 +131,7 @@ class TestCli < Minitest::Test
     refute_nil    Geb::CLI::Commands::Server.method_defined?(:options)
     refute_empty  Geb::CLI::Commands::Server.options, "Server command should have options."
 
-    assert_cli_option Geb::CLI::Commands::Server, :port,       :int,     0
+    assert_cli_option Geb::CLI::Commands::Server, :port,       :int,     nil
     assert_cli_option Geb::CLI::Commands::Server, :skip_build, :boolean, false
 
   end # test "that geb has a server command"

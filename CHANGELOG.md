@@ -7,10 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
-- N/A
+- New Site Variables feature
 
 ### Changed
-- N/A
+- Simplified build and release commands 
 
 ### Deprecated
 - N/A
@@ -19,15 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - N/A
 
 ### Fixed
-- N/A
+- Configured port not being used
 
 ### Security
 - N/A
-
-## [0.1.12] - 2024-07-04
-### Added
-- New Site Variables feature
-- Simplified build and release commands 
 
 ## [0.1.11] - 2024-07-04
 ### Added

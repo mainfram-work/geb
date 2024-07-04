@@ -67,3 +67,19 @@
 # the release directory.
 # e.g. template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
 template_paths: ["assets", "shared", "*.html", "site.webmanifest", "geb.config.yml"]
+
+# If you want to specify site variables, you can do so here.  These variables will be available
+# to the site as site.site_variables.  You can specify different variables for different environments
+# by specifying the environment name and the variables for that environment. Site variables are
+# processed last, after templates and partials band can be used in pages, templates or partials.
+# to use a site variable, use the syntax _{variable_name}_. If a variable is missing Geb will 
+# simply replace the _{tag}_ with an empty string.
+# In the example below, use _{title}_ and _{site_url}_ in your pages, templates or partials.
+# Geb will use local or release version depending if you are running the build or release command.
+#site_variables:
+#  local:
+#    title: "My Local Site"
+#    site_url: "http://localhost:4000"
+#  release:
+#    title: "My Site"
+#    site_url: "https://example.com"

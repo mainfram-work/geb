@@ -22,8 +22,8 @@ module Geb
   class Page
 
     # variable pattern match
-    VARIABLE_PATTERN = /_\{(.*?)\}_/
-    PAGE_TITLE_PATTERN = /<title>(.*?)<\/title>/
+    VARIABLE_PATTERN    = /_\{(.*?)\}_/
+    PAGE_TITLE_PATTERN  = /<title>(.*?)<\/title>/
 
     class PageFileNotFound < Geb::Error
       MESSAGE = "Page file not found".freeze

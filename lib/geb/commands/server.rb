@@ -23,7 +23,7 @@ module Geb
         example [" ", "--port 8080", "--skip_auto_build", "--skip_build"]
 
         # Define command options
-        option :port,             type: :int,     default: 0,     desc: "Port to run the server on, otherwise it will use config file setting"
+        option :port,             type: :int,     default: nil,     desc: "Port to run the server on, otherwise it will use config file setting"
         option :skip_build,       type: :boolean, default: false, desc: "Skip building the site before starting the server"
         option :skip_auto_build,  type: :boolean, default: false, desc: "Don't automatically rebuild the site when a file changes"
 

@@ -33,7 +33,7 @@ remote_path: "/home/user/public_html"
 # Set the local web server port that the site will run on.
 # Geb server command will use this port to start the local web server
 # If you don't specify a port, geb server command auto selects a port
-#local_port: 4000
+local_port: 4000
 
 # Specifies the output directory, this directory will be used to store the output of
 # the build and release commands. 
