@@ -18,6 +18,7 @@ require 'fileutils'
 module Geb
   class Template
 
+    # template, section and insert tag match patterns
     TEMPLATE_PATTERN  = /<% template: (.*?) %>/
     SECTION_PATTERN   = /<% start: (.*?) %>(.*?)<% end: \1 %>/m
     INSERT_PATTERN    = /<%= insert: (.*?) %>/

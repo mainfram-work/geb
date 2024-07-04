@@ -21,8 +21,9 @@ require 'fileutils'
 module Geb
   class Page
 
-    # insert pattern constant
-    INSERT_PATTERN    = /<%= insert: (.*?) %>/
+    # variable pattern match
+    VARIABLE_PATTERN = /_\{(.*?)\}_/
+    PAGE_TITLE_PATTERN = /<title>(.*?)<\/title>/
 
     class PageFileNotFound < Geb::Error
       MESSAGE = "Page file not found".freeze
@@ -96,9 +97,10 @@ module Geb
       # initalise the new page content
       @parsed_content = @content.dup
 
-      # parse the content for templates and partials
+      # parse the content for templates, partials and site variables
       @parsed_content = parse_for_templates(@parsed_content)
       @parsed_content = parse_for_partials(@parsed_content)
+      @parsed_content = parse_for_site_variables(@parsed_content)
 
     end # def parse
 
@@ -169,6 +171,53 @@ module Geb
       return content
 
     end # def parse_for_partials
+
+    # parse the content for site variables
+    # @param content [String] the content to parse for site variables. Default is the parsed page content.
+    # @return [String] the parsed content, with no site variables to parse.
+    # @note site variables are defined in the site configuration file
+    # @note site variables are matched using the VARIABLE_PATTERN
+    def parse_for_site_variables(content = @parsed_content)
+
+      # initialize the return parsed content
+      return_parsed_content = content.dup
+
+      # get the site variables, this method automatically loads release vs local variables
+      site_variables = @site.site_config.get_site_variables()
+
+      # initialize special variables for the site
+      special_variables = {}
+
+      # add special variables to site variables
+      special_variables['page_relative_path'] = @path.gsub(@site.site_path, '')
+
+      # extract the page title from <title> tag and add it to the site variable
+      special_variables['page_title'] = content.match(PAGE_TITLE_PATTERN)[1] if content.match(PAGE_TITLE_PATTERN)
+
+      # set the site name
+      special_variables['site_name'] = @site.site_config.site_name
+
+      # check if the site config has site variables
+      if site_variables && !site_variables.empty?
+
+        # find _{name}_ and replace with the site variable value
+        return_parsed_content.gsub!(VARIABLE_PATTERN) do |match|
+          key = match[2..-3] # remove _{ and }_
+          site_variables[key] || match
+        end # content.gsub!
+
+      end # if
+
+      # find _{name}_ and replace with the site variable value
+      return_parsed_content.gsub!(VARIABLE_PATTERN) do |match|
+        key = match[2..-3] # remove _{ and }_
+        special_variables[key] || match
+      end # content.gsub!
+
+      # return the parsed content with variables handled
+      return return_parsed_content
+
+    end # def parse_for_site_variables
 
     # build the page, save it to the output folder
     # @param output_path [String] the output path

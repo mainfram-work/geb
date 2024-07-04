@@ -53,6 +53,12 @@ module Geb
     # @return [Boolean] true if the site is loaded
     attr_reader :loaded
 
+    # @!attribute [r] releasing
+    # @return [Boolean] true if the site is releasing
+    # @note this is used to prevent recursive releases and to ensure site variables are correct
+    # @note this is set to true when the site is being released and reset to false when the release is done
+    attr_reader :releasing
+
     # @!attribute [r] pages
     # @return [Hash] the site pages to process
     attr_reader :pages
@@ -63,6 +69,7 @@ module Geb
 
       @validated = false
       @loaded = false
+      @releasing = false
       @site_path = nil
       @template_path = nil
       @pages = {}

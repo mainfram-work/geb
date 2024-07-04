@@ -183,7 +183,7 @@ class TestGebCommandBuild < Geb::CliTest
 
     assert_includes stdout, "Loading site from path #{Dir.pwd} ... done."
     assert_includes stdout, "Found geb site at path #{Dir.pwd}"
-    assert_match(/Building \d* pages for/, stdout)
+    assert_match(/Building \d*.* pages locally/, stdout)
     assert_includes stdout, "loading page"
     assert_includes stdout, "loading template"
     assert_includes stdout, "loading partial"
@@ -191,7 +191,7 @@ class TestGebCommandBuild < Geb::CliTest
     assert_match(/Done building \d* pages for/, stdout)
     assert_includes stdout, "Clearing site output folder"
     assert_includes stdout, "Outputting site to"
-    assert_includes stdout, "Building assets for"
+    assert_match(/Building .* assets locally/, stdout)
     assert_includes stdout, "Done building assets for"
 
   end # test "that the command actually builds the site"

@@ -99,5 +99,18 @@ module Geb
       return @config['template_paths'] || []
     end # def template_paths
 
+    # get the configured partial paths
+    # @return [Array] the partial paths
+    # @note the configured site variables are different depending on the environment (local or release)
+    def get_site_variables
+
+      # check if the site is releasing and return the site variables
+      environment = (@site.releasing ? 'release' : 'local')
+
+      # return the site variables for the environment
+      return @config['site_variables']&.[](environment) || {}
+
+    end # def get_site_variables
+
   end # class Config
 end # module Geb

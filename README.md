@@ -25,6 +25,7 @@ With Geb, you can harness the power of site templates to streamline your workflo
   - [Partial Example](#partial-example)
   - [Result Page](#result-page)
   - [Discussion and key takeaways](#discussion-and-key-takeaways)
+- [Site Variables](#site-variables)
 - [Command Reference](#command-reference)
 - [Roadmap](#roadmap)
 - [Development](#development)
@@ -198,8 +199,9 @@ that makes sense for your site.
 
 ## Pages, Templates and Partials
 
- Below are some examples of how to use pages, templates and partials with Geb.
- Read the examples first, then the discussion located after the examples.
+Below are some examples of how to use pages, templates and partials with Geb.
+Read the examples first, then the discussion located after the examples.
+
 ### Page Example
 Here is a simple page example, in the above site structure this might be `index.html` file
  ```erb
@@ -263,7 +265,7 @@ Below is the Page Example above, processed by `geb build` command.
 ### Discussion and key takeaways
 
   - Pages are the actual content of the site. They are the only files that are served directly.
-  - The example page above uses a template found in /shared/templates/_site.html
+  - The example page above uses a template found in /shared/templates/\_site.html
   - Templates are used to wrap pages in a common structure. They are not served directly.
   - The example template above has two content blocks, title and content.
   - The page above has those content areas filled in with whatever is required
@@ -274,6 +276,42 @@ Below is the Page Example above, processed by `geb build` command.
   - Partials are used to include common content in pages and templates. They are not served directly.
   - Partials can be nested, but be careful not to create circular references.
   - That's about it... happy coding!
+
+## Site Variables
+
+Geb supports a concept of site variables. In the geb configuration file you can specify site variables that are merged into the pages once templates and partials have been parsed.
+
+Here is an example of what `geb.config.yml` may contain:
+
+```yaml
+site_variables:
+  local:
+    title: "My Local Site"
+    site_url: "http://localhost:4000"
+  release:
+    title: "My Site"
+    site_url: "https://example.com"
+```
+
+Geb will select the appropriate variables depending if you are building the site using `geb build` or releasing the site using `geb release`. Logically, `geb build` uses **local** variables, while `geb release` uses **release** variables.
+
+To use the variables within templates, partials or pages, simply enclose the site variable name in \_{...}\_
+
+<div><pre><code class="erb">&lt;html>
+  &lt;head&gt;
+    &lt;title&gt;_{title}_&gt;/title&gt;
+    &lt;meta name="twitter:image" content="_{site_url}_/assets/images/og-thumb.png" /&gt;
+  &lt;/head&gt;
+&lt;/html&gt;
+</code></pre>
+</div>
+
+Geb also has three special variables that are available during both `geb build` and `geb release`. These are:
+
+ - **page_title** - Extracted from the page &lt;title&gt;&lt;/title&gt; tag
+ - **page_relative_path** - Page path relative to the site URL
+ - **site_name** - Geb site name (either from configuration or development folder name)
+
 
 ## Command Reference
 

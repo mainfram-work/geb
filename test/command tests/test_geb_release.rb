@@ -111,7 +111,7 @@ class TestGebCommandRelease < Geb::CliTest
 
     assert_includes stdout, "Loading site from path #{Dir.pwd} ... done."
     assert_includes stdout, "Found geb site at path #{Dir.pwd}"
-    assert_match(/Building \d* pages for/, stdout)
+    assert_match(/Building \d*.* pages for release/, stdout)
     assert_includes stdout, "loading page"
     assert_includes stdout, "loading template"
     assert_includes stdout, "loading partial"
@@ -119,10 +119,8 @@ class TestGebCommandRelease < Geb::CliTest
     assert_match(/Done building \d* pages for/, stdout)
     assert_includes stdout, "Clearing site output folder"
     assert_match(/Outputting site to.*done/, stdout)
-    assert_includes stdout, "Building assets for"
+    assert_match(/Building .* assets for release/, stdout)
     assert_includes stdout, "Done building assets for"
-    assert_match(/Clearing site release folder.*done/, stdout)
-    assert_match(/Releasing site to.*done/, stdout)
     refute_match(/Resolving directories and files to include in the template archive.*done/, stdout)
     refute_match(/Creating template archive in.*done/, stdout)
 
@@ -141,7 +139,7 @@ class TestGebCommandRelease < Geb::CliTest
 
     assert_includes stdout, "Loading site from path #{Dir.pwd} ... done."
     assert_includes stdout, "Found geb site at path #{Dir.pwd}"
-    assert_match(/Building \d* pages for/, stdout)
+    assert_match(/Building \d*.* pages for release/, stdout)
     assert_includes stdout, "loading page"
     assert_includes stdout, "loading template"
     assert_includes stdout, "loading partial"
@@ -149,10 +147,9 @@ class TestGebCommandRelease < Geb::CliTest
     assert_match(/Done building \d* pages for/, stdout)
     assert_includes stdout, "Clearing site output folder"
     assert_match(/Outputting site to.*done/, stdout)
-    assert_includes stdout, "Building assets for"
+    assert_match(/Building .* assets for release/, stdout)
     assert_includes stdout, "Done building assets for"
-    assert_match(/Clearing site release folder.*done/, stdout)
-    assert_match(/Releasing site to.*done/, stdout)
+    assert_match(/Clearing site output folder.*done/, stdout)
     assert_match(/Resolving directories and files to include in the template archive.*done/, stdout)
     assert_match(/copying directory and all sub-directories from.*to.*done/, stdout)
     assert_match(/copying file from.*to.*done/, stdout)

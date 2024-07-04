@@ -17,8 +17,8 @@ class TestServer < Geb::ApiTest
 
     site_mock = mock('site')
     site_mock.stubs(:site_path).returns('site_path')
-    site_mock.stubs(:get_site_output_directory).returns('site_path/output')
-    site_mock.stubs(:get_site_release_directory).returns('site_path/release')
+    site_mock.stubs(:get_site_local_output_directory).returns('site_path/output')
+    site_mock.stubs(:get_site_release_output_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
@@ -42,8 +42,8 @@ class TestServer < Geb::ApiTest
 
     site_mock = mock('site')
     site_mock.stubs(:site_path).returns('site_path')
-    site_mock.stubs(:get_site_output_directory).returns('site_path/output')
-    site_mock.stubs(:get_site_release_directory).returns('site_path/release')
+    site_mock.stubs(:get_site_local_output_directory).returns('site_path/output')
+    site_mock.stubs(:get_site_release_output_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
@@ -67,8 +67,8 @@ class TestServer < Geb::ApiTest
 
     site_mock = mock('site')
     site_mock.stubs(:site_path).returns('site_path')
-    site_mock.stubs(:get_site_output_directory).returns('site_path/output')
-    site_mock.stubs(:get_site_release_directory).returns('site_path/release')
+    site_mock.stubs(:get_site_local_output_directory).returns('site_path/output')
+    site_mock.stubs(:get_site_release_output_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.expects(:start)
@@ -104,8 +104,8 @@ class TestServer < Geb::ApiTest
 
     site_mock = mock('site')
     site_mock.stubs(:site_path).returns('site_path')
-    site_mock.stubs(:get_site_output_directory).returns('site_path/output')
-    site_mock.stubs(:get_site_release_directory).returns('site_path/release')
+    site_mock.stubs(:get_site_local_output_directory).returns('site_path/output')
+    site_mock.stubs(:get_site_release_output_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.expects(:start)
@@ -140,8 +140,8 @@ class TestServer < Geb::ApiTest
 
     site_mock = mock('site')
     site_mock.stubs(:site_path).returns('site_path')
-    site_mock.stubs(:get_site_output_directory).returns('site_path/output')
-    site_mock.stubs(:get_site_release_directory).returns('site_path/release')
+    site_mock.stubs(:get_site_local_output_directory).returns('site_path/output')
+    site_mock.stubs(:get_site_release_output_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
@@ -174,8 +174,8 @@ class TestServer < Geb::ApiTest
 
     site_mock = mock('site')
     site_mock.stubs(:site_path).returns('site_path')
-    site_mock.stubs(:get_site_output_directory).returns('site_path/output')
-    site_mock.stubs(:get_site_release_directory).returns('site_path/release')
+    site_mock.stubs(:get_site_local_output_directory).returns('site_path/output')
+    site_mock.stubs(:get_site_release_output_directory).returns('site_path/release')
 
     http_server_mock = mock('webric_httpserver')
     http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
@@ -212,8 +212,8 @@ class TestServer < Geb::ApiTest
 
       site_mock = mock('site')
       site_mock.stubs(:site_path).returns(dir)
-      site_mock.stubs(:get_site_output_directory).returns(dir)
-      site_mock.stubs(:get_site_release_directory).returns(dir)
+      site_mock.stubs(:get_site_local_output_directory).returns(dir)
+      site_mock.stubs(:get_site_release_output_directory).returns(dir)
       http_server_mock = mock('webric_httpserver')
       http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
       file_watcher_mock = mock('file_watcher')
@@ -253,8 +253,8 @@ class TestServer < Geb::ApiTest
 
       site_mock = mock('site')
       site_mock.stubs(:site_path).returns(dir)
-      site_mock.stubs(:get_site_output_directory).returns(dir)
-      site_mock.stubs(:get_site_release_directory).returns(dir)
+      site_mock.stubs(:get_site_local_output_directory).returns(dir)
+      site_mock.stubs(:get_site_release_output_directory).returns(dir)
       http_server_mock = mock('webric_httpserver')
       http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
       file_watcher_mock = mock('file_watcher')
@@ -302,8 +302,8 @@ class TestServer < Geb::ApiTest
 
       site_mock = mock('site')
       site_mock.stubs(:site_path).returns(site_dir)
-      site_mock.stubs(:get_site_output_directory).returns(site_output_directory)
-      site_mock.stubs(:get_site_release_directory).returns(site_release_directory)
+      site_mock.stubs(:get_site_local_output_directory).returns(site_output_directory)
+      site_mock.stubs(:get_site_release_output_directory).returns(site_release_directory)
       site_mock.expects(:build).times(1)
 
       http_server_mock = mock('webric_httpserver')
@@ -370,8 +370,8 @@ class TestServer < Geb::ApiTest
 
       site_mock = mock('site')
       site_mock.stubs(:site_path).returns(site_dir)
-      site_mock.stubs(:get_site_output_directory).returns(site_output_directory)
-      site_mock.stubs(:get_site_release_directory).returns(site_release_directory)
+      site_mock.stubs(:get_site_local_output_directory).returns(site_output_directory)
+      site_mock.stubs(:get_site_release_output_directory).returns(site_release_directory)
       site_mock.expects(:build).raises(Geb::Error, "Build failed")
 
       http_server_mock = mock('webric_httpserver')

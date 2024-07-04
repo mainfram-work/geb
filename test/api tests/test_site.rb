@@ -788,7 +788,7 @@ class SiteTest < Geb::ApiTest
       site.instance_variable_set(:@site_path, site_path)
       site.instance_variable_set(:@site_config, config)
 
-      site.send(:clear_site_output_directory)
+      site.clear_site_output_directory(site.get_site_local_output_directory())
 
       # check to make sure all the files and directories are gone
       refute Dir.exist?(File.join(site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub"))
@@ -798,7 +798,7 @@ class SiteTest < Geb::ApiTest
 
   end # test "that the clear site output directory method clears the output directory"
 
-  test "that the output site method copies the local output directory to the release output directory" do
+  test "that the output site method files from one directory to another" do
 
     site = Geb::Site.new
     test_site_path = "test/site"
@@ -822,7 +822,7 @@ class SiteTest < Geb::ApiTest
       site.instance_variable_set(:@site_path, site_path)
       site.instance_variable_set(:@site_config, config)
 
-      site.send(:output_site, very_temp_dir)
+      site.output_site(very_temp_dir, site.get_site_local_output_directory())
 
       # check to make sure all the files and directories are gone
       assert Dir.exist?(File.join(site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR, "sub"))
@@ -830,23 +830,21 @@ class SiteTest < Geb::ApiTest
 
     end # Dir.mktmpdir
 
-  end # test "that the output site method copies the local output directory to the release output directory"
+  end # test "that the output site method files from one directory to another"
 
   test "that the release method executes the site build first" do
 
     site = Geb::Site.new
     test_site_path = "test/site"
-    test_site_release_dir = File.join(test_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR)
 
-    execution_sequence = sequence('execution_sequence')
-    site.expects(:build).once.in_sequence(execution_sequence)
-    site.expects(:get_site_release_directory).returns(test_site_release_dir).once.in_sequence(execution_sequence)
-    site.expects(:clear_site_release_directory).once.in_sequence(execution_sequence)
-    site.expects(:copy_site_to_release_directory).once.in_sequence(execution_sequence)
+    site.expects(:build).once
 
     site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@loaded, true)
 
     site.release
+
+    # TODO: More...
 
   end # test "that the release method executes the site build first"
 
@@ -860,33 +858,59 @@ class SiteTest < Geb::ApiTest
     site.instance_variable_set(:@site_path, test_site_path)
     site.instance_variable_set(:@site_config, config)
 
-    site_release_directory = site.get_site_release_directory()
+    site_release_directory = site.get_site_release_output_directory()
 
     assert_equal File.join(test_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR), site_release_directory
 
   end # test "that the site release directory is correctly generated"
 
-  test "that the site release calls correct file operations" do
+  test "that the site release sets and resets the releasing flag correctly" do
 
     site = Geb::Site.new
     test_site_path = "test/site"
-    test_site_output_dir = File.join(test_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR)
-    test_site_release_dir = File.join(test_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR)
 
-    execution_sequence = sequence('execution_sequence')
     site.expects(:build).once
-    site.stubs(:get_site_release_directory).returns(test_site_release_dir)
-    FileUtils.expects(:rm_rf).with(Dir.glob("#{test_site_release_dir}/*")).once.in_sequence(execution_sequence)
-    FileUtils.expects(:cp_r).with("#{test_site_output_dir}/.", test_site_release_dir).once.in_sequence(execution_sequence)
-
-    config = mock('config')
-    config.stubs(:output_dir).returns("output")
     site.instance_variable_set(:@site_path, test_site_path)
-    site.instance_variable_set(:@site_config, config)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@releasing, false)
 
     site.release
 
-  end # test "that the site release calls correct file operations"
+    refute site.releasing
+
+  end # test "that the site release sets and resets the releasing flag correctly"
+
+  test "that the site release handles site not being loaded" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@loaded, false)
+    site.instance_variable_set(:@releasing, false)
+
+    error = assert_raises Geb::Site::SiteNotLoadedError do
+      site.release
+    end
+
+    assert_includes error.message, "Could not release the site"
+
+  end # test "that the site release handles site not being loaded"
+
+  test "that the site release handles release flag already set" do
+
+    site = Geb::Site.new
+    test_site_path = "test/site"
+
+    site.instance_variable_set(:@site_path, test_site_path)
+    site.instance_variable_set(:@loaded, true)
+    site.instance_variable_set(:@releasing, true)
+
+    assert_raises Geb::Site::SiteReleasingError do
+      site.release
+    end
+
+  end # test "that the site release handles release flag already set"
 
   test "that site bundle template method executes as expected" do
 
@@ -1253,7 +1277,7 @@ class SiteTest < Geb::ApiTest
 
       FileUtils.touch(File.join(site_release_path, "dummy_file.html"))
 
-      assert_equal site_release_path, site.get_site_release_directory()
+      assert_equal site_release_path, site.get_site_release_output_directory()
 
       assert site.released?
 
@@ -1278,7 +1302,7 @@ class SiteTest < Geb::ApiTest
 
       FileUtils.mkdir_p(site_path)
 
-      assert_equal site_release_path, site.get_site_release_directory()
+      assert_equal site_release_path, site.get_site_release_output_directory()
 
       refute site.released?
 
@@ -1304,7 +1328,7 @@ class SiteTest < Geb::ApiTest
       FileUtils.mkdir_p(site_path)
       FileUtils.mkdir_p(site_release_path)
 
-      assert_equal site_release_path, site.get_site_release_directory()
+      assert_equal site_release_path, site.get_site_release_output_directory()
 
       refute site.released?
 

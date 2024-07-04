@@ -86,7 +86,7 @@ module Geb
 
           # build up the command arguments
           command_exclude_pattern = '*.DS_Store'
-          command_source_directory  = File.join(get_site_release_directory, '/')
+          command_source_directory  = File.join(get_site_release_output_directory(), '/')
           command_remote_uri        = @site_config.remote_uri + ":" + @site_config.remote_path
 
           # build the rsync command

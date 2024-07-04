@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   # basic gem information
   spec.name         = "geb"
-  spec.version      = "0.1.11"
+  spec.version      = "0.1.12"
   spec.authors      = ["Edin Mustajbegovic"]
   spec.email        = ["edin@actiontwelve.com"]
   spec.summary      = "Geb is a robust static website manager and builder, offering powerful tools and templates for creating and managing static websites with ease."

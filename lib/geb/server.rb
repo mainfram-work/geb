@@ -73,7 +73,7 @@ module Geb
       # Create a new WEBrick server
       server = WEBrick::HTTPServer.new(
         Port: @port,
-        DocumentRoot: @site.get_site_output_directory()
+        DocumentRoot: @site.get_site_local_output_directory()
       ) # WEBrick::HTTPServer.new
 
       Geb.log "Server running on http://localhost:#{server.config[:Port]}/"
@@ -118,8 +118,8 @@ module Geb
       end # Listen.to(site.site_path) do |modified, added, removed|
 
       # set ignore the output and release directories, cleanup the paths and make them relative to the site path
-      ignore_output_dir   = @site.get_site_output_directory().gsub(@site.site_path, '').gsub(/\A\W+/, '')
-      ignore_release_dir  = @site.get_site_release_directory().gsub(@site.site_path, '').gsub(/\A\W+/, '')
+      ignore_output_dir   = @site.get_site_local_output_directory().gsub(@site.site_path, '').gsub(/\A\W+/, '')
+      ignore_release_dir  = @site.get_site_release_output_directory().gsub(@site.site_path, '').gsub(/\A\W+/, '')
 
       Geb.log  "Watching for changes in [#{@site.site_path}]"
       Geb.log  "Ignoring [#{ignore_output_dir}]"

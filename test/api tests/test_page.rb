@@ -76,16 +76,16 @@ class PageTest < Geb::ApiTest
     site = mock('site')
     site.stubs(:site_path).returns(Dir.pwd)
 
+    parse_sequence = sequence('parse_sequence')
     Geb::Page.any_instance.stubs(:page_file_exists?).returns(true)
-    Geb::Page.any_instance.stubs(:parse_for_templates).returns(parsed_page_content)
-    Geb::Page.any_instance.stubs(:parse_for_partials).returns(parsed_page_content)
+    Geb::Page.any_instance.stubs(:parse_for_templates).returns(parsed_page_content).once.in_sequence(parse_sequence)
+    Geb::Page.any_instance.stubs(:parse_for_partials).returns(parsed_page_content).once.in_sequence(parse_sequence)
+    Geb::Page.any_instance.stubs(:parse_for_site_variables).returns(parsed_page_content).once.in_sequence(parse_sequence)
     File.stubs(:read).returns(page_content)
 
     page = Geb::Page.new(site, page_path)
 
     assert_respond_to page, :parse
-
-    page.parse
 
     assert_respond_to page, :parsed_content
     assert_equal page.parsed_content, parsed_page_content
@@ -203,6 +203,88 @@ class PageTest < Geb::ApiTest
     assert_equal output_content, partial_content
 
   end # test "that page parse_for_partials method works"
+
+  test "that the parse_for_site_variables method works" do
+
+    page_path = File.join(Dir.pwd, "test", "fixtures", "template.html")
+    site_name = "Some cool site"
+    page_title = "This is some ultra cool page title"
+    page_content = <<-PAGE
+      _{variable_1}_ _{variable_2}_ _{variable_3}_
+      <title>#{page_title}</title>
+      _{site_name}_
+      _{page_relative_path}_
+      _{site_name}_
+    PAGE
+
+    site_variables = { "variable_1" => "value_1", "variable_2" => "value_2" }
+
+    config = mock('config')
+    config.stubs(:get_site_variables).returns(site_variables)
+    config.stubs(:site_name).returns(site_name)
+
+    site = mock('site')
+    site.stubs(:site_path).returns(Dir.pwd)
+    site.stubs(:site_config).returns(config)
+
+    File.stubs(:read).returns(page_content)
+    Geb::Page.any_instance.stubs(:page_file_exists?).returns(true)
+    Geb::Page.any_instance.stubs(:parse_for_templates).returns(page_content)
+    Geb::Page.any_instance.stubs(:parse_for_partials).returns(page_content)
+
+    page = Geb::Page.new(site, page_path)
+
+    output_content = page.parse_for_site_variables(page_content)
+
+    assert_includes output_content, "value_1"
+    assert_includes output_content, "value_2"
+    assert_includes output_content, "_{variable_3}_"
+    assert_includes output_content, site_name
+    assert_includes output_content, " <title>#{page_title}</title>"
+    assert_includes output_content, page_path.gsub(Dir.pwd, "")
+
+  end # test "that the parse_for_site_variables method works"
+
+  test "that the parse_for_site_variables method works if site variables are not set" do
+
+    page_path = File.join(Dir.pwd, "test", "fixtures", "template.html")
+    site_name = "Some cool site"
+    page_title = "This is some ultra cool page title"
+    page_content = <<-PAGE
+      _{variable_1}_ _{variable_2}_ _{variable_3}_
+      <title>#{page_title}</title>
+      _{site_name}_
+      _{page_relative_path}_
+      _{site_name}_
+    PAGE
+
+    site_variables = nil
+
+    config = mock('config')
+    config.stubs(:get_site_variables).returns(site_variables)
+    config.stubs(:site_name).returns(site_name)
+
+    site = mock('site')
+    site.stubs(:site_path).returns(Dir.pwd)
+    site.stubs(:site_config).returns(config)
+
+    File.stubs(:read).returns(page_content)
+    Geb::Page.any_instance.stubs(:page_file_exists?).returns(true)
+    Geb::Page.any_instance.stubs(:parse_for_templates).returns(page_content)
+    Geb::Page.any_instance.stubs(:parse_for_partials).returns(page_content)
+
+    page = Geb::Page.new(site, page_path)
+
+    output_content = page.parse_for_site_variables(page_content)
+
+    assert_includes output_content, "_{variable_1}_"
+    assert_includes output_content, "_{variable_2}_"
+    assert_includes output_content, "_{variable_3}_"
+    assert_includes output_content, site_name
+    assert_includes output_content, " <title>#{page_title}</title>"
+    assert_includes output_content, page_path.gsub(Dir.pwd, "")
+
+  end # test "that the parse_for_site_variables method works if site variables are not set"
 
   test "that page build method works" do
 

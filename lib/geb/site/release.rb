@@ -13,24 +13,31 @@ module Geb
   class Site
     module Release
 
+      class SiteReleasingError < Geb::Error
+        MESSAGE = "Site is already releasing.".freeze
+        def initialize(e = ""); super(e, MESSAGE); end
+      end # class SiteReleasingError < Geb::Error
+
       # release the site
+      # @raise SiteNotLoadedError if the site is not loaded
       def release
 
-        # build the site first
+        # make sure the site is laoded, if not, raise an error
+        raise Geb::Site::SiteNotLoadedError.new("Could not release the site.") unless @loaded
+
+        # make sure the site is not already releasing, to prevent recursive releases
+        raise Geb::Site::SiteReleasingError.new if @releasing
+
+        # set the site to releasing
+        @releasing = true
+
+        # build the site
         build();
 
-        # get the site local and release directory
-        site_release_directory  = get_site_release_directory()
+      ensure
 
-        # clear the output directory
-        Geb.log_start "Clearing site release folder #{site_release_directory} ... "
-        clear_site_release_directory()
-        Geb.log "done."
-
-        # copy the files to the output directory
-        Geb.log_start "Releasing site to #{site_release_directory} ... "
-        copy_site_to_release_directory()
-        Geb.log "done."
+        # set the site to not releasing
+        @releasing = false
 
       end # def release
 
@@ -40,29 +47,17 @@ module Geb
         return File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR, Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)
       end # def get_template_archive_release_path
 
-      # get the site release directory
+      # get the site release output directory
       # @return [String] the site release directory
-      def get_site_release_directory
+      def get_site_release_output_directory
         return File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR)
-      end # def get_site_release_directory
-
-      # clear the site release directory
-      # @return [Nil]
-      def clear_site_release_directory
-        FileUtils.rm_rf(Dir.glob("#{get_site_release_directory()}/*"))
-      end # def clear_site_release_directory
-
-      # output the site from local output to release directory.
-      # @return [Nil]
-      def copy_site_to_release_directory
-        FileUtils.cp_r("#{get_site_output_directory()}/.", get_site_release_directory())
-      end # def output_site
+      end # def get_site_release_output_directory
 
       # check if the site has been released.
       # The site is considered released if the release directory exists and is not empty.
       # @return [Boolean] true if the site has been released, false otherwise
       def released?
-        return Dir.exist?(get_site_release_directory()) && !Dir.empty?(get_site_release_directory())
+        return Dir.exist?(get_site_release_output_directory()) && !Dir.empty?(get_site_release_output_directory())
       end # def released?
 
     end # module Build
