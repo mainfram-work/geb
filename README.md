@@ -1,14 +1,12 @@
 # Geb
 
-Geb is a static website manager/builder named after the Egyptian god Geb, the foundation of the web.
-It uses the [dry-cli](https://rubygems.org/gems/dry-cli) gem to create a command line tool.
+Geb is a powerful and intuitive static website manager and builder named after the ancient Egyptian god Geb, the deity of the Earth. Just as Geb provides a stable foundation for the world, our software offers a robust and essential foundation for building and managing static websites, which form the very bedrock of the web.
+
+Geb provides a seamless command line interface, making it easy to create, build, and manage your static websites with efficiency and ease. Whether you are a seasoned developer or a beginner, Geb provides the tools and templates to help you get started quickly and effectively.
 
 ![Geb Logo](lib/geb/samples/basic/assets/images/hero.png)
 
-Geb draws a symbolic connection to the ancient Egyptian god Geb, the deity of the Earth. 
-Just as Geb the god provides a stable foundation for the world, software Geb offers a 
-robust and essential foundation for building and managing static websites, which are the 
-very bedrock of the web.
+With Geb, you can harness the power of site templates to streamline your workflow, ensuring your websites are not only beautiful but also maintainable. Our built-in templates, along with the ability to use previous projects as templates, provide unparalleled flexibility and reusability, enabling you to focus on what matters most: creating amazing content and user experiences.
 
 ## Table of Contents
 
@@ -95,11 +93,11 @@ $ geb release
 $ geb upload
 ```
 
-All geb commands (other than the **init** command) are executed with the project directory. Geb looks for the site root by finding the *geb.config.yml* file up the directory tree.
+All geb commands (other than the `geb init` command) are executed with the project directory. Geb looks for the site root by finding the `geb.config.yml` file up the directory tree.
 
 ## Geb Site Configuration
 
-Every Geb site has a configuration file at the root of the site.  The file is called **geb.config.yml**
+Every Geb site has a configuration file at the root of the site.  The file is called `geb.config.yml`
 The geb command will use values in the configuration file over the default values in almost all cases.
 
 Check out a [sample geb configuration file](lib/geb/samples/geb.config.yml) for a detailed description of all configuration items.
@@ -114,7 +112,7 @@ Geb comes with a set of site templates, distributed with the geb gem. These are:
 - **basic** - this is a default template, that provides a simple site structure and placeholders for various concepts such as headers, footers, javascript and CSS and so on.
 - **bootstrap_jquery** - a site template with Bootstrap 5 and JQuery 3.7, along with example pages.
 
-To use one of the built-in templates, simply pass the name to the **geb init** command
+To use one of the built-in templates, simply pass the name to the `geb init` command
 ```bash
 $ geb init new_site --template bootstrap_jquery
 ```
@@ -124,7 +122,7 @@ If you do not specify a site template, geb will use the **basic** template that 
 
 Site templates can also be other sites you have developed. To use a previous project as a basis for some new project, you will need the following.  
 
-First, the project you wish to use as a template needs to have *template_paths* configured within its *geb.config.yml* file. 
+First, the project you wish to use as a template needs to have `template_paths` configured within its `geb.config.yml` file. 
 Here is an example.
 ```yaml
 # if you want to share the site as a template site, specify which files and directories 
@@ -132,29 +130,29 @@ Here is an example.
 template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
 ```
 
-To use a previous project as a site template, simply pass it to the **geb init** command
+To use a previous project as a site template, simply pass it to the `geb init` command
 ```bash
 $ geb init new_site --template ~/projects/other_site
 ```
 
 ### Publishing and using templates
 
-To publish the site template along with your site, you will need to specify the *template_paths* configuration within the *geb.config.yml* file and package the template using the **geb release** command
+To publish the site template along with your site, you will need to specify the `template_paths` configuration within the `geb.config.yml` file and package the template using the `geb release` command
 ```bash
 $ cd ~/projects/new_site
 $ geb release --with_template
 ```
-Geb will generate *geb-template.tar.gz* within the site release directory, which you can then upload using **geb upload** command or what other mechanisms you plan to use to deploy the finished site.
+Geb will generate `geb-template.tar.gz` within the site release directory, which you can then upload using `geb upload` command or what other mechanisms you plan to use to deploy the finished site.
 
-To use already published template, simply pass the site URL to **geb init** command.
+To use an already published template, simply pass the site URL to `geb init` command.
 ```bash
 $ geb init new_site --template http://www.some_website.com/
 ```
 
-You can either pass the URL to the *geb-template.tar.gz*.  Geb will try URL first and if it doesn't find *geb-template.tar.gz* it will append the filename and try again.
+You can either pass the URL to the *geb-template.tar.gz*.  Geb will try the URL first and if it doesn't find `geb-template.tar.gz` it will append the filename and try again.
 
 ## Basic Site Structure
-You can structure a Geb site however you want. The only required directories are *assets* and *output* with *local* and *release* sub-directories.  **geb init** command will create these directories.
+You can structure a Geb site however you want. The only required directories are `assets` and `output` with `local` and `release` sub-directories.  `geb init` command will create these directories.
 ```
 new_site
   ├── assets                    # [required] assets directory for images, css, js, etc.
@@ -188,7 +186,7 @@ Files that start with _ are partials or templates and are not meant to be served
 You won't see these files in the output directory.
 
 It is possible to configure geb to use different directories for assets or output. 
-However, *geb.config.yml* must be updated to reflect these changes and be located in the site root. 
+However, `geb.config.yml` must be updated to reflect these changes and be located in the site root. 
 Check the [sample geb configuration file](lib/geb/samples/geb.config.yml) for more information.
 
 The rest is up to you.  We like the convention of putting partials and templates in the 
@@ -200,7 +198,7 @@ that makes sense for your site.
  Below are some examples of how to use pages, templates and partials with Geb.
  Read the examples first, then the discussion located after the examples.
 ### **Page** Example
-Here is a simple page example, in the above site structure this might be *index.html* file
+Here is a simple page example, in the above site structure this might be `index.html` file
  ```erb
  <% template: shared/templates/_site.html %>
 
@@ -214,7 +212,7 @@ Here is a simple page example, in the above site structure this might be *index.
 <% end: content %>
  ```
  ### **Template** Example
- This is a page template example, in the above site structure this might be *shared/templates/_site.html*
+ This is a page template example, in the above site structure this might be `shared/templates/_site.html`
  ```erb
 <!DOCTYPE html>
 <html>
@@ -232,14 +230,14 @@ Here is a simple page example, in the above site structure this might be *index.
 </html>
  ```
  ### **Partial** Example
- This is a page partial example, in the above site structure it could be any file in the *shared/partials* directory.
+ This is a page partial example, in the above site structure it could be any file in the `shared/partials` directory.
  ```erb
 <h1>Best Product Ever<h1>
 <p>This is the best product ever</p>
 <% partial: shared/partials/_product_analytics.html %>
 ```
 ### Result Page
-Below is the Page Example above, processed by **geb build** command.
+Below is the Page Example above, processed by `geb build` command.
 ```html
  <!DOCTYPE html>
 <html>
@@ -281,8 +279,7 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/geb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/geb/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/mainfram-work/geb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/mainfram-work/geb/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -290,6 +287,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Geb project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/geb/blob/main/CODE_OF_CONDUCT.md).
-
-cat extensions.list | xargs -L 1 code --install-extension
+Everyone interacting in the Geb project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/mainfram-work/geb/blob/main/CODE_OF_CONDUCT.md).

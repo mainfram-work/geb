@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.version      = "0.3.11"
   spec.authors      = ["Edin Mustajbegovic"]
   spec.email        = ["edin@actiontwelve.com"]
-  spec.summary      = "A static website builder with simple templating and management utilities."
+  spec.summary      = "Geb is a robust static website manager and builder, offering powerful tools and templates for creating and managing static websites with ease."
   spec.description  = "A static website builder with simple templating and management utilities."
   spec.homepage     = "https://github.com/mainfram-work/geb"
   spec.license      = "MIT"
