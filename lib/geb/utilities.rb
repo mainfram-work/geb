@@ -74,7 +74,7 @@ module Geb
   # copy the specified file and directory paths to the destination directory
   # @param source_path [String] the source directory
   # @param paths [Array] the paths to copy (still full paths, but from source directory)
-  # @param destination [String] the destination directory
+  # @param destination_path [String] the destination directory
   # @param quiet [Boolean] the flag to suppress output
   # @raise [Geb::Error] if the any of the file operations fail
   def self.copy_paths_to_directory(source_path, paths, destination_path, quiet = false)

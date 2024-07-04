@@ -14,7 +14,7 @@
 module Geb
 
   # define the version of the gem
-  VERSION = "0.3.11"
+  VERSION = "0.1.11"
 
 end # module Geb
 

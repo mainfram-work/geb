@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geb (0.3.11)
+    geb (0.1.11)
       dry-cli (~> 1.0)
       listen (~> 3.9)
       webrick (~> 1.8)

@@ -19,9 +19,9 @@ With Geb, you can harness the power of site templates to streamline your workflo
   - [Publishing and using templates](#publishing-and-using-templates)
 - [Basic Site Structure](#basic-site-structure)
 - [Pages, Templates and Partials](#pages-templates-and-partials)
-  - [**Page** Example](#page-example)
-  - [**Template** Example](#template-example)
-  - [**Partial** Example](#partial-example)
+  - [Page Example](#page-example)
+  - [Template Example](#template-example)
+  - [Partial Example](#partial-example)
   - [Result Page](#result-page)
   - [Discussion and key takeaways](#discussion-and-key-takeaways)
 - [Command Reference](#command-reference)
@@ -199,7 +199,7 @@ that makes sense for your site.
 
  Below are some examples of how to use pages, templates and partials with Geb.
  Read the examples first, then the discussion located after the examples.
-### **Page** Example
+### Page Example
 Here is a simple page example, in the above site structure this might be `index.html` file
  ```erb
  <% template: shared/templates/_site.html %>
@@ -213,7 +213,7 @@ Here is a simple page example, in the above site structure this might be `index.
   <% partial: shared/partials/_featured_product.html %>
 <% end: content %>
  ```
- ### **Template** Example
+ ### Template Example
  This is a page template example, in the above site structure this might be `shared/templates/_site.html`
  ```erb
 <!DOCTYPE html>
@@ -231,7 +231,7 @@ Here is a simple page example, in the above site structure this might be `index.
   </body>
 </html>
  ```
- ### **Partial** Example
+ ### Partial Example
  This is a page partial example, in the above site structure it could be any file in the `shared/partials` directory.
  ```erb
 <h1>Best Product Ever<h1>
