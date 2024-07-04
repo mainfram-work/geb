@@ -311,6 +311,7 @@ Geb also has three special variables that are available during both `geb build` 
  - **page_title** - Extracted from the page &lt;title&gt;&lt;/title&gt; tag
  - **page_relative_path** - Page path relative to the site URL
  - **site_name** - Geb site name (either from configuration or development folder name)
+ - **geb_version** - Geb version number
 
 
 ## Command Reference

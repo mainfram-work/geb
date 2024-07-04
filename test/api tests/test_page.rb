@@ -212,9 +212,10 @@ class PageTest < Geb::ApiTest
     page_content = <<-PAGE
       _{variable_1}_ _{variable_2}_ _{variable_3}_
       <title>#{page_title}</title>
-      _{site_name}_
+      Find the _{page_title}_ here
       _{page_relative_path}_
       _{site_name}_
+      Geb version _{geb_version}_
     PAGE
 
     site_variables = { "variable_1" => "value_1", "variable_2" => "value_2" }
@@ -240,7 +241,8 @@ class PageTest < Geb::ApiTest
     assert_includes output_content, "value_2"
     assert_includes output_content, "_{variable_3}_"
     assert_includes output_content, site_name
-    assert_includes output_content, " <title>#{page_title}</title>"
+    assert_includes output_content, "Find the #{page_title} here"
+    assert_includes output_content, "Geb version #{Geb::VERSION}"
     assert_includes output_content, page_path.gsub(Dir.pwd, "")
 
   end # test "that the parse_for_site_variables method works"

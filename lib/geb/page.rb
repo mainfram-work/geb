@@ -197,6 +197,9 @@ module Geb
       # set the site name
       special_variables['site_name'] = @site.site_config.site_name
 
+      # set the geb version special variable
+      special_variables['geb_version'] = Geb::VERSION
+
       # check if the site config has site variables
       if site_variables && !site_variables.empty?
 
