@@ -24,6 +24,8 @@ With Geb, you can harness the power of site templates to streamline your workflo
   - [**Partial** Example](#partial-example)
   - [Result Page](#result-page)
   - [Discussion and key takeaways](#discussion-and-key-takeaways)
+- [Command Reference](#command-reference)
+- [Roadmap](#roadmap)
 - [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
@@ -272,11 +274,97 @@ Below is the Page Example above, processed by `geb build` command.
   - Partials can be nested, but be careful not to create circular references.
   - That's about it... happy coding!
 
+## Command Reference
+
+### geb build
+Build the full site, includes pages and assets.
+```bash
+$ geb build [--skip_assets] [--skip_pages]
+```
+- `--skip_assets`: Skip building assets (images, css, js)
+- `--skip_pages`: Skip building pages
+
+### geb init
+Initialise geb site, creates folder locations, git repository and initial file structures.
+```bash
+$ geb init SITE_PATH [--template=VALUE] [--skip-template] [--skip-git] [--force]
+```
+- `--template=VALUE`: Template site, either a path or one of the following: bootstrap_jquery, basic
+- `--[no-]skip-template`: Skip generating a site from template
+- `--[no-]skip-git`: Skip initialising git repository
+- `--[no-]force`: Force overwrite of existing files and git repository
+
+### geb release
+Builds the release version of the site (pages and assets).
+```bash
+$ geb release [--with_template]
+```
+- `--with_template`: Build the release site with a template archive
+
+### geb remote
+Launch remote ssh session using the config file settings.
+```bash
+$ geb remote
+```
+
+### geb server
+Start a local server to view the site output (runs build first), uses webrick.
+```bash
+$ geb server [--port=PORT] [--skip-build] [--skip-auto-build]
+```
+- `--port=PORT`: Port to run the server on
+- `--[no-]skip-build`: Skip building the site before starting the server
+- `--[no-]skip-auto-build`: Don't automatically rebuild the site when a file changes
+
+### geb upload
+Upload the site to the remote server.
+```bash
+$ geb upload
+```
+
+### geb version
+Print the current version of Geb.
+```bash
+$ geb version
+```
+
+## Roadmap
+
+This roadmap outlines the planned features and improvements for future versions of Geb. The timeline and features are subject to change based on feedback and development priorities.
+
+### Version 0.3.0
+**Target Release Date:** Sometime in September 2024
+
+**Planned Features**
+- **Template Enhancements**: Improve the existing templates and add more templates for various types of websites.
+- **Plugin Support**: Introduce a plugin system to extend Geb's functionality.
+- **Improved Documentation**: Expand the documentation with more examples and tutorials.
+
+**Improvements**
+- **Windows Support**: Test and build Geb on windows operating system
+- **Better Testing**: Ability to better test `geb upload` and `geb remote` commands.
+
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` which just runs `bundle install` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Gab has the following dependencies
+
+ - `Ruby >= 3.0.0`
+ - [dry/cli](https://dry-rb.org/gems/dry-cli/1.0/) - a general-purpose framework for developing Command Line Interface (CLI) applications.
+ - [Webrick](https://github.com/ruby/webrick) - an HTTP server toolkit that can be configured as an HTTPS server, a proxy server, and a virtual-host server.
+ - [Listen](https://github.com/guard/listen) - gem listens to file modifications and notifies you about the changes.
+
+ The development environment has the following dependencies:
+
+ - [Rake](https://ruby.github.io/rake/) - a Make-like program implemented in Ruby. 
+ - [minitest](https://github.com/minitest/minitest) - provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking.
+ - [webmock](https://github.com/bblimke/webmock) - library for stubbing and setting expectations on HTTP requests in Ruby.
+ - [mocha](https://github.com/freerange/mocha) - a Ruby library for mocking and stubbing.
+ - [simplecov](https://github.com/simplecov-ruby/simplecov) - a code coverage analysis tool for Ruby.
+ - [yard](https://yardoc.org) - a Ruby documentation tool.
+
+To install this gem onto your local machine, run `bundle exec rake build` and then `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/mainfram-work/geb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/mainfram-work/geb/blob/main/CODE_OF_CONDUCT.md).
@@ -288,3 +376,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Geb project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/mainfram-work/geb/blob/main/CODE_OF_CONDUCT.md).
+
+

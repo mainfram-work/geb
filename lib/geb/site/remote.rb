@@ -128,7 +128,7 @@ module Geb
 
         rescue Interrupt, IOError
           Geb.log "Upload interrupted."
-        rescue  => e
+        rescue
           Geb.log "Upload interrupted."
         ensure
           # restore the original thread report on exception setting

@@ -9,10 +9,6 @@
 #
 # @see https://github.com/mainfram-work/geb for more information
 
-
-require 'zlib'
-require 'archive/tar/minitar'
-
 module Geb
   class Site
     module Release

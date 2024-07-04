@@ -32,10 +32,9 @@ Gem::Specification.new do |spec|
   # ruby version, dependencies and other settings
   spec.required_ruby_version = ">= 3.0.0"
   spec.add_dependency "dry-cli", "~> 1.0"
-  spec.add_dependency "rake", "~> 13.0"
   spec.add_dependency "webrick", "~> 1.8"
   spec.add_dependency 'listen', "~> 3.9"
-  spec.add_dependency 'minitar', "~> 0.9"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "webmock", "~> 3.0"
   spec.add_development_dependency 'simplecov', '~> 0.21.2'
