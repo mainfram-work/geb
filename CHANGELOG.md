@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Security
 - N/A
 
-## [0.1.0] - 2024-07-07
+## [0.1.11] - 2024-07-04
 ### Added
 - Initial release of Geb with core features for managing and building static websites.
 - Command-line interface
