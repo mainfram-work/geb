@@ -18,7 +18,7 @@ module Geb
     # default values for site templates
     TEMPLATE_ARCHIVE_FILENAME = 'geb-template.tar.gz'             # default the template archive filename
     AVAILABLE_TEMPLATES       =                                   # list of bundled templates (first one is the default template)
-      ['bootstrap_jquery', 'basic']
+      ['basic', 'bootstrap_jquery']
     SITE_CONFIG_FILENAME      = 'geb.config.yml'                  # site config file name
     HTTP_TEMPLATE_CONTENT_TYPES =                               # acceptable remote template content types
       ['application/x-gzip', 'application/gzip', 'application/octet-stream']

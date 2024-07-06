@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - New Site Variables feature
 - --debug option to the `geb server` command to show full build output when file changes are detected
 - Updated bootstrap_jquery bundled template
+- Updated basic bundled template
 
 ### Changed
 - Simplified build and release command APIs
