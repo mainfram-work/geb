@@ -278,7 +278,7 @@ Below is the Page Example above, processed by `geb build` command.
   - Obviously, the "start: what_ever_name" -> "end: what_ever_name" must have matching "names"
   - Partials are used to include common content in pages and templates. They are not served directly.
   - Partials can be nested, but be careful not to create circular references.
-  - A note on tags, <%= partial ... %> and <%= insert ... %> have and equal sign, while <% template %>, <% start %>, <% end %> do not. The reason is partial and insert actually change content where they are, while other tags are instructions.
+  - A note on tags, <%= partial ... %> and <%= insert ... %> have and equal sign, while <% template ... %>, <% start ... %>, <% end ... %> do not. The reason is partial and insert actually change content where they are, while other tags are instructions.
   - That's about it... happy coding!
 
 ## Site Variables
