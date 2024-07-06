@@ -1,8 +1,8 @@
 # Geb
 ![Gem Version](https://img.shields.io/gem/v/geb.svg)
-[![Changelog](https://img.shields.io/badge/Changelog-1.0.0-blue.svg)](CHANGELOG.md)
+[![Changelog](https://img.shields.io/badge/Changelog-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-1.4-blue.svg)](CODE_OF_CONDUCT.md)
+[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-blue.svg)](CODE_OF_CONDUCT.md)
 
 Geb is a powerful and intuitive static website manager and builder named after the ancient Egyptian god Geb, the deity of the Earth. Just as Geb provides a stable foundation for the world, our software offers a robust and essential foundation for building and managing static websites, which form the very bedrock of the web.
 
