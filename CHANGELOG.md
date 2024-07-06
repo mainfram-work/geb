@@ -7,13 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
-- New Site Variables feature
-- --debug option to the `geb server` command to show full build output when file changes are detected
-- Updated bootstrap_jquery bundled template
-- Updated basic bundled template
+- N/A
 
 ### Changed
-- Simplified build and release command APIs
+- N/A
 
 ### Deprecated
 - N/A
@@ -22,9 +19,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - N/A
 
 ### Fixed
+- N/A
+
+### Security
+- N/A
+
+## [0.1.12] - 2024-07-06
+### Added
+- New Site Variables feature
+- --debug option to the `geb server` command to show full build output when file changes are detected
+- Updated bootstrap_jquery bundled template
+- Updated basic bundled template
+### Changed
+- Simplified build and release command APIs
+### Fixed
 - Configured port not being used by the `geb server` command
 - Fixed issue with template paths not working with certain wild card paths (.e.g. **/*.html)
-
 ### Security
 - Fixed issues with generating a site template with `geb release --with_template`, it now packages a sanitized version of `geb.config.yml` without remote_url and remote_path
 
