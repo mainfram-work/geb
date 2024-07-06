@@ -216,7 +216,7 @@ Here is a simple page example, in the above site structure this might be `index.
 
 <% start: content %>
   This is page content
-  <% partial: shared/partials/_featured_product.html %>
+  <%= partial: shared/partials/_featured_product.html %>
 <% end: content %>
  ```
  ### Template Example
@@ -225,15 +225,15 @@ Here is a simple page example, in the above site structure this might be `index.
 <!DOCTYPE html>
 <html>
   <head>
-    <title><% insert: title %></title>
-    <% partial: shared/partials/_analytics.html %>
-    <% partial: shared/partials/_meta_tags.html %>
-    <% partial: shared/partials/_global_assets.html %>
+    <title><%= insert: title %></title>
+    <%= partial: shared/partials/_analytics.html %>
+    <%= partial: shared/partials/_meta_tags.html %>
+    <%= partial: shared/partials/_global_assets.html %>
    </head>
   <body>
-    <% partial: shared/partials/_header.html %>
-    <% insert: content %>
-    <% partial: shared/partials/_footer.html %>
+    <%= partial: shared/partials/_header.html %>
+    <%= insert: content %>
+    <%= partial: shared/partials/_footer.html %>
   </body>
 </html>
  ```
@@ -242,7 +242,7 @@ Here is a simple page example, in the above site structure this might be `index.
  ```erb
 <h1>Best Product Ever<h1>
 <p>This is the best product ever</p>
-<% partial: shared/partials/_product_analytics.html %>
+<%= partial: shared/partials/_product_analytics.html %>
 ```
 ### Result Page
 Below is the Page Example above, processed by `geb build` command.
@@ -278,6 +278,7 @@ Below is the Page Example above, processed by `geb build` command.
   - Obviously, the "start: what_ever_name" -> "end: what_ever_name" must have matching "names"
   - Partials are used to include common content in pages and templates. They are not served directly.
   - Partials can be nested, but be careful not to create circular references.
+  - A note on tags, <%= partial ... %> and <%= insert ... %> have and equal sign, while <% template %>, <% start %>, <% end %> do not. The reason is partial and insert actually change content where they are, while other tags are instructions.
   - That's about it... happy coding!
 
 ## Site Variables
