@@ -1,7 +1,74 @@
 BODY {
-  background-color: #1A2D3D;
+  background-color: #1A2D3D !important;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   color: #fff;
+}
+
+nav {
+  background-color: #9FD88D;;
+  color: #1A2D3D;
+  padding: 10px;
+  .nav-link,a { color: #000000; }
+}
+
+.hero-image {
+  border: 10px solid #9FD88D;
+  border-radius: 100%;
+}
+
+highlight {
+  color: #9FD88D;
+  font-weight: bold;
+}
+
+.lead {
+  color: lightgrey;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: bold;
+}
+
+.navbar-toggler {
+  border-color: transparent;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(26, 45, 61, 1)' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.nav-tabs {
+  border-bottom: 0px;
+  margin-bottom: 30px;
+  .nav-item { margin: 0px 10px; }
+  .nav-link { color: #9FD88D; }
+  .active {
+    background-color: #9FD88D !important;
+  }
+}
+
+.code-block {
+  background-color: #121F2A; /* Light grey background */
+  border: 1px solid #dee2e6; /* Light border */
+  border-radius: 0.25rem; /* Rounded corners */
+  padding: 1rem; /* Padding */
+  overflow-x: auto; /* Horizontal scrolling for long lines */
+  margin: 10px 5px;
+  a { text-decoration: none; }
+}
+.code-block code {
+  color: #d63384; /* Text color */
+}
+
+.prompt {
+  color: #6D1A43; /* Prompt color (blue) */
+  font-weight: bold;
+}
+
+.output {
+  color: #6c757d; /* Output color (grey) */
+}
+
+.comment {
+  color: #6a737d; /* Comment color (grey) */
+  font-style: italic; /* Italicize comments */
 }

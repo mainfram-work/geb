@@ -1,11 +1,261 @@
 <% template: shared/templates/_site.html %>
 
 <% start: title %>
-This is a website title
+Sample Site - (bootstrap 5 & jquery 3.6.0)
 <% end: title %>
 
 <% start: content %>
 
-<p>Welcome to the site</p>
+<div class="container px-5 mt-5 mb-5">
+  <div class="row gx-5 align-items-center">
+    <div class="col-lg-6">
+        <img src="/assets/images/hero.png" class="img-fluid hero-image" alt="...">
+    </div>
+      <div class="col-lg-6">
+          <!-- Mashead text and app badges-->
+          <div class="mb-5 mb-lg-0 text-center text-lg-start">
+              <h1 class="display-4 lh-1 mb-3 mt-5">gem install <highlight>geb</highlight></h1>
+              <p class="lead fw-normal text-white mb-5">Build, manage and share static websites and templates, all hail geb the great</p>
+              <div class="d-flex flex-column flex-lg-row align-items-center">
+                  <a class="btn btn-success me-lg-3 mb-4 mb-lg-0" href="https://github.com/mainfram-work/geb.git" target="_blank" role="button"><i class="bi bi-github"></i> Github Repo</a>
+                  <a class="btn btn-success me-lg-3 mb-4 mb-lg-0" href="#" role="button">
+                    <svg width="18px" height="18px" viewBox="-18.5 0 293 293" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
+                      <g fill="#FFFFFF">
+                        <path d="M76.7478977,97.4337652 L76.585237,97.2711045 L40.4745594,133.381782 L128.148682,220.893244 L164.25936,184.945227 L215.822805,133.381782 L179.712127,97.2711045 L179.712127,97.1084438 L76.585237,97.1084438 L76.7478977,97.4337652 Z"></path>
+                        <path d="M127.823361,0.975964259 L0.1347034,74.1732837 L0.1347034,220.567923 L127.823361,293.765242 L255.512018,220.567923 L255.512018,74.1732837 L127.823361,0.975964259 L127.823361,0.975964259 Z M231.112911,206.579102 L127.823361,266.112921 L24.5338099,206.579102 L24.5338099,87.8367833 L127.823361,28.3029635 L231.112911,87.8367833 L231.112911,206.579102 L231.112911,206.579102 Z"></path>
+                      </g>
+                    </svg>
+                    Rubygems
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
 
+<div class="lead m-5">
+  <p class="m-2">
+    Geb, draws a symbolic connection to the ancient Egyptian god Geb, the deity of the Earth.
+    Just as Geb the god provides a stable foundation for the world, software Geb offers a robust 
+    and essential foundation for building and managing static websites, which are the very bedrock
+    of the web. 
+  </p>
+</div>
+
+<div class="container">
+  <ul class="nav nav-tabs bg-transparent " id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#installation" type="button" role="tab" aria-controls="home" aria-selected="true">Installation</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#workflow" type="button" role="tab" aria-controls="profile" aria-selected="false">Typical Workflow</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-controls="contact" aria-selected="false">Working With Site Templates</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#sitestructure" type="button" role="tab" aria-controls="contact" aria-selected="false">Site Structure</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#pagestemplatespartials" type="button" role="tab" aria-controls="contact" aria-selected="false">Pages, Templates and Partials</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="installation" role="tabpanel" aria-labelledby="home-tab">
+      <a name="installation"></a>
+<pre class="code-block mb-5">
+  <h4>Installation</h4>
+  <code>
+    <span class="comment"># as simple as installing a ruby gem</span>
+    <span class="prompt">$</span> gem <strong>install</strong> geb
+
+    <span class="comment"># installing from source is just as simple</span>
+    <span class="prompt">$</span> <strong>git</strong> clone https://github.com/mainfram-work/geb.git
+    <span class="prompt">$</span> <strong>cd</strong> geb
+    <span class="prompt">$</span> <strong>bundle</strong> install
+    <span class="prompt">$</span> <strong>rake</strong> test
+    <span class="prompt">$</span> <strong>rake</strong> build
+    <span class="prompt">$</span> <strong>rake</strong> install
+
+    <span class="comment"># list all available geb commands and get help for each individual geb command</span>
+    <span class="prompt">$</span> geb <strong>help</strong>
+    <span class="prompt">$</span> geb &lt;command&gt; <strong>help</strong>
+  </code>
+</pre>
+    </div>
+    <div class="tab-pane fade" id="workflow" role="tabpanel" aria-labelledby="profile-tab">
+      <a name="typical_workflow"></a>
+<pre class="code-block mb-5">
+  <h4>Typical <strong>Workflow</strong></h4>
+  <code>
+    <span class="comment"># initialize a new site in the directory nexthing</span>
+    <span class="prompt">$</span> geb <strong>init</strong> nexthing
+    <span class="prompt">$</span> cd nexthing
+
+    <span class="comment"># build the site</span>
+    <span class="prompt">$</span> geb <strong>build</strong>
+
+    <span class="comment"># start a local web server to access your built site</span>
+    <span class="prompt">$</span> geb <strong>server</strong>
+
+    <span class="comment"># build a release version of the site</span>
+    <span class="prompt">$</span> geb <strong>release</strong>
+
+    <span class="comment"># upload the released site to your remote server</span>
+    <span class="prompt">$</span> geb <strong>upload</strong>
+  </code>
+</pre>
+    </div>
+    <div class="tab-pane fade" id="templates" role="tabpanel" aria-labelledby="contact-tab">
+      <a name="site_templates"></a>
+<pre class="code-block mb-5">
+  <h4>Working with <strong>site templates</strong></h4>
+  <code>
+    <span class="comment"># get started with one of the built in templates (full list on our <a href="#"><i class="bi bi-github"></i> github page</a>)</span>
+    <span class="prompt">$</span> geb <strong>init</strong> nexthing --template <strong>bootstrap_jquery</strong> 
+    <span class="prompt">$</span> cd nexthing
+
+    <span class="comment"># create a template from your own site, it will upload with the rest of your site</span>
+    <span class="prompt">$</span> geb <strong>release</strong> --with_template
+
+    <span class="comment"># you can initialize new projects based on your previous projects</span>
+    <span class="prompt">$</span> geb <strong>init</strong> nexthing --template /path/to/some/other/site
+
+    <span class="comment"># you can also initialize new projects using other people's deployed templates</span>
+    <span class="prompt">$</span> geb <strong>init</strong> nexthing --template https://www.example.com/
+  </code>
+</pre>
+  </div>
+  <div class="tab-pane fade" id="sitestructure" role="tabpanel" aria-labelledby="home-tab">
+    <pre class="code-block mb-5">
+      <h4>Site Structure, some basics</h4>
+      You can structure geb sites how ever you want.  
+      Here is a default structure that is created when you initialize a new site with geb.
+      The structure below is for the site you are currently viewing. 
+      There are several files and directories required by geb that are <code>highlighted</code>
+    
+      ├── <code>assets</code>                    # assets directory for images, css, js, etc.
+        ├── images                  <span class="comment"># images directory</span>
+        ├── css                     <span class="comment"># css directory</span>
+        ├── js                      <span class="comment"># js directory</span>
+      ├── blog                      <span class="comment"># just a directory to hold blog posts </span>
+        ├── blog_post_1.html        <span class="comment"># a sample blog post</span>
+        ├── index.html              <span class="comment"># the blog index page</span>
+      ├── <code>geb.config.yml</code>            # the site configuration file  
+      ├── index.html                <span class="comment"># site index pag, this page</span>
+      ├── page.html                 <span class="comment"># another page</span>
+      ├── <code>output</code>                    # the directory where the built site is output
+        ├── <code>local</code>                   # local build directory, this is where site is serverd from
+        ├── <code>release</code>                 # release build directory, this is we you would upload to a remote server
+      ├── shared                    <span class="comment"># shared directory for partials, templates, etc.</span>
+        ├── partials                <span class="comment"># partials directory</span>
+          ├── _analytics.html       <span class="comment"># partial with site analytics</span>
+          ├── _footer.html          <span class="comment"># footer partial</span>
+          ├── _global_assets.html   <span class="comment"># global assets partial (js and css references)</span>
+          ├── _header.html          <span class="comment"># header partial</span>
+          ├── _meta_tags.html       <span class="comment"># site mata tags partial</span>
+        ├── templates               <span class="comment"># templates directory</span>
+        ├── _blog_post.html         <span class="comment"># template for blog pages</span>
+        ├── _site.html              <span class="comment"># template for general site pages</span>
+      ├── site.webmanifest          <span class="comment"># site webmanifest file</span>
+    
+      Files that start with _ are partials or templates and are not meant to be served directly.
+      You won't see these files in the output directory.
+      
+      All references to assets (images, css, js, etc.) as well as links should be 
+      <code>relative to the site root.</code>
+    
+      It is possible to configure geb to use different directories for assets or output.
+      However, geb.config.yml must be updated to reflect these changes and located 
+      in the site root. Check geb.config.yml for more information.
+    
+      The rest is up to you.  We like the convention of putting partials and templates in the 
+      shared directory, but you can put them anywhere. You can create any directory structure
+      that makes sense for your site. 
+    
+    </pre>
+    </div>  
+    <div class="tab-pane fade" id="pagestemplatespartials" role="tabpanel" aria-labelledby="home-tab">
+<pre class="code-block mb-5">
+  <h4>Pages, Templates and Partials</h4>
+  Below are some examples of how to use pages, templates and partials with geb.
+  Read the examples, discussion is after the examples.
+  <hr>
+  <h5>Page Example <small><span class="comment">(e.g. /index.html)</span></small></h5>
+  <code>&lt;% template: shared/templates/_site.html %&gt;</code>
+  
+  <code>&lt;% start: title %&gt;</code>
+    Page Title
+  <code>&lt;% end: title %&gt;</code>
+  
+  <code>&lt;% start: content %&gt;</code>
+    This is page content
+    <code>&lt;% partial: shared/partials/_featured_product.html %&gt;</code>
+  <code>&lt;% end: content %&gt;</code>
+
+  <h5>Template Example <small><span class="comment">(e.g. /shared/templates/_site.html)</span></small></h5>
+  <code>&lt;% template: shared/templates/_site.html %&gt;</code>
+  
+  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;<code>&lt;% insert: title %&gt;</code>&lt;/title&gt;
+        &lt;% partial: shared/partials/_analytics.html %&gt;
+        &lt;% partial: shared/partials/_meta_tags.html %&gt;
+        &lt;% partial: shared/partials/_global_assets.html %&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;% partial: shared/partials/_header.html %&gt;
+      <code>&lt;% insert: content %&gt;</code>
+      &lt;% partial: shared/partials/_footer.html %&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+  
+  <h5>Partial Example <small><span class="comment">(e.g. /shared/partials/_featued_product.html)</span></small></h5>
+  &lt;h1&gt;Best Product Ever&lt;h1&gt;
+  &lt;p&gt;This is the best product ever&lt;/p&gt;
+  <code>&lt;% partial: shared/partials/_product_analytics.html %&gt;</code>
+  
+  <h5>Result Page</h5>
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt;Page Title&lt;/title&gt;
+        <span class="comment">&lt;!-- content from shared/partials/_analytics.html --&gt;</span>
+        <span class="comment">&lt;!-- content from shared/partials/_meta_tags.html --&gt;</span>
+        <span class="comment">&lt;!-- content from shared/partials/_global_assets.html --&gt;</span>
+      &lt;/head&gt;
+      &lt;body&gt;
+        <span class="comment">&lt;!-- content from shared/partials/_header.html --&gt;</span>
+        This is page content
+        &lt;h1&gt;Best Product Ever&lt;h1&gt;
+        &lt;p&gt;This is the best product ever&lt;/p&gt;
+        <span class="comment">&lt;!-- content from shared/partials/_product_analytics.html --&gt;</span>
+        <span class="comment">&lt;!-- content from shared/partials/_footer.html --&gt;</span>
+      &lt;/body&gt;
+    &lt;/html&gt;
+  <hr>
+  - Pages are the actual content of the site. They are the only files that are served directly.
+  - Example page above uses a template found in /shared/templates/_site.html
+  - Templates are used to wrap pages in a common structure. They are not served directly.
+  - Example template above has two content blocks, title and content.
+  - Page above has those content areas filled in what ever is required
+  - Page <code>start: what_ever_name</code> and template <code>insert: what_ever_name</code> must have matching "names"
+  - If a page uses a template, the template must be defined at the top of the page.
+  - If a page uses a template, any content not in a "start: what_ever_name" -> "end: what_ever_name" block is ignored.
+  - Obviously, the "start: what_ever_name" -> "end: what_ever_name" must have matching "names"
+  - Partials are used to include common content in pages and templates. They are not served directly.
+  - Partials can be nested, but be careful not to create circular references.
+  - Thats about it... happy coding!
+</pre>
+    </div> 
+  </div>
+</div>
+
+
+
+
+
+
+  
 <% end: content %>

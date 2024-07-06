@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title><%= insert: title %></title>
+
+    <%= partial: shared/partials/_analytics.html %>
+    <%= partial: shared/partials/_meta_tags.html %>
+    <%= partial: shared/partials/_global_assets.html %>
+    
+  </head>
+  <body>
+    
+    <%= partial: shared/partials/_header.html %>
+    <%= insert: content %>
+    <%= partial: shared/partials/_footer.html %>
+
+  </body>
+</html>

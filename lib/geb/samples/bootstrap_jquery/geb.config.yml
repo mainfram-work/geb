@@ -1,4 +1,3 @@
-
 # Geb Configuration File
 # =======================
 #
@@ -33,7 +32,7 @@
 # Set the local web server port that the site will run on.
 # Geb server command will use this port to start the local web server
 # If you don't specify a port, geb server command auto selects a port
-#local_port: 4000
+local_port: 4000
 
 # Specifies the output directory, this directory will be used to store the output of
 # the build and release commands. 
@@ -66,7 +65,7 @@
 # The site template files will be archived into geb-template.tar.gz file and put within
 # the release directory.
 # e.g. template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
-template_paths: ["assets", "shared", "*.html", "site.webmanifest", "geb.config.yml"]
+template_paths: ['assets', 'shared', '**/*.html', 'site.webmanifest']
 
 # If you want to specify site variables, you can do so here.  These variables will be available
 # to the site as site.site_variables.  You can specify different variables for different environments
@@ -76,10 +75,12 @@ template_paths: ["assets", "shared", "*.html", "site.webmanifest", "geb.config.y
 # simply replace the _{tag}_ with an empty string.
 # In the example below, use _{title}_ and _{site_url}_ in your pages, templates or partials.
 # Geb will use local or release version depending if you are running the build or release command.
-#site_variables:
-#  local:
-#    title: "My Local Site"
-#    site_url: "http://localhost:4000"
-#  release:
-#    title: "My Site"
-#    site_url: "https://example.com"
+# Geb has the following site variables by default: page_relative_path, site_name, geb_version, page_title
+site_variables:
+  local:
+    title: "My Local Site"
+    site_url: "http://localhost:4000"
+  release:
+    title: "My Site"
+    site_url: "https://example.com"
+  

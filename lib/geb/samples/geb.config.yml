@@ -76,6 +76,7 @@
 # simply replace the _{tag}_ with an empty string.
 # In the example below, use _{title}_ and _{site_url}_ in your pages, templates or partials.
 # Geb will use local or release version depending if you are running the build or release command.
+# Geb has the following site variables by default: page_relative_path, site_name, geb_version, page_title
 #site_variables:
 #  local:
 #    title: "My Local Site"

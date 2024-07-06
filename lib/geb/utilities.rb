@@ -87,7 +87,7 @@ module Geb
       destination_file_path = File.join(destination_path, relative_template_path)
 
       # ensure the destination directory exists
-      FileUtils.mkdir_p(File.dirname(destination_path))
+      FileUtils.mkdir_p(File.dirname(destination_file_path))
 
       # copy the resolved template path to the destination path
       if File.directory?(path)
