@@ -359,6 +359,7 @@ $ geb server [--port=PORT] [--skip-build] [--skip-auto-build]
 - `--port=PORT`: Port to run the server on
 - `--[no-]skip-build`: Skip building the site before starting the server
 - `--[no-]skip-auto-build`: Don't automatically rebuild the site when a file changes
+- `--[no-]debug:` Enable full output during site rebuild
 
 ### geb upload
 Upload the site to the remote server.
