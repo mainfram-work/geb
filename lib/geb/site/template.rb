@@ -93,7 +93,9 @@ module Geb
         Geb.log "Done copying directories and files to the template archive directory."
 
         # create a geb config file in the temporary directory
+        Geb.log_start "Generating geb.config.yml in the template archive directory ... "
         @site_config.generate_config_file(tmp_archive_directory)
+        Geb.log "done."
 
         # create a template archive with files from the temporary directory into the release directory
         output_archive_filename = File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR, Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)

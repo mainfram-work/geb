@@ -153,6 +153,7 @@ class TestGebCommandRelease < Geb::CliTest
     assert_match(/Resolving directories and files to include in the template archive.*done/, stdout)
     assert_match(/copying directory and all sub-directories from.*to.*done/, stdout)
     assert_match(/copying file from.*to.*done/, stdout)
+    assert_match(/Generating geb\.config\.yml in the template archive directory.*done/, stdout)
     assert_includes stdout, "Done copying directories and files to the template archive directory."
     assert_match(/Creating template archive in.*done/, stdout)
 
