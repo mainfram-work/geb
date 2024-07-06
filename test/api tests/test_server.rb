@@ -29,7 +29,7 @@ class TestServer < Geb::ApiTest
     WEBrick::HTTPServer.expects(:new).returns(http_server_mock)
     Listen.stubs(:to).returns(file_watcher_mock)
 
-    server = Geb::Server.new(site_mock, 3456, true)
+    server = Geb::Server.new(site_mock, 3456, true, false)
 
     assert_instance_of Geb::Server, server
 
@@ -54,7 +54,7 @@ class TestServer < Geb::ApiTest
     WEBrick::HTTPServer.expects(:new).returns(http_server_mock)
     Listen.stubs(:to).returns(file_watcher_mock)
 
-    server = Geb::Server.new(site_mock, 3456, false)
+    server = Geb::Server.new(site_mock, 3456, false, false)
 
     assert_instance_of Geb::Server, server
 
@@ -81,7 +81,7 @@ class TestServer < Geb::ApiTest
     WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
     Listen.stubs(:to).returns(file_watcher_mock)
 
-    server = Geb::Server.new(site_mock, 3456, true)
+    server = Geb::Server.new(site_mock, 3456, true, false)
 
     server.start
 
@@ -118,7 +118,7 @@ class TestServer < Geb::ApiTest
     WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
     Listen.stubs(:to).returns(file_watcher_mock)
 
-    server = Geb::Server.new(site_mock, 3456, false)
+    server = Geb::Server.new(site_mock, 3456, false, false)
 
     server.start
 
@@ -157,7 +157,7 @@ class TestServer < Geb::ApiTest
     WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
     Listen.stubs(:to).returns(file_watcher_mock)
 
-    server = Geb::Server.new(site_mock, 3456, true)
+    server = Geb::Server.new(site_mock, 3456, true, false)
 
     server.start
 
@@ -189,7 +189,7 @@ class TestServer < Geb::ApiTest
     WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
     Listen.stubs(:to).returns(file_watcher_mock)
 
-    server = Geb::Server.new(site_mock, 3456, false)
+    server = Geb::Server.new(site_mock, 3456, false, false)
 
     server.start
 
@@ -222,7 +222,7 @@ class TestServer < Geb::ApiTest
       WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
       Listen.stubs(:to).returns(file_watcher_mock)
 
-      geb_server = Geb::Server.new(site_mock, port, true)
+      geb_server = Geb::Server.new(site_mock, port, true, false)
 
       WEBrick::HTTPServer.unstub(:new)
 
@@ -263,7 +263,7 @@ class TestServer < Geb::ApiTest
       WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
       Listen.stubs(:to).returns(file_watcher_mock)
 
-      geb_server = Geb::Server.new(site_mock, 8888, true)
+      geb_server = Geb::Server.new(site_mock, 8888, true, false)
 
       Listen.unstub(:to)
       file_watcher  = geb_server.send(:get_file_watcher)
@@ -314,15 +314,13 @@ class TestServer < Geb::ApiTest
       WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
       Listen.stubs(:to).returns(file_watcher_mock)
 
-      geb_server = Geb::Server.new(site_mock, 8888, true)
+      geb_server = Geb::Server.new(site_mock, 8888, true, false)
 
       Listen.unstub(:to)
 
       log_output = ""
       Geb.stubs(:log_start) { |*args| log_output << args.first }
       Geb.stubs(:log)       { |*args| log_output << args.first }
-
-      # initialize a sequence
       Geb.expects(:log_start).times(1).with("Found changes, rebuilding site ... ")
       Geb.expects(:log).times(4)
 
@@ -344,6 +342,72 @@ class TestServer < Geb::ApiTest
     end # Dir.mktmpdir
 
   end # test "that the server detects file changes and rebuilds the site"
+
+
+  test "that the server detects file changes and rebuilds the site with debug set" do
+
+    # create a temporary directory
+    Dir.mktmpdir do |dir|
+
+      site_dir = File.join(dir, 'newsite')
+      site_output_directory = File.join(site_dir, 'output/local')
+      site_release_directory = File.join(site_dir, 'output/release')
+
+      file_path_add = File.join(site_dir, 'add.html')
+      file_path_modify = File.join(site_dir, 'modify.html')
+      file_path_delete = File.join(site_dir, 'delete.html')
+
+      FileUtils.mkdir_p(site_dir)
+      FileUtils.mkdir_p(site_output_directory)
+      FileUtils.mkdir_p(site_release_directory)
+
+      FileUtils.touch(file_path_modify)
+      File.write(file_path_modify, 'modify file original content')
+      FileUtils.touch(file_path_delete)
+      File.write(file_path_delete, 'delete file content')
+
+      site_mock = mock('site')
+      site_mock.stubs(:site_path).returns(site_dir)
+      site_mock.stubs(:get_site_local_output_directory).returns(site_output_directory)
+      site_mock.stubs(:get_site_release_output_directory).returns(site_release_directory)
+      site_mock.expects(:build).times(1)
+
+      http_server_mock = mock('webric_httpserver')
+      http_server_mock.stubs(:config).returns({:Port => 3456, :DocumentRoot => 'site_path/output'})
+      file_watcher_mock = mock('file_watcher')
+      file_watcher_mock.stubs(:ignore)
+
+      WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
+      Listen.stubs(:to).returns(file_watcher_mock)
+
+      geb_server = Geb::Server.new(site_mock, 8888, true, true)
+
+      Listen.unstub(:to)
+
+      log_output = ""
+      Geb.stubs(:log_start) { |*args| log_output << args.first }
+      Geb.stubs(:log)       { |*args| log_output << args.first }
+      Geb.expects(:log_start).times(1).with("Found changes, rebuilding site ... ")
+      Geb.expects(:log).times(4)
+
+      file_watcher = geb_server.send(:get_file_watcher)
+
+      file_watcher.start
+
+      sleep 0.5
+
+      FileUtils.touch(file_path_add)
+      File.write(file_path_add, 'add file content')
+      File.write(file_path_modify, 'modify file modified content')
+      FileUtils.rm(file_path_delete)
+
+      sleep 0.5
+
+      file_watcher.stop
+
+    end # Dir.mktmpdir
+
+  end # test "that the server detects file changes and rebuilds the site with debug set"
 
 
   test "that the server detects file changes handles exception is build fails" do
@@ -382,7 +446,7 @@ class TestServer < Geb::ApiTest
       WEBrick::HTTPServer.stubs(:new).returns(http_server_mock)
       Listen.stubs(:to).returns(file_watcher_mock)
 
-      geb_server = Geb::Server.new(site_mock, 8888, true)
+      geb_server = Geb::Server.new(site_mock, 8888, true, false)
 
       Listen.unstub(:to)
 

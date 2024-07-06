@@ -157,6 +157,9 @@ module Geb
       # @note the ignore_files_exp and ignore_directories are used to ignore files that are not pages
       def get_page_files(path, exts = Geb::Defaults::PAGE_EXTENSIONS, ignore_files_exp = Geb::Defaults::TEMPLATE_AND_PARTIAL_IDENTIFIER, ignore_directories = [])
 
+        # make sure every page extention specified starts with a dot
+        exts.map! { |ext| ext.start_with?('.') ? ext : ".#{ext}" }
+
         # get all files in the path with the specified extentions
         files = Dir.glob("#{path}/**/*{#{exts.join(',')}}")
 

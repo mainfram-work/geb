@@ -23,9 +23,10 @@ module Geb
         example [" ", "--port 8080", "--skip_auto_build", "--skip_build"]
 
         # Define command options
-        option :port,             type: :int,     default: nil,     desc: "Port to run the server on, otherwise it will use config file setting"
+        option :port,             type: :int,     default: nil,   desc: "Port to run the server on, otherwise it will use config file setting"
         option :skip_build,       type: :boolean, default: false, desc: "Skip building the site before starting the server"
         option :skip_auto_build,  type: :boolean, default: false, desc: "Don't automatically rebuild the site when a file changes"
+        option :debug,            type: :boolean, default: false, desc: "Enable full output during site rebuild"
 
         # Call method for the server command
         # @param options [Hash] the options hash for the command
@@ -46,7 +47,7 @@ module Geb
           server_port = options[:port] || site.site_config.local_port || 0
 
           # initialize the server
-          server = Geb::Server.new(site, server_port, !options[:skip_auto_build])
+          server = Geb::Server.new(site, server_port, !options[:skip_auto_build], options[:debug])
 
           # start the server
           server.start()

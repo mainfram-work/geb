@@ -68,6 +68,7 @@ module Geb
       # @raise InvalidTemplateSpecification if the template paths are not specified
       # @raise InvalidTemplateSpecification if the resolved template paths are empty
       # @raise InvalidTemplateSpecification if the template archive cannot be created
+      # @note template will be bundled with the geb.config.yml file, so the site can be re-created from the template
       def bundle_template
 
         # raise an error if the site is not loaded
@@ -90,6 +91,9 @@ module Geb
         Geb.log "Copying directories and files to the template archive directory #{tmp_archive_directory}"
         Geb.copy_paths_to_directory(@site_path, resolved_template_paths, tmp_archive_directory)
         Geb.log "Done copying directories and files to the template archive directory."
+
+        # create a geb config file in the temporary directory
+        @site_config.generate_config_file(tmp_archive_directory)
 
         # create a template archive with files from the temporary directory into the release directory
         output_archive_filename = File.join(@site_path, @site_config.output_dir, Geb::Defaults::RELEASE_OUTPUT_DIR, Geb::Defaults::TEMPLATE_ARCHIVE_FILENAME)

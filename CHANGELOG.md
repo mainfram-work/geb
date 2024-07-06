@@ -8,9 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 - New Site Variables feature
+- Added --debug option to the `geb server` command to show full build output when file changes are detected
 
 ### Changed
-- Simplified build and release commands 
+- Simplified build and release command APIs
 
 ### Deprecated
 - N/A
@@ -19,7 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - N/A
 
 ### Fixed
-- Configured port not being used
+- Configured port not being used by the `geb server` command
+- Fixed issues with generating a site template with `geb release --with_template`, it now packages a sanitized version of `geb.config.yml`
 
 ### Security
 - N/A

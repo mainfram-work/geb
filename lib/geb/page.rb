@@ -183,38 +183,18 @@ module Geb
       return_parsed_content = content.dup
 
       # get the site variables, this method automatically loads release vs local variables
-      site_variables = @site.site_config.get_site_variables()
+      site_variables = @site.site_config.get_site_variables() || {}
 
-      # initialize special variables for the site
-      special_variables = {}
-
-      # add special variables to site variables
-      special_variables['page_relative_path'] = @path.gsub(@site.site_path, '')
-
-      # extract the page title from <title> tag and add it to the site variable
-      special_variables['page_title'] = content.match(PAGE_TITLE_PATTERN)[1] if content.match(PAGE_TITLE_PATTERN)
-
-      # set the site name
-      special_variables['site_name'] = @site.site_config.site_name
-
-      # set the geb version special variable
-      special_variables['geb_version'] = Geb::VERSION
-
-      # check if the site config has site variables
-      if site_variables && !site_variables.empty?
-
-        # find _{name}_ and replace with the site variable value
-        return_parsed_content.gsub!(VARIABLE_PATTERN) do |match|
-          key = match[2..-3] # remove _{ and }_
-          site_variables[key] || match
-        end # content.gsub!
-
-      end # if
+      # set the special variables
+      site_variables['page_relative_path']  = @path.gsub(@site.site_path, '')
+      site_variables['page_title']          = content.match(PAGE_TITLE_PATTERN)[1] if content.match(PAGE_TITLE_PATTERN)
+      site_variables['site_name']           = @site.site_config.site_name
+      site_variables['geb_version']         = Geb::VERSION
 
       # find _{name}_ and replace with the site variable value
       return_parsed_content.gsub!(VARIABLE_PATTERN) do |match|
         key = match[2..-3] # remove _{ and }_
-        special_variables[key] || match
+        site_variables[key] || match
       end # content.gsub!
 
       # return the parsed content with variables handled

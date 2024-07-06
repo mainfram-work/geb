@@ -327,4 +327,136 @@ class TestConfig < Minitest::Test
 
   end # test "that the template paths are returned as config value if set"
 
+  test "that generate config file creates a new config file" do
+
+    site = Geb::Site.new
+    site_path = File.join(File.dirname(__FILE__), "..", "files", "test-site")
+
+    site.instance_variable_set :@site_path, site_path
+
+    config = Geb::Config.new(site)
+
+    refute_empty config.instance_variable_get(:@config)
+
+    Dir.mktmpdir do |tmp_dir|
+
+      config.generate_config_file(tmp_dir)
+
+      assert File.exist?(File.join(tmp_dir, Geb::Defaults::SITE_CONFIG_FILENAME))
+
+      new_generated_config = YAML.load_file(File.join(tmp_dir, Geb::Defaults::SITE_CONFIG_FILENAME))
+
+      refute_empty new_generated_config
+
+      assert_nil new_generated_config['site_name']
+      assert_nil new_generated_config['remote_uri']
+      assert_nil new_generated_config['remote_path']
+
+    end # Dir.mktmpdir
+
+  end # test "that generate config file creates a new config file"
+
+  test "that generate config file raises an error if the destination directory doesn't exist" do
+
+    site = Geb::Site.new
+    site_path = File.join(File.dirname(__FILE__), "..", "files", "test-site")
+
+    site.instance_variable_set :@site_path, site_path
+
+    config = Geb::Config.new(site)
+
+    refute_empty config.instance_variable_get(:@config)
+
+    error = assert_raises(Geb::Config::DestinationDirMissing) do
+      config.generate_config_file("fake_dir")
+    end
+
+    assert_includes error.message, "Specified directory [fake_dir] missing."
+
+  end # test "that generate config file raises an error if the destination directory doesn't exist"
+
+  test "that generate config file raises an error if the config file already exists" do
+
+    site = Geb::Site.new
+    site_path = File.join(File.dirname(__FILE__), "..", "files", "test-site")
+
+    site.instance_variable_set :@site_path, site_path
+
+    config = Geb::Config.new(site)
+
+    refute_empty config.instance_variable_get(:@config)
+
+    Dir.mktmpdir do |tmp_dir|
+
+      File.open(File.join(tmp_dir, Geb::Defaults::SITE_CONFIG_FILENAME), 'w') { |f| f.write("test") }
+
+      error = assert_raises(Geb::Config::ConfigAlreadyExists) do
+        config.generate_config_file(tmp_dir)
+      end
+
+      assert_includes error.message, "Specified directory [#{tmp_dir}] already has geb config."
+
+    end # Dir.mktmpdir
+
+  end # test "that generate config file raises an error if the config file already exists"
+
+  test "that generate config sucessfully generates all configuration fields" do
+
+    site = Geb::Site.new
+    site_path = File.join(File.dirname(__FILE__), "..", "files", "test-site")
+
+    site.instance_variable_set :@site_path, site_path
+
+    config = Geb::Config.new(site)
+
+    refute_empty config.instance_variable_get(:@config)
+
+    test_config = {}
+    test_config['site_name']                        = "test-site"
+    test_config['remote_uri']                       = "https://primjer.hr"
+    test_config['remote_path']                      = "/var/www/html"
+    test_config['local_port']                       = 737373
+    test_config['output_dir']                       = "publicni"
+    test_config['assets_dir']                       = "assetsni"
+    test_config['page_extensions']                  = [".erb", ".htm", ".php"]
+    test_config['template_paths']                   = ["templates", "partials"]
+    test_config['template_and_partial_identifier']  = "erb"
+    test_config['site_variables']                   = {
+      'local'   => {'site_name' => 'test-site', 'site_url' => 'http://localhost:737373',  'site_path' => '/var/www/html' },
+      'release' => {'site_name' => 'test-site', 'site_url' => 'https://primjer.hr',       'site_path' => '/var/www/html' }
+    }
+
+    config.instance_variable_set :@config, test_config
+
+    Dir.mktmpdir do |tmp_dir|
+
+      config.generate_config_file(tmp_dir)
+
+      assert File.exist?(File.join(tmp_dir, Geb::Defaults::SITE_CONFIG_FILENAME))
+
+      new_generated_config = YAML.load_file(File.join(tmp_dir, Geb::Defaults::SITE_CONFIG_FILENAME))
+
+      refute_empty new_generated_config
+
+      assert_nil new_generated_config['site_name']
+      assert_nil new_generated_config['remote_uri']
+      assert_nil new_generated_config['remote_path']
+
+      assert_equal test_config['local_port'],                       new_generated_config['local_port']
+      assert_equal test_config['output_dir'],                       new_generated_config['output_dir']
+      assert_equal test_config['assets_dir'],                       new_generated_config['assets_dir']
+      assert_equal test_config['page_extensions'],                  new_generated_config['page_extensions']
+      assert_equal test_config['template_paths'],                   new_generated_config['template_paths']
+      assert_equal test_config['template_and_partial_identifier'],  new_generated_config['template_and_partial_identifier']
+      assert_equal test_config['site_variables']['local'],          new_generated_config['site_variables']['local']
+      refute_equal test_config['site_variables']['release'],        new_generated_config['site_variables']['release']
+
+      assert_empty new_generated_config['site_variables']['release']['site_name']
+      assert_empty new_generated_config['site_variables']['release']['site_url']
+      assert_empty new_generated_config['site_variables']['release']['site_path']
+
+    end # Dir.mktmpdir
+
+  end # test "that generate config sucessfully generates all configuration fields"
+
 end # class TestConfig < Minitest::Test

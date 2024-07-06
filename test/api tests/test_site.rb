@@ -629,6 +629,55 @@ class SiteTest < Geb::ApiTest
 
   end # test "that the build pages method throws an exception if the page output throws an exception"
 
+  test "that the build pages methods builds pages with custom page extensions" do
+
+      site = Geb::Site.new
+      test_site_path = "test/site"
+
+      Dir.mktmpdir do |temp_dir|
+
+        site_path = File.join(temp_dir, test_site_path)
+
+        site_pages = []
+        site_pages << File.join(site_path, "index.html")
+        site_pages << File.join(site_path, "about.htm")
+        site_pages << File.join(site_path, "contact.html")
+        site_pages << File.join(site_path, "sub/page.html")
+        site_pages << File.join(site_path, "sub/sub/page.htm")
+        site_pages << File.join(site_path, "assets/styles/foo.css")
+        site_pages.sort!
+
+        FileUtils.mkdir_p(site_path)
+
+        site_pages.each do |page|
+          FileUtils.mkdir_p(File.dirname(page))
+          FileUtils.touch(page)
+        end
+
+        config = mock('config')
+        config.stubs(:site_name).returns("site")
+        config.stubs(:output_dir).returns("output")
+        config.stubs(:page_extensions).returns([".htm", ".css"])
+        config.stubs(:template_and_partial_identifier).returns(Geb::Defaults::TEMPLATE_AND_PARTIAL_IDENTIFIER)
+
+        page_mock = mock('page')
+        page_mock.expects(:build).times(3)
+        Geb::Page.expects(:new).returns(page_mock).with(site, File.join(site_path, "about.htm")).once
+        Geb::Page.expects(:new).returns(page_mock).with(site, File.join(site_path, "sub/sub/page.htm")).once
+        Geb::Page.expects(:new).returns(page_mock).with(site, File.join(site_path, "assets/styles/foo.css")).once
+
+        site.instance_variable_set(:@loaded, true)
+        site.instance_variable_set(:@site_path, site_path)
+        site.instance_variable_set(:@site_config, config)
+        site.expects(:clear_site_output_directory).once
+        site.expects(:output_site).once
+
+        site.build_pages
+
+      end # Dir.mktmpdir
+
+  end # test "that the build pages methods builds pages with custom page extensions"
+
   test "that get page files method returns a list of page files using defaults" do
 
     site = Geb::Site.new
@@ -661,11 +710,10 @@ class SiteTest < Geb::ApiTest
 
   end # test "that get page files method returns a list of page files using defaults"
 
-  test "that get page files method returns a list of page files using custom page extension" do
+  test "that get page files method returns a list of page files using custom page extensions" do
 
     site = Geb::Site.new
     test_site_path = "test/site"
-    test_page_extension = [".htm"]
 
     Dir.mktmpdir do |temp_dir|
 
@@ -675,6 +723,7 @@ class SiteTest < Geb::ApiTest
       site_pages << File.join(site_path, "index.htm")
       site_pages << File.join(site_path, "about.html")
       site_pages << File.join(site_path, "contact.htm")
+      site_pages << File.join(site_path, "styles/test.css")
       site_pages << File.join(site_path, "sub/page.htm")
       site_pages << File.join(site_path, "sub/sub/page.html")
       site_pages.sort!
@@ -686,13 +735,39 @@ class SiteTest < Geb::ApiTest
         FileUtils.touch(page)
       end
 
-      pages = site.send(:get_page_files, site_path, test_page_extension)
+      pages = site.get_page_files(site_path, [".htm"])
 
-      assert_equal site_pages.length - 2, pages.length
+      assert_equal 3, pages.length
+      assert_includes pages, File.join(site_path, "index.htm")
+      refute_includes pages, File.join(site_path, "about.html")
+      assert_includes pages, File.join(site_path, "contact.htm")
+      refute_includes pages, File.join(site_path, "styles/test.css")
+      assert_includes pages, File.join(site_path, "sub/page.htm")
+      refute_includes pages, File.join(site_path, "sub/sub/page.html")
+
+      pages = site.get_page_files(site_path, [".htm", ".css"])
+
+      assert_equal 4, pages.length
+      assert_includes pages, File.join(site_path, "index.htm")
+      refute_includes pages, File.join(site_path, "about.html")
+      assert_includes pages, File.join(site_path, "contact.htm")
+      assert_includes pages, File.join(site_path, "styles/test.css")
+      assert_includes pages, File.join(site_path, "sub/page.htm")
+      refute_includes pages, File.join(site_path, "sub/sub/page.html")
+
+      pages = site.get_page_files(site_path, [".htm", "css"])
+
+      assert_equal 4, pages.length
+      assert_includes pages, File.join(site_path, "index.htm")
+      refute_includes pages, File.join(site_path, "about.html")
+      assert_includes pages, File.join(site_path, "contact.htm")
+      assert_includes pages, File.join(site_path, "styles/test.css")
+      assert_includes pages, File.join(site_path, "sub/page.htm")
+      refute_includes pages, File.join(site_path, "sub/sub/page.html")
 
     end # Dir.mktmpdir
 
-  end # test "that get page files method returns a list of page files using custom page extension"
+  end # test "that get page files method returns a list of page files using custom page extensions"
 
   test "that the get page files method returns a list of page files while ignoring files with ignore pattern" do
 
@@ -923,6 +998,7 @@ class SiteTest < Geb::ApiTest
     config = mock('config')
     config.stubs(:template_paths).returns(template_paths_config)
     config.stubs(:output_dir).returns(Geb::Defaults::OUTPUT_DIR)
+    config.stubs(:generate_config_file)
     site.instance_variable_set(:@site_path, test_site_path)
     site.instance_variable_set(:@loaded, true)
     site.instance_variable_set(:@site_config, config)

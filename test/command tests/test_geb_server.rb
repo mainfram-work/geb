@@ -100,6 +100,27 @@ class TestGebCommandServer < Geb::CliTest
 
   end # test "that command default executes"
 
+  test "that command default executes with debug option set to true" do
+
+    copy_test_site()
+    server_port  = Geb::Test::WebServerProxy.find_available_port()
+    geb_command = "geb server --port #{server_port} --debug"
+
+    server_up = lambda do |output, error_output|
+      output.include?("Server running on http://localhost:#{server_port}")
+    end
+
+    run_command_with_timeout(geb_command, break_condition: server_up) do |output, error_output|
+
+      assert_includes output, "Loading site from path #{Dir.pwd}"
+      assert_includes output, "Server running on http://localhost:#{server_port}"
+      assert_includes output, "Watching for changes in [#{Dir.pwd}]"
+      assert_match(/Building .* pages locally/, output)
+
+    end # run_command_with_timeout
+
+  end # test "that command default executes"
+
   test "that command handles being executed in a non-site directory" do
 
     # create a temporary directory

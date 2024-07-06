@@ -22,11 +22,13 @@ module Geb
     # @param site [Geb::Site] the site instance to serve
     # @param port [Integer] the port to run the server on
     # @param auto_build [Boolean] whether to start the file watcher
-    def initialize(site, port, auto_build)
+    # @param debug [Boolean] whether to enable full output during site rebuild
+    def initialize(site, port, auto_build, debug)
 
       # set the site and port
       @site = site
       @port = port
+      @debug = debug
 
       # get the http server instance and file watcher if auto_build is set
       @http_server  = get_http_server()
@@ -104,8 +106,12 @@ module Geb
           # attempt to rebuild the site, log any errors but do not stop watching
           begin
 
-            # rebuild the site, suppress log output
-            Geb.no_log { @site.build() }
+            # rebuild the site, suppress log output if deubg is not set
+            if @debug
+              @site.build()
+            else
+              Geb.no_log { @site.build() }
+            end # if else
 
           rescue Geb::Error => e
             Geb.log "\nError rebuilding site: #{e.message}"
