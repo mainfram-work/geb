@@ -1,0 +1,26 @@
+
+<style>
+  .geb-footer {
+    display: flex; flex-direction: column; justify-content: center; gap: 1rem; margin-top: 1rem; margin-bottom: 2rem;
+    .geb-badge-container { display: flex; justify-content: center; gap: 1rem; }
+    a { text-decoration: none; color: inherit; border: none;  img { cursor: pointer; } }
+    code { width: auto; display: none; margin: 1rem auto 0; background-color: #f8f9fa; padding: 0.3rem; border-radius: 0.25rem; font-size: 0.7rem;}
+  }
+</style>
+<script>
+  function toggle_geb_code() {
+    const code = document.querySelector('.geb-footer code');
+    code.innerHTML = code.innerHTML.replace('[site_url]', window.location.origin);
+    code.style.display = code.style.display === 'none' ? 'block' : 'none';
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+</script>
+<div class="geb-footer">
+  <div class="geb-badge-container">
+    <a href="https://github.com/mainfram-work/geb" target="_blank"><img src="https://img.shields.io/badge/built_with-geb-9FD88D" alt="Built with Geb" /></a>
+    <a href="javascript:toggle_geb_code()"><img src="https://img.shields.io/badge/geb-site_template_available-9FD88D" alt="Geb Site Template Available" /></a>
+  </div>  
+  <code style="display: none;">
+    $ gem install geb<br />$ geb init new_site --template [site_url]
+  </code>
+</div>

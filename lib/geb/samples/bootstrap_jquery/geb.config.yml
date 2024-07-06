@@ -65,7 +65,7 @@ local_port: 4000
 # The site template files will be archived into geb-template.tar.gz file and put within
 # the release directory.
 # e.g. template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
-template_paths: ['assets', 'shared', '**/*.html', 'site.webmanifest']
+template_paths: ['assets', 'shared', '**/*.html', 'site.webmanifest', 'geb.config.yml']
 
 # If you want to specify site variables, you can do so here.  These variables will be available
 # to the site as site.site_variables.  You can specify different variables for different environments
