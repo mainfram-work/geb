@@ -37,7 +37,7 @@ module Geb
 
     # default values for site pages
     PAGE_EXTENSIONS           =                                   # list of file extention to treat as pages
-      ['.md', '.markdown', '.html', '.htm', '.txt', '.js', '.css']
+      ['.md', '.markdown', '.html', '.htm', '.txt', '.js', '.css', '.webmanifest']
     TEMPLATE_AND_PARTIAL_IDENTIFIER  = /^_/                       # filename pattern for templates or partials
 
   end # module Defaults
