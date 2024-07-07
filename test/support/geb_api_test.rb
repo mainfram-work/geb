@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 #
-# This is a Api test base class for Geb.  It provides a consistant setup and
+# This is a Api test base class for Geb.  It provides a consistent setup and
 # teardown for API tests. Currently just stubs the Geb::log and Geb::log_start
-# as not to polute the test output with logging.
+# as not to pollute the test output with logging.
 #
 # @title Geb - Test Support - API Test
 # @author Edin Mustajbegovic <edin@actiontwelve.com>

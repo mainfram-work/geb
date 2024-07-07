@@ -20,7 +20,7 @@ module Geb
     AVAILABLE_TEMPLATES       =                                   # list of bundled templates (first one is the default template)
       ['basic', 'bootstrap_jquery']
     SITE_CONFIG_FILENAME      = 'geb.config.yml'                  # site config file name
-    HTTP_TEMPLATE_CONTENT_TYPES =                               # acceptable remote template content types
+    HTTP_TEMPLATE_CONTENT_TYPES =                                 # acceptable remote template content types
       ['application/x-gzip', 'application/gzip', 'application/octet-stream']
     BUNDLED_TEMPLATES_DIR     =                                   # bundled template directory
       File.join(__dir__, 'samples')
@@ -36,7 +36,7 @@ module Geb
     ASSETS_DIR                = 'assets'                          # location for assets (images, js and css)
 
     # default values for site pages
-    PAGE_EXTENSIONS           =                                   # list of file extention to treat as pages
+    PAGE_EXTENSIONS           =                                   # list of file extension to treat as pages
       ['.md', '.markdown', '.html', '.htm', '.txt', '.js', '.css', '.webmanifest']
     TEMPLATE_AND_PARTIAL_IDENTIFIER  = /^_/                       # filename pattern for templates or partials
 

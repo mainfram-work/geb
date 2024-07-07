@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# The CLI Registry class, registers all the commands and their alises with
+# The CLI Registry class, registers all the commands and their aliases with
 # the Dry::CLI framework.
 #
 # @title Geb - Command Registry

@@ -35,10 +35,10 @@ module Geb
       def initialize(e = ""); super(e, MESSAGE); end
     end # class PageFileReadFailure < Geb::Error
 
-    class PageMissingTemplateDefition < Geb::Error
-      MESSAGE = "Page is missing template defitions but has insert sections defined".freeze
+    class PageMissingTemplateDefinition < Geb::Error
+      MESSAGE = "Page is missing template definition but has insert sections defined".freeze
       def initialize(e = ""); super(e, MESSAGE); end
-    end # class PageMissingTemplateDefition < Geb::Error
+    end # class PageMissingTemplateDefinition < Geb::Error
 
     class FailedToOutputPage < Geb::Error
       MESSAGE = "Failed to create output page".freeze
@@ -94,7 +94,7 @@ module Geb
     # parse the page content for templates and partials
     def parse
 
-      # initalise the new page content
+      # initialize the new page content
       @parsed_content = @content.dup
 
       # parse the content for templates, partials and site variables
@@ -108,10 +108,10 @@ module Geb
     # templates can be based on templates.
     # @param content [String] the content to parse for templates. Default is the parsed page content.
     # @return [String] the parsed content, with no templates to parse.
-    # @raise [PageMissingTemplateDefition] if a template sections are found but the template declaration is not.
+    # @raise [PageMissingTemplateDefinition] if a template sections are found but the template declaration is not.
     def parse_for_templates(content = @parsed_content)
 
-      # initialise a flag to keep looking for templates
+      # initialize a flag to keep looking for templates
       keep_looking_for_template = true
 
       # keep looking for template until we find them all
@@ -122,7 +122,7 @@ module Geb
         template_sections = Geb::Template.extract_sections_for_template(content)
 
         # raise an error if template sections are defined but the template is not
-        raise PageMissingTemplateDefition.new(page_name) if template_sections.any? && template_path.nil?
+        raise PageMissingTemplateDefinition.new(page_name) if template_sections.any? && template_path.nil?
 
         # check if we found a template
         if template_path.nil?
@@ -148,15 +148,15 @@ module Geb
     end # def parse_for_templates
 
     # parse the content for partials. This method will keep looking for partials until all partials are found as
-    # partials can be embeded in other partials.
+    # partials can be embedded in other partials.
     # @param content [String] the content to parse for partials. Default is the parsed page content.
     # @return [String] the parsed content, with no partials to parse.
     def parse_for_partials(content = @parsed_content)
 
-      # initialise a flag to keep looking for partials
+      # initialize a flag to keep looking for partials
       keep_looking_for_partials = true
 
-      # keep looking for partials until we find them all (partials can be embeded in other partials)
+      # keep looking for partials until we find them all (partials can be embedded in other partials)
       while keep_looking_for_partials
 
         # attempt to extract the partial paths

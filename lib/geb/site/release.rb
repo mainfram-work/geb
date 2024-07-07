@@ -22,7 +22,7 @@ module Geb
       # @raise SiteNotLoadedError if the site is not loaded
       def release
 
-        # make sure the site is laoded, if not, raise an error
+        # make sure the site is loaded, if not, raise an error
         raise Geb::Site::SiteNotLoadedError.new("Could not release the site.") unless @loaded
 
         # make sure the site is not already releasing, to prevent recursive releases

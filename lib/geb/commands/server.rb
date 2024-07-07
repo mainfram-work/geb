@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 #
-# Build command definition, based on Dry::CLI framework
-# Run a webrick http server to view the site output, it optionally monitors
+# Server command definition, based on Dry::CLI framework
+# Run a webrick http server to view the site output, it also monitors
 # for file changes and rebuilds the site when a file changes.
 #
-# @title Geb - Remote Command
+# @title Geb - Server Command
 # @author Edin Mustajbegovic <edin@actiontwelve.com>
 # @copyright 2024 Edin Mustajbegovic
 # @license MIT
@@ -32,7 +32,7 @@ module Geb
         # @param options [Hash] the options hash for the command
         def call(**options)
 
-          # initialise a site and load it from the current directory
+          # initialize a site and load it from the current directory
           site = Geb::Site.new
           site.load(Dir.pwd)
 

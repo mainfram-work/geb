@@ -36,10 +36,8 @@ class TestGebCommandVersion < Geb::CliTest
 
   test "that command default executes" do
 
-    # call geb auto command and capture output and error
     stdout, stderr, status = Open3.capture3('geb version')
 
-    # assert that the output contains the expected string
     assert status.success?
     assert_includes stdout, "Geb version #{Geb::VERSION}"
     assert_empty stderr

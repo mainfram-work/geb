@@ -31,7 +31,7 @@ module Geb
 
   end # class Error < StandardError
 
-  # initialise a flag for suppressing output
+  # initialize a flag for suppressing output
   @@suppress_log_output = false
 
   # log method for printing messages to the console

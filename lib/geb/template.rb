@@ -41,12 +41,12 @@ module Geb
       @@loaded_templates = {}
     end # def self.expire_cache
 
-    # class method to initialise a template if it is not already loaded, otherwise, return the cached template
+    # class method to initialize a template if it is not already loaded, otherwise, return the cached template
     # @param template_path [String] the path to the template file
     # @return [Geb::Template] the template object
     def self.load(template_path)
 
-      # initialise a return template object
+      # initialize a return template object
       return_template = nil
 
       # check if the template is already loaded
@@ -91,7 +91,7 @@ module Geb
     # @note the function looks for tags like this <% start: header %> ... <% end: header %> in the page content and returns whats in between
     def self.extract_sections_for_template(page_content)
 
-      # initialise the sections for the template hash
+      # initialize the sections for the template hash
       sections_for_template = {}
 
       # scan the page content for sections and add them to the hash
@@ -117,7 +117,7 @@ module Geb
     # @return [Geb::Template] the template object
     def initialize(template_path)
 
-      # set the specified template path and initialise the content
+      # set the specified template path and initialize the content
       @path = template_path
       @content = nil
 

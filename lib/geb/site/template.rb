@@ -107,7 +107,7 @@ module Geb
 
       # validate the template URL. It checks if the URL is accessible and is a tar.gz file.
       # if the URL is not accessible, it tries to find the template by appending TEMPLATE_ARCHIVE_FILENAME
-      # this is to facilitate specifiying a top level URL. The method returns the URL if it is valid.
+      # this is to facilitate specifying a top level URL. The method returns the URL if it is valid.
       # @param template_url [String] the URL to the template
       # @raise InvalidTemplateURL if the URL is not accessible or is not a tar.gz file
       # @return [String] the validated template URL

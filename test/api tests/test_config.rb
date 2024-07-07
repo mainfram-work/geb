@@ -400,7 +400,7 @@ class TestConfig < Minitest::Test
 
   end # test "that generate config file raises an error if the config file already exists"
 
-  test "that generate config sucessfully generates all configuration fields" do
+  test "that generate config successfully generates all configuration fields" do
 
     site = Geb::Site.new
     site_path = File.join(File.dirname(__FILE__), "..", "files", "test-site")
@@ -457,6 +457,6 @@ class TestConfig < Minitest::Test
 
     end # Dir.mktmpdir
 
-  end # test "that generate config sucessfully generates all configuration fields"
+  end # test "that generate config successfully generates all configuration fields"
 
 end # class TestConfig < Minitest::Test

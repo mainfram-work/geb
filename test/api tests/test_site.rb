@@ -481,7 +481,7 @@ class SiteTest < Geb::ApiTest
   test "that the load site method looks up the chain to find the site directory" do
 
     site = Geb::Site.new
-    test_site_path = "find/site/here/nothere"
+    test_site_path = "find/site/here/notthere"
 
     template_dir_sequence = sequence('template_directory_has_config_sequence')
 
@@ -495,7 +495,7 @@ class SiteTest < Geb::ApiTest
 
     full_site_path = File.join(Dir.pwd, test_site_path)
 
-    assert_equal site.site_path, full_site_path.gsub('/nothere', '')
+    assert_equal site.site_path, full_site_path.gsub('/notthere', '')
     assert site.loaded
 
   end # test "that the load site method looks up the chain to find the site directory"
@@ -1070,7 +1070,7 @@ class SiteTest < Geb::ApiTest
 
   end # test "that the template archive release path is constructed correctly"
 
-  test "that launch remot method executes as expected" do
+  test "that launch remote method executes as expected" do
 
     site = Geb::Site.new
     test_site_path = "test/site"

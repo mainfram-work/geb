@@ -27,7 +27,7 @@ module Geb
       # @raise SiteNotLoaded if the site is not loaded
       def build
 
-        # make sure the site is laoded, if not, raise an error
+        # make sure the site is loaded, if not, raise an error
         raise SiteNotLoadedError.new("Could not build the site.") unless @loaded
 
         # build the assets and pages
@@ -41,7 +41,7 @@ module Geb
       # @raise SiteNotLoaded if the site is not loaded
       def build_pages
 
-        # make sure the site is laoded, if not, raise an error
+        # make sure the site is loaded, if not, raise an error
         raise SiteNotLoadedError.new("Could not build pages.") unless @loaded
 
         # expire page template and partial caches
@@ -62,7 +62,7 @@ module Geb
           # iterate over the HTML files and build the pages
           page_files.each do |page_file|
 
-            # create a new page object and buid the page into the temporary directory
+            # create a new page object and build the page into the temporary directory
             page = Geb::Page.new(self, page_file)
             page.build(tmp_dir)
 
@@ -97,7 +97,7 @@ module Geb
       # @raise SiteNotLoaded if the site is not loaded
       def build_assets
 
-        # make sure the site is laoded, if not, raise an error
+        # make sure the site is loaded, if not, raise an error
         raise SiteNotLoadedError.new("Could not build assets.") unless @loaded
 
         # get the destination directory for the site output, depending on the release flag
@@ -148,19 +148,19 @@ module Geb
         return File.join(@site_path, @site_config.output_dir, Geb::Defaults::LOCAL_OUTPUT_DIR)
       end # def get_site_local_output_directory
 
-      # get the page files in the specified path, with specified extentions and ignoring files that match the pattern
+      # get the page files in the specified path, with specified extensions and ignoring files that match the pattern
       # @param path [String] the path to the files
-      # @param exts [Array] the extentions to look for, default is Geb::Defaults.PAGE_EXTENSIONS
+      # @param exts [Array] the extensions to look for, default is Geb::Defaults.PAGE_EXTENSIONS
       # @param ignore_files_exp [Regexp] the pattern to ignore files, default is Geb::Defaults.TEMPLATE_AND_PARTIAL_IDENTIFIER
       # @param ignore_directories [Array] the directories to ignore, default is []
       # @return [Array] the array of matched file paths
       # @note the ignore_files_exp and ignore_directories are used to ignore files that are not pages
       def get_page_files(path, exts = Geb::Defaults::PAGE_EXTENSIONS, ignore_files_exp = Geb::Defaults::TEMPLATE_AND_PARTIAL_IDENTIFIER, ignore_directories = [])
 
-        # make sure every page extention specified starts with a dot
+        # make sure every page extension specified starts with a dot
         exts.map! { |ext| ext.start_with?('.') ? ext : ".#{ext}" }
 
-        # get all files in the path with the specified extentions
+        # get all files in the path with the specified extensions
         files = Dir.glob("#{path}/**/*{#{exts.join(',')}}")
 
         # reject files that match the ignore pattern and that are within the output or release directories

@@ -26,7 +26,7 @@ module Geb
         # Call method for the remote command
         def call(*)
 
-          # initialise a new site and load the site from the current directory
+          # initialize a new site and load the site from the current directory
           site = Geb::Site.new
           site.load(Dir.pwd)
 

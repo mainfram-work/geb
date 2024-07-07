@@ -101,7 +101,7 @@ module Geb
           # set the template dir to specified template path if template dir is still nil
           template_dir = template_path if template_dir.nil? # this is the case when the template is a local directory
 
-          # check if the template path is a directory and ontains a geb.config.yml file
+          # check if the template path is a directory and contains a geb.config.yml file
           Geb.log_start "Validating template path #{template_dir.to_s} ... "
           raise InvalidTemplate.new if template_dir.nil?
           raise InvalidTemplate.new unless template_directory_exists?(template_dir)

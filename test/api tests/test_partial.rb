@@ -70,7 +70,7 @@ class PartialTest < Geb::ApiTest
 
   end # test "that self.load returns the template content when the template file exists"
 
-  test "that self.load returns a cached copy of the partial if it was laoded previously" do
+  test "that self.load returns a cached copy of the partial if it was loaded previously" do
 
     assert_empty Geb::Partial.class_variable_set(:@@loaded_partials, {})
 
@@ -89,7 +89,7 @@ class PartialTest < Geb::ApiTest
 
     assert_same partial1, partial2
 
-  end # test "that self.load returns a cached copy of the template if it was laoded previously"
+  end # test "that self.load returns a cached copy of the template if it was loaded previously"
 
   test "that self.process_partials returns the partial content when the partial file exists" do
 

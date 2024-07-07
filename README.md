@@ -310,7 +310,7 @@ To use the variables within templates, partials or pages, simply enclose the sit
 </code></pre>
 </div>
 
-Geb also has three special variables that are available during both `geb build` and `geb release`. These are:
+Geb also has four special variables that are available during both `geb build` and `geb release`. These are:
 
  - **page_title** - Extracted from the page &lt;title&gt;&lt;/title&gt; tag
  - **page_relative_path** - Page path relative to the site URL

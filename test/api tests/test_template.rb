@@ -93,10 +93,8 @@ class TemplateTest < Geb::ApiTest
 
   test "that extract template path, finds the template path in the page content" do
 
-    # initalize the template path
     original_template_path = "shared/templates/_site.html"
 
-    # generate multiline page content
     page_content = <<-PAGE
       <p>foobar</p>
       <% template: #{original_template_path} %>
@@ -125,10 +123,8 @@ class TemplateTest < Geb::ApiTest
 
   test "that extract template path, returns the first entry when multiple template definitions are present" do
 
-    # initalize the template path
     original_template_path = "shared/templates/_site.html"
 
-    # generate multiline page content
     page_content = <<-PAGE
       <p>foobar</p>
       <% template: #{original_template_path} %>
@@ -145,13 +141,11 @@ class TemplateTest < Geb::ApiTest
 
   test "that extract sections for template, finds the sections in the page content" do
 
-    # initalize the sections
     original_sections = {
       "header" => "header content",
       "footer" => "footer content"
     }
 
-    # generate multiline page content
     page_content = <<-PAGE
       <p>foobar</p>
       <% start: header %>
@@ -172,7 +166,6 @@ class TemplateTest < Geb::ApiTest
 
   test "that extract sections for template, returns an empty hash if no sections are found in the page content" do
 
-    # generate multiline page content
     page_content = <<-PAGE
       <p>foobar</p>
       <p>foobar</p>
@@ -188,7 +181,6 @@ class TemplateTest < Geb::ApiTest
 
     original_template_path = "shared/templates/_site.html"
 
-    # initalize the sections
     original_sections = {
       "header" => "header content",
       "footer" => "footer content"

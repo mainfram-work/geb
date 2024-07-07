@@ -145,7 +145,7 @@ class PageTest < Geb::ApiTest
 
   end # test "that page parse_for_templates method works"
 
-  test "that page parse_for_templates method raises an exception if page content has sections but no template defintion" do
+  test "that page parse_for_templates method raises an exception if page content has sections but no template definition" do
 
     page_path = File.join(Dir.pwd, "test", "fixtures", "template.html")
     page_content = <<-PAGE
@@ -169,11 +169,11 @@ class PageTest < Geb::ApiTest
 
     page = Geb::Page.new(site, page_path)
 
-    assert_raises Geb::Page::PageMissingTemplateDefition do
+    assert_raises Geb::Page::PageMissingTemplateDefinition do
       page.parse_for_templates(page_content)
     end # assert_raises
 
-  end # test "that page parse_for_templates method raises an exception if page content has sections but no template defintion"
+  end # test "that page parse_for_templates method raises an exception if page content has sections but no template definition"
 
   test "that page parse_for_partials method works" do
 

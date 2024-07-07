@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 - Bundled site templates had hardcoded geb version, did not use the _{geb_version}_ variable in meta_tags partial.
+- Code documentation tidy
 
 ### Security
 - N/A

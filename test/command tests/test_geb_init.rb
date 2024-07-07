@@ -106,7 +106,7 @@ class TestGebCommandInit < Geb::CliTest
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_includes stdout, "Initialising git repository ... done."
+    assert_includes stdout, "Initializing git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
@@ -139,7 +139,7 @@ class TestGebCommandInit < Geb::CliTest
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    refute_includes stdout, "Initialising git repository ... done."
+    refute_includes stdout, "Initializing git repository ... done."
     assert_includes stdout, "Skipping git repository creation as told."
 
     refute File.directory?(File.join(new_site_path, ".git"))
@@ -170,7 +170,7 @@ class TestGebCommandInit < Geb::CliTest
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_includes stdout, "Initialising git repository ... done."
+    assert_includes stdout, "Initializing git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
@@ -206,7 +206,7 @@ class TestGebCommandInit < Geb::CliTest
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_includes stdout, "Initialising git repository ... done."
+    assert_includes stdout, "Initializing git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
     assert File.directory?(File.join(new_site_path, ".git"))
     assert File.exist?(File.join(new_site_path, ".gitignore"))
@@ -262,7 +262,7 @@ class TestGebCommandInit < Geb::CliTest
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))
 
-    assert_includes stdout, "Initialising git repository ... done."
+    assert_includes stdout, "Initializing git repository ... done."
     refute_includes stdout, "Skipping git repository creation as told."
 
     assert File.directory?(File.join(new_site_path, ".git"))

@@ -18,7 +18,7 @@ require 'listen'
 module Geb
   class Server
 
-    # initialise the http server class with the site and port, use auto_build to start the file watcher.
+    # initialize the http server class with the site and port, use auto_build to start the file watcher.
     # @param site [Geb::Site] the site instance to serve
     # @param port [Integer] the port to run the server on
     # @param auto_build [Boolean] whether to start the file watcher

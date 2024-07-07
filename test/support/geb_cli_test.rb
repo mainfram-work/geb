@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 #
-# This is a CLI test base class for Geb.  It provides a consistant setup and
+# This is a CLI test base class for Geb.  It provides a consistent setup and
 # teardown for CLI tests. Current setup and teardown handle the following
 # tasks:
 #  - It checks the version of the command being tested on the setup and asserts
@@ -186,7 +186,7 @@ module Geb
       # initialize a new mutex
       mutex = Mutex.new
 
-      # initialise a condition variable for signaling
+      # initialize a condition variable for signaling
       condition_variable = ConditionVariable.new
 
       event_thread = Thread.new do

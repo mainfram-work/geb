@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 #
 # Module with some pretty crazy things.
-# Seth is an egyption god of chaos and mischief.  This code is a tribute to him.
-# Some of the thigns here run at the very bassis of the Ruby language and change
+# Seth is an egyptian god of chaos and mischief.  This code is a tribute to him.
+# Some of the things here run at the very basis of the Ruby language and change
 # how standard things work.  This is not for the faint of heart.
 #
 # @title Geb

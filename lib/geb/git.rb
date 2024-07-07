@@ -77,7 +77,7 @@ module Geb
     # @return [void]
     def self.create_git_repo(site_directory)
 
-      Geb.log_start "Initialising git repository ... "
+      Geb.log_start "Initializing git repository ... "
 
       # initialize the git repository
       _, stderr, status = Open3.capture3("git -C #{Shellwords.shellescape(site_directory)} init")
@@ -91,7 +91,7 @@ module Geb
         # create a .gitignore file
         File.open(File.join(site_directory, '.gitignore'), 'w') do |f|
 
-          # ignore everything withint the output folder
+          # ignore everything within the output folder
           f.puts "/output"
           f.puts "/.DS_Store"
 

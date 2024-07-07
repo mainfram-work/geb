@@ -43,7 +43,6 @@ class TestCli < Minitest::Test
 
   test "that all geb commands show help correctly" do
 
-    # build a hash of all commands (key is command name, value is commmand class instance)
     commands = {}
     commands["release"] = Geb::CLI::Commands::Release.new
     commands["build"]   = Geb::CLI::Commands::Build.new

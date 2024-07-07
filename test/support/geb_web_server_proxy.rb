@@ -87,7 +87,7 @@ module Geb
         return "http://localhost:#{@server.config[:Port]}"
       end # def base_url
 
-      # stub a reques, this is the whole point of this class
+      # stub a request, this is the whole point of this class
       # @param url [String] the url to stub
       # @param headers [Hash] the headers to return
       # @param body [String] the body to return (optional)

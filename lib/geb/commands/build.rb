@@ -28,7 +28,7 @@ module Geb
         # Call method for the build command
         def call(**options)
 
-          # initialise a new site and load the site from the current directory
+          # initialize a new site and load the site from the current directory
           site = Geb::Site.new
           site.load(Dir.pwd)
 

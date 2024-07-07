@@ -40,12 +40,12 @@ module Geb
       @@loaded_partials = {}
     end # def self.expire_cache
 
-    # class method to initialise a partial if it is not already loaded, otherwise, return the cached partial
+    # class method to initialize a partial if it is not already loaded, otherwise, return the cached partial
     # @param partial_path [String] the path to the partial file
     # @return [Geb::Partial] the partial object
     def self.load(partial_path)
 
-      # initialise a return partial object
+      # initialize a return partial object
       return_partial = nil
 
       # check if the partial is already loaded
@@ -78,7 +78,7 @@ module Geb
     # @raise [PartialFileReadFailure] if the partial file could not be read
     def self.process_partials(site_path, page_content)
 
-      # initialise a counter to count the number of partials found on the page
+      # initialize a counter to count the number of partials found on the page
       partial_count = 0
 
       # initialize return page content
@@ -115,7 +115,7 @@ module Geb
     # @return [String] the content of the partial file
     attr_reader :content
 
-    # initialise a new partial object
+    # initialize a new partial object
     # @param partial_path [String] the path to the partial file
     # @raise [PartialFileNotFound] if the partial file does not exist
     # @raise [PartialFileReadFailure] if the partial file could not be read

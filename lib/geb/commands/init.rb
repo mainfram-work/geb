@@ -21,7 +21,7 @@ module Geb
       class Init < Dry::CLI::Command
 
         # command description, usage and examples
-        desc "Initialise geb site, creates folder locations, git repository and initial file structures"
+        desc "Initialize geb site, creates folder locations, git repository and initial file structures"
         example ["new_site ", "new_site [options]", "new_site --skip_template --skip_git"]
 
         # define project name command argument
@@ -30,7 +30,7 @@ module Geb
         # define command options
         option :template,       type: :string,  required: false,  desc: "Template site, either a path to a folder or one of the following: #{Geb::Defaults::AVAILABLE_TEMPLATES.join(", ")}. Default: #{Geb::Defaults::AVAILABLE_TEMPLATES.first}"
         option :skip_template,  type: :boolean, default: false,   desc: "Skip generating a site from template, ignores the template option."
-        option :skip_git,       type: :boolean, default: false,   desc: "Skip initialising git repository"
+        option :skip_git,       type: :boolean, default: false,   desc: "Skip initializing git repository"
         option :force,          type: :boolean, default: false,   desc: "Force overwrite of existing files and git repository. Use with caution."
 
         # call method for the init command

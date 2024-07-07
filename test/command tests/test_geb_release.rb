@@ -72,10 +72,8 @@ class TestGebCommandRelease < Geb::CliTest
 
     copy_test_site()
 
-    # call geb auto command and capture output and error
     _, stderr, status = Open3.capture3('geb release')
 
-    # assert that the output contains the expected string
     assert status.success?
     assert_empty stderr
 
@@ -83,16 +81,12 @@ class TestGebCommandRelease < Geb::CliTest
 
   test "that command handles being executed in a non-site directory" do
 
-    # create a temporary directory
     Dir.mktmpdir do |dir|
 
-      # change the current directory to the temporary directory
       Dir.chdir(dir)
 
-      # call geb auto command and capture output and error
       _, stderr, status = Open3.capture3('geb release')
 
-      # assert that the output contains the expected string
       assert status.success?
       refute_empty stderr
 
