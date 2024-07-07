@@ -1,8 +1,8 @@
 # Geb
 [![Gem Version](https://img.shields.io/gem/v/geb.svg)](https://rubygems.org/gems/geb)
 [![Changelog](https://img.shields.io/badge/Changelog-blue.svg)](CHANGELOG.md)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-blue.svg)](CODE_OF_CONDUCT.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Geb is a powerful and intuitive static website manager and builder named after the ancient Egyptian god Geb, the deity of the Earth. Just as Geb provides a stable foundation for the world, our software offers a robust and essential foundation for building and managing static websites, which form the very bedrock of the web.
 
@@ -67,7 +67,7 @@ Geb has several commands to help you manage your site. running "geb help" will l
 $ geb help
 Commands:
   geb build                    # Build the full site, includes pages and assets
-  geb init SITE_PATH           # Initialise geb site, creates folder locations, git repository and initial file structures
+  geb init SITE_PATH           # Initialize geb site, creates folder locations, git repository and initial file structures
   geb release                  # Builds the release version of the site (pages and assets)
   geb remote                   # Launch remote ssh session using the config file settings
   geb server                   # Start a local server to view the site output (runs build first), uses webrick
@@ -149,7 +149,7 @@ To publish the site template along with your site, you will need to specify the 
 $ cd ~/projects/new_site
 $ geb release --with_template
 ```
-Geb will generate `geb-template.tar.gz` within the site release directory, which you can then upload using `geb upload` command or what other mechanisms you plan to use to deploy the finished site.
+Geb will generate `geb-template.tar.gz` within the site release directory, which you can then upload using `geb upload` command or whatever other mechanisms you plan to use to deploy the finished site.
 
 To use an already published template, simply pass the site URL to `geb init` command.
 ```bash
@@ -181,7 +181,7 @@ new_site
       ├── _footer.html          # footer partial
       ├── _global_assets.html   # global assets partial (js and css references)
       ├── _header.html          # header partial
-      ├── _meta_tags.html       # site mata tags partial
+      ├── _meta_tags.html       # site meta tags partial
     ├── templates               # templates directory
       ├── _blog_post.html       # template for blog pages
       ├── _site.html            # template for general site pages
@@ -278,12 +278,12 @@ Below is the Page Example above, processed by `geb build` command.
   - Obviously, the "start: what_ever_name" -> "end: what_ever_name" must have matching "names"
   - Partials are used to include common content in pages and templates. They are not served directly.
   - Partials can be nested, but be careful not to create circular references.
-  - A note on tags, <%= partial ... %> and <%= insert ... %> have and equal sign, while <% template ... %>, <% start ... %>, <% end ... %> do not. The reason is partial and insert actually change content where they are, while other tags are instructions.
+  - A note on tags, <%= partial ... %> and <%= insert ... %> have and equal sign, while <% template ... %>, <% start ... %>, <% end ... %> do not. The reason is partials and inserts change content where they are, while other tags are instructions.
   - That's about it... happy coding!
 
 ## Site Variables
 
-Geb supports a concept of site variables. In the geb configuration file you can specify site variables that are merged into the pages once templates and partials have been parsed.
+Geb supports the concept of site variables. In the geb configuration file, you can specify site variables that are merged into the pages once templates and partials have been parsed.
 
 Here is an example of what `geb.config.yml` may contain:
 
@@ -334,8 +334,8 @@ Initialise geb site, creates folder locations, git repository and initial file s
 $ geb init SITE_PATH [--template=VALUE] [--skip-template] [--skip-git] [--force]
 ```
 - `--template=VALUE`: Template site, either a path or one of the following: bootstrap_jquery, basic
-- `--[no-]skip-template`: Skip generating a site from template
-- `--[no-]skip-git`: Skip initialising git repository
+- `--[no-]skip-template`: Skip generating a site from a template
+- `--[no-]skip-git`: Skip initializing the git repository
 - `--[no-]force`: Force overwrite of existing files and git repository
 
 ### geb release
@@ -386,7 +386,7 @@ This roadmap outlines the planned features and improvements for future versions 
 - **Improved Documentation**: Expand the documentation with more examples and tutorials.
 
 **Improvements**
-- **Windows Support**: Test and build Geb on windows operating system
+- **Windows Support**: Test and build Geb on Windows operating system
 - **Better Testing**: Ability to better test `geb upload` and `geb remote` commands.
 
 ## Development
@@ -402,7 +402,7 @@ Gab has the following dependencies
 
  The development environment has the following dependencies:
 
- - [Rake](https://ruby.github.io/rake/) - a Make-like program implemented in Ruby. 
+ - [Rake](https://ruby.github.io/rake/) - a Make-like program implemented in Ruby.
  - [minitest](https://github.com/minitest/minitest) - provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking.
  - [webmock](https://github.com/bblimke/webmock) - library for stubbing and setting expectations on HTTP requests in Ruby.
  - [mocha](https://github.com/freerange/mocha) - a Ruby library for mocking and stubbing.
