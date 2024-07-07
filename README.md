@@ -1,5 +1,5 @@
 # Geb
-[![Gem Version](https://img.shields.io/gem/v/geb.svg)](https://rubygems.org)
+[![Gem Version](https://img.shields.io/gem/v/geb.svg)](https://rubygems.org/gems/geb)
 [![Changelog](https://img.shields.io/badge/Changelog-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-blue.svg)](CODE_OF_CONDUCT.md)
