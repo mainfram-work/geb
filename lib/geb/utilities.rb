@@ -50,6 +50,20 @@ module Geb
     print message unless @@suppress_log_output
   end # def self.log
 
+  # log method for printing important messages to the console
+  # @param message [String] the message to print
+  def self.log_important(message)
+
+    # make sure the output is not suppressed
+    unless @@suppress_log_output
+      puts "\n----------| !!! IMPORTANT !!! |--------------------------\n\n"
+      puts message
+      puts "\n---------------------------------------------------------\n"
+      puts "\n"
+    end # unless
+
+  end # def self.log_important
+
   # method to suppress log output within a block
   # @return [Object] the return value of the block
   # @yield the block to suppress log output

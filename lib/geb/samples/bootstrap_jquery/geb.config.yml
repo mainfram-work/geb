@@ -67,6 +67,9 @@ local_port: 4000
 # e.g. template_paths: ["assets", "shared", "*.html", "site.webmanifest"]
 template_paths: ['assets', 'shared', '**/*.html', 'site.webmanifest', 'geb.config.yml']
 
+# Template message is a message that is displayed when the site is used as a template.
+template_message: "Please remember to uncomment the site_variables section in the geb.config.yml file and update for your site. Some templates and partials use site_url, which needs to be aligned with the local_port configuration in the geb.config.yml file."
+
 # If you want to specify site variables, you can do so here.  These variables will be available
 # to the site as site.site_variables.  You can specify different variables for different environments
 # by specifying the environment name and the variables for that environment. Site variables are

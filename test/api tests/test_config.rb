@@ -420,6 +420,7 @@ class TestConfig < Minitest::Test
     test_config['assets_dir']                       = "assetsni"
     test_config['page_extensions']                  = [".erb", ".htm", ".php"]
     test_config['template_paths']                   = ["templates", "partials"]
+    test_config['template_message']                 = "This is a test message"
     test_config['template_and_partial_identifier']  = "erb"
     test_config['site_variables']                   = {
       'local'   => {'site_name' => 'test-site', 'site_url' => 'http://localhost:737373',  'site_path' => '/var/www/html' },
@@ -447,6 +448,7 @@ class TestConfig < Minitest::Test
       assert_equal test_config['assets_dir'],                       new_generated_config['assets_dir']
       assert_equal test_config['page_extensions'],                  new_generated_config['page_extensions']
       assert_equal test_config['template_paths'],                   new_generated_config['template_paths']
+      assert_equal test_config['template_message'],                 new_generated_config['template_message']
       assert_equal test_config['template_and_partial_identifier'],  new_generated_config['template_and_partial_identifier']
       assert_equal test_config['site_variables']['local'],          new_generated_config['site_variables']['local']
       refute_equal test_config['site_variables']['release'],        new_generated_config['site_variables']['release']

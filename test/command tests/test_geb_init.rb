@@ -202,6 +202,7 @@ class TestGebCommandInit < Geb::CliTest
     assert_includes stdout, "Resolving directories and files from template site to copy ... done."
     assert_includes stdout, "copying directory and all sub-directories from #{template_full_path}"
     assert_includes stdout, "copying directory and all sub-directories from"
+    assert_includes stdout, "Please remember to uncomment the site_variables section in the geb.config.yml file and update for your site."
     assert_includes stdout, "Creating: local and release output folders ...done."
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::LOCAL_OUTPUT_DIR))
     assert File.directory?(File.join(new_site_path, Geb::Defaults::OUTPUT_DIR, Geb::Defaults::RELEASE_OUTPUT_DIR))

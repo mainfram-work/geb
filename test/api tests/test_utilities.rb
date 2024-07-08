@@ -159,4 +159,22 @@ class UtilitiesTest < Minitest::Test
 
   end # test "that copy paths to directory raises an error if the file operations fail"
 
+  test "that log_important prints a message to the console" do
+
+    important_message = "this is some very important message"
+
+    # setup a StringIO to capture standard output
+    original_stdout = $stdout
+    $stdout = StringIO.new
+
+    Geb.log_important(important_message)
+
+    assert_includes $stdout.string, "!!! IMPORTANT !!!"
+    assert_includes $stdout.string, important_message
+
+    # reset $stdout
+    $stdout = original_stdout
+
+  end # test "that log_important prints a message to the console"
+
 end # class UtilitiesTest < Geb::ApiTest

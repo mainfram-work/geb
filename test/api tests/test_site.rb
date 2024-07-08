@@ -368,7 +368,7 @@ class SiteTest < Geb::ApiTest
 
   end # test "that the create site method creates a site folder without a template"
 
-  test "that the create site method creates a site folder with a template" do
+  test "that the create site method creates a site folder with a template with template message" do
 
     site = Geb::Site.new
     test_site_path = "test_site"
@@ -391,7 +391,7 @@ class SiteTest < Geb::ApiTest
         else
           FileUtils.mkdir_p(File.dirname(File.join(test_template_path, path)))
           File.open(File.join(test_template_path, path), "w") do |file|
-            file.write("This is a dumny file path: #{path}")
+            file.write("This is a dummy file path: #{path}")
           end
         end
       end
@@ -399,9 +399,12 @@ class SiteTest < Geb::ApiTest
         file.write("\n")
         file.write('template_paths: ["assets", "shared", "*.html", "site.webmanifest", "geb.config.yml"]')
         file.write("\n")
+        file.write('template_message: "This is a template message to display"')
+        file.write("\n")
       end
 
       Geb::stubs(:site_directory_has_config?).returns(true)
+      Geb.expects(:log_important).with("This is a template message to display").once
       site.instance_variable_set(:@validated, true)
       site.instance_variable_set(:@site_path, File.join(temp_dir, test_site_path))
       site.instance_variable_set(:@template_path, test_template_path)
@@ -423,7 +426,7 @@ class SiteTest < Geb::ApiTest
         else
           assert File.exist?(File.join(site.site_path, path))
           File.open(File.join(site.site_path, path), "r") do |file|
-            assert_equal file.read, "This is a dumny file path: #{path}"
+            assert_equal file.read, "This is a dummy file path: #{path}"
           end
         end
       end
@@ -433,7 +436,7 @@ class SiteTest < Geb::ApiTest
 
     end # Dir.mktmpdir
 
-  end # test "that the create site method creates a site folder with a template"
+  end # test "that the create site method creates a site folder with a template with template message"
 
   test "that the create site method skips the site directory folder creation if folder already exists" do
 

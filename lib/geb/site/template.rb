@@ -61,6 +61,9 @@ module Geb
         # copy the resolved template paths to the site path
         Geb.copy_paths_to_directory(template_site.site_path, resolved_template_paths, @site_path)
 
+        # display the template message if it has been configured within the template
+        Geb.log_important template_site.site_config.template_message if template_site.site_config.template_message
+
       end # def copy_template_from_path
 
       # bundle the site as a template archive

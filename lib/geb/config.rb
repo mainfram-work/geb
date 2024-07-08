@@ -70,11 +70,12 @@ module Geb
       new_config = {}
 
       # add existing configuration to the new configuration
-      new_config['local_port'] = local_port           if local_port
-      new_config['output_dir'] = output_dir           unless output_dir == Geb::Defaults::OUTPUT_DIR
-      new_config['assets_dir'] = assets_dir           unless assets_dir == Geb::Defaults::ASSETS_DIR
-      new_config['page_extensions'] = page_extensions unless page_extensions == Geb::Defaults::PAGE_EXTENSIONS
-      new_config['template_paths'] = template_paths   if template_paths
+      new_config['local_port'] = local_port             if local_port
+      new_config['output_dir'] = output_dir             unless output_dir == Geb::Defaults::OUTPUT_DIR
+      new_config['assets_dir'] = assets_dir             unless assets_dir == Geb::Defaults::ASSETS_DIR
+      new_config['page_extensions']   = page_extensions   unless page_extensions == Geb::Defaults::PAGE_EXTENSIONS
+      new_config['template_paths']    = template_paths    if template_paths
+      new_config['template_message']  = template_message  if template_message
       new_config['template_and_partial_identifier'] = template_and_partial_identifier unless template_and_partial_identifier == Geb::Defaults::TEMPLATE_AND_PARTIAL_IDENTIFIER
 
       # check if site variables are used
@@ -173,6 +174,13 @@ module Geb
     def template_paths
       return @config['template_paths'] || []
     end # def template_paths
+
+    # get the configured template message
+    # @return [String] the template message
+    # @note the template message is displayed after the template has been used.
+    def template_message
+      return @config['template_message'] || nil
+    end # def template_message
 
     # get the configured partial paths
     # @return [Array] the partial paths
